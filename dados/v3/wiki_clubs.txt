@@ -1,0 +1,156 @@
+A|Athletico Paranaense|Curitiba|PR|Arena da Baixada|42 372
+A|Atlético Mineiro|Belo Horizonte|MG|Arena MRV|46 000
+A|Bahia|Salvador|BA|Arena Fonte Nova|50 025
+A|Botafogo|Rio de Janeiro|RJ|Nilton Santos|46 831
+A|Chapecoense|Chapecó|SC|Arena Condá|22 600
+A|Corinthians|São Paulo|SP|Neo Química Arena|48 905
+A|Coritiba|Curitiba|PR|Couto Pereira|40 502
+A|Cruzeiro|Belo Horizonte|MG|Mineirão|62 000
+A|Flamengo|Rio de Janeiro|RJ|Maracanã|78 838
+A|Fluminense|Rio de Janeiro|RJ|Maracanã|78 838
+A|Grêmio|Porto Alegre|RS|Arena do Grêmio|55 662
+A|Internacional|Porto Alegre|RS|Beira-Rio|50 128
+A|Mirassol|Mirassol|SP|Maião|15 023
+A|Palmeiras|São Paulo|SP|Nubank Parque|43 713
+A|Red Bull Bragantino|Bragança Paulista|SP|Cícero de Souza Marques[nota 4]|12 000
+A|Remo|Belém|PA|Mangueirão|53 635
+A|Santos|Santos|SP|Vila Belmiro|20 360
+A|São Paulo|São Paulo|SP|Morumbis|66 795
+A|Vasco da Gama|Rio de Janeiro|RJ|São Januário|20 419
+A|Vitória|Salvador|BA|Barradão|30 793
+B|América Mineiro|Belo Horizonte|MG|Independência|23 018
+B|Athletic|São João del-Rei|MG|Arena Sicredi|6 324
+B|Atlético Goianiense|Goiânia|GO|Antônio Accioly|12 500
+B|Avaí|Florianópolis|SC|Ressacada|17 800
+B|Botafogo-SP|Ribeirão Preto|SP|Santa Cruz|25 000
+B|Ceará|Fortaleza|CE|Arena Castelão|63 903
+B|CRB|Maceió|AL|Rei Pelé|17 126
+B|Criciúma|Criciúma|SC|Heriberto Hülse|19 225
+B|Cuiabá|Cuiabá|MT|Arena Pantanal|44 097
+B|Fortaleza|Fortaleza|CE|Arena Castelão|63 903
+B|Goiás|Goiânia|GO|Serrinha|14 525
+B|Juventude|Caxias do Sul|RS|Alfredo Jaconi|19 924
+B|Londrina|Londrina|PR|VGD|8 000
+B|Náutico|Recife|PE|Aflitos|22 856
+B|Novorizontino|Novo Horizonte|SP|Jorjão|12 398
+B|Operário-PR|Ponta Grossa|PR|Germano Krüger|10 632
+B|Ponte Preta|Campinas|SP|Moisés Lucarelli|17 728
+B|São Bernardo|São Bernardo do Campo|SP|1º de Maio|13 440
+B|Sport|Recife|PE|Ilha do Retiro|26 418
+B|Vila Nova|Goiânia|GO|OBA|11 788
+C|Amazonas|Manaus|AM|Carlos Zamith|10 000
+C|Anápolis|Anápolis|GO|Jonas Duarte|12 875
+C|Barra-SC|Balneário Camboriú|SC|Arena Barra FC|5 500
+C|Botafogo-PB|João Pessoa|PB|Almeidão (PB)|19 000
+C|Brusque|Brusque|SC|Arena Simon|5 000
+C|Caxias|Caxias do Sul|RS|Centenário|22 132
+C|Confiança|Aracaju|SE|Batistão|15 000
+C|Ferroviária|Araraquara|SP|Fonte Luminosa|20 000
+C|Figueirense|Florianópolis|SC|Orlando Scarpelli|19 584
+C|Floresta|Fortaleza|CE|Domingão|10 500
+C|Guarani|Campinas|SP|Brinco de Ouro|20 580
+C|Inter de Limeira|Limeira|SP|Limeirão|18 000
+C|Itabaiana|Itabaiana|SE|Etelvino Mendonça|10 000
+C|Ituano|Itu|SP|Novelli Junior|15 600
+C|Maranhão|São Luís|MA|Castelão|40 149
+C|Maringá|Maringá|PR|Willie Davids|16 226
+C|Paysandu|Belém|PA|Curuzu|16 200
+C|Santa Cruz|Recife|PE|Arena de Pernambuco[13]|45 500
+C|Volta Redonda|Volta Redonda|RJ|Raulino de Oliveira|18 230
+C|Ypiranga de Erechim|Erechim|RS|Colosso da Lagoa|22 000
+D|ABC|Natal|RN|Frasqueirão|18 000
+D|ABECAT|Ouvidor|GO|Luiz Benedito|1 000
+D|Água Santa|Diadema|SP|Arena Inamar|10 000
+D|Águia de Marabá|Marabá|PA|Zinho de Oliveira|5 000
+D|Altos|Altos|PI|Albertão|52 296
+D|America|Rio de Janeiro|RJ|Giulite Coutinho|12 150
+D|América de Natal|Natal|RN|Arena das Dunas|32 050
+D|Aparecidense|Aparecida de Goiânia|GO|Annibal Batista|5 000
+D|Araguaína|Araguaína|TO|Mirandão|7 000
+D|ASA|Arapiraca|AL|Fumeirão|15 332
+D|Atlético Cearense|Fortaleza|CE|Domingão|10 500
+D|Atlético de Alagoinhas|Alagoinhas|BA|Carneirão|9 000
+D|Azuriz|Pato Branco|PR|Pioneiros|1 500
+D|Betim Futebol|Betim|MG|Vera Cruz|1 800
+D|Brasil de Pelotas|Pelotas|RS|Bento Freitas|12 314
+D|Brasiliense|Taguatinga|DF|Boca do Jacaré|27 000
+D|Blumenau|Blumenau|SC|Monumental do SESI|3 624
+D|Capital-DF|Paranoá|DF|JK|6 000
+D|Ceilândia|Ceilândia|DF|Abadião|4 200
+D|Central|Caruaru|PE|Lacerdão|19 487
+D|Cianorte|Cianorte|PR|Albino Turbay|4 000
+D|CRAC|Catalão|GO|Genervino da Fonseca|8 500
+D|CSA|Maceió|AL|Rei Pelé|17 126
+D|CSE|Palmeira dos Índios|AL|Juca Sampaio|7 000
+D|Decisão Goiana|Goiana|PE|SESC Goiana|6 100
+D|Democrata GV|Governador Valadares|MG|Mamudão|8 675
+D|FC Cascavel|Cascavel|PR|Olímpico Regional|28 125
+D|Ferroviário|Fortaleza|CE|Presidente Vargas|20 268
+D|Fluminense-PI|Teresina|PI|Lindolfo Monteiro|5 114
+D|Galvez|Rio Branco|AC|Arena da Floresta|13 784
+D|Gama|Gama|DF|Bezerrão|20 310
+D|GAS|Boa Vista|RR|Canarinho|4 556
+D|Gazin Porto Velho|Porto Velho|RO|Aluizão|5 000
+D|Goiatuba|Goiatuba|GO|Divinão|6 000
+D|Guaporé|Rolim de Moura|RO|Cassolão|4 000
+D|Guarany de Bagé|Bagé|RS|Estrela D'Alva|10 000
+D|Humaitá|Porto Acre|AC|Arena da Floresta|13 784
+D|IAPE|São Luís|MA|Nhozinho Santos|12 891
+D|Iguatu|Iguatu|CE|Morenão|3 600
+D|Imperatriz|Imperatriz|MA|Frei Epifânio|10 000
+D|Independência|Rio Branco|AC|Arena da Floresta|13 784
+D|Inhumas|Inhumas|GO|Zico Brandão|4 380
+D|Ivinhema|Ivinhema|MS|Saraivão|2 800
+D|Jacuipense|Riachão do Jacuípe|BA|Arena Cajueiro|7 000
+D|Joinville|Joinville|SC|Arena Joinville|22 400
+D|Juazeirense|Juazeiro|BA|Adautão|8 000
+D|Lagarto|Lagarto|SE|Barretão|5 000
+D|Laguna|Tibau do Sul|RN|Nazarenão|7 000
+D|Luverdense|Lucas do Rio Verde|MT|Passo das Emas|10 000
+D|Madureira|Rio de Janeiro|RJ|Conselheiro Galvão|5 014
+D|Maguary|Bonito|PE|Arthur Tavares|4 000
+D|Manauara|Manaus|AM|Colina|10 141
+D|Manaus|Manaus|AM|Arena da Amazônia|44 000
+D|Maracanã-CE|Maracanaú|CE|Almir Dutra|5 000
+D|Marcílio Dias|Itajaí|SC|Gigantão das Avenidas|6 010
+D|Maricá|Maricá|RJ|João Saldanha|2 000
+D|Mixto|Cuiabá|MT|Dutrinha|7 500
+D|Monte Roraima|Boa Vista|RR|Canarinho|4 556
+D|Moto Club|São Luís|MA|Castelão|40 149
+D|Nacional-AM|Manaus|AM|Arena da Amazônia|44 000
+D|Noroeste|Bauru|SP|Alfredão|15 420
+D|Nova Iguaçu|Nova Iguaçu|RJ|Laranjão|1 600
+D|Operário-MS|Campo Grande|MS|Moreninhas|3 216
+D|Operário VG|Várzea Grande|MT|Dito Souza|2 600
+D|Oratório|Macapá|AP|Augusto Antunes|2 318
+D|Parnahyba|Parnaíba|PI|Pedro Alelaf|4 700
+D|Piauí|Teresina|PI|Albertão|52 296
+D|Porto-BA|Porto Seguro|BA|Agnaldo Bento|5 000
+D|Portuguesa|São Paulo|SP|Canindé|22 375
+D|Portuguesa-RJ|Rio de Janeiro|RJ|Luso-Brasileiro|5 044
+D|Pouso Alegre|Pouso Alegre|MG|Manduzão|26 000
+D|Primavera-MT|Primavera do Leste|MT|Cerradão|4 000
+D|Real Noroeste|Águia Branca|ES|José Olímpio da Rocha|5 820
+D|Retrô|Camaragibe|PE|Arena de Pernambuco|44 000
+D|Rio Branco-ES|Vitória|ES|Kleber Andrade|21 000
+D|Sampaio Corrêa|São Luís|MA|Castelão|40 149
+D|Sampaio Corrêa-RJ|Saquarema|RJ|Lourivaldão|4 284
+D|Santa Catarina|Rio do Sul|SC|Alfredo João Krieck|2 959
+D|São José-RS|Porto Alegre|RS|Passo d'Areia|14 000
+D|São Joseense|São José dos Pinhais|PR|Pinhão|4 047
+D|São Luiz|Ijuí|RS|19 de Outubro|6 000
+D|São Raimundo-RR|Boa Vista|RR|Canarinho|4 556
+D|Sergipe|Aracaju|SE|Batistão|15 586
+D|Serra Branca|Campina Grande|PB|Amigão|20 000
+D|Sousa|Sousa|PB|Marizão|12 400
+D|Tirol|Fortaleza|CE|Presidente Vargas|20 268
+D|Tocantinópolis|Tocantinópolis|TO|Ribeirão|8 000
+D|Tombense|Tombos|MG|Almeidão (MG)|6 555
+D|Trem|Macapá|AP|Augusto Antunes|2 318
+D|Treze|Campina Grande|PB|Amigão|19 000
+D|Tuna Luso|Belém|PA|Souza|5 000
+D|Uberlândia|Uberlândia|MG|Parque do Sabiá|53 350
+D|União Rondonópolis|Rondonópolis|MT|Luthero Lopes|18 000
+D|Velo Clube|Rio Claro|SP|Benitão|8 136
+D|Vitória-ES|Vitória|ES|Salvador Costa|3 000
+D|XV de Piracicaba|Piracicaba|SP|Barão da Serra Negra|18 000

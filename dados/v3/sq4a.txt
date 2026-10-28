@@ -1,0 +1,1285 @@
+@BRA4|73407|Pouso Alegre FC
+Thiago Braga|GK|42|0|14|0|0|1198
+Natan|GK|21|0|0|0|0|0
+Felipe|GK|22|0|0|0|0|0
+Xandão|CB|36|0|14|1|1|1197
+Vanderley|CB|26|0|13|0|0|1031
+Samuel Bastos|CB|22|0|0|0|0|0
+Victão|CB|22|0|15|1|0|1190
+Guilherme Buscarioli|CB|20|0|5|0|0|80
+Foguinho|LB|29|0|2|0|0|76
+Enzo|LB|23|0|0|0|0|0
+Ryan|RB|23|0|2|0|0|12
+Rafael Vaz|RB|20|0|0|0|0|0
+Albert|DM|30|0|6|0|0|332
+Thomás Agustín|DM|22|0|1|0|0|32
+Ítalo Henrique|CM|28|0|0|0|0|0
+André Anderson|AM|27|125|7|0|0|268
+Bruno Oliveira|AM|28|0|0|0|0|0
+Pedro Arthur|AM|23|0|8|1|0|410
+Biel|AM|18|0|10|0|0|560
+Jhonatan Kauan|RW|22|350|7|1|0|273
+Ryan Galdino|RW|20|0|0|0|0|0
+Ricardo Bueno|ST|39|0|1|0|0|45
+Pedro Balotelli|ST|21|0|2|0|0|36
+Ryan Daniel|ST|21|0|0|0|0|0
+João Gabriel|ST|18|0|3|0|0|76
+@BRA4|36963|Santa Catarina Clube
+Marcos de Paula|GK|33|0|24|0|0|2160
+Vinicius Machado|GK|26|0|1|0|0|90
+Roberto Teixeira|GK|21|0|0|0|0|0
+Gabriel Amaral|GK|18|0|0|0|0|0
+Hyan|CB|21|0|0|0|0|0
+Henrique|CB|26|0|0|0|0|0
+Kauan|CB|18|0|0|0|0|0
+Zé Leandro|CB|28|0|17|2|0|1368
+Kauê Oliveira|CB|22|0|15|0|0|984
+Beto|CB|31|0|9|1|0|267
+Adriel|CB|25|0|23|1|0|2033
+Matheus Coruja|LB|26|0|21|0|0|1425
+DVD|LB|21|0|5|0|0|97
+Piauí|LB|21|0|20|3|0|897
+Juninho|RB|29|0|25|1|0|2236
+Iago Henrique|RB|23|0|0|0|0|0
+Nenê Bonilha|DM|34|0|0|0|0|0
+Henrique Rodrigues|DM|23|0|0|0|0|0
+Breno Santos|DM|21|0|0|0|0|0
+Iarley|?Meio-Campo|19|0|0|0|0|0
+Pedro Fabrício|?Meio-Campo|19|0|1|0|0|1
+Martins|CM|21|0|0|0|0|0
+Mendes|AM|31|0|21|2|3|1659
+Cleberson|AM|24|0|22|0|0|1560
+Brener|AM|26|0|16|2|1|403
+Renan|AM|22|0|19|1|0|940
+Wagner Pinote|LW|26|100|0|0|0|0
+Vitinho|RW|23|250|0|0|0|0
+Marquinho|RW|27|0|8|0|0|154
+Nycollas|RW|23|0|0|0|0|0
+Gui Nascimento|RW|24|0|20|2|0|554
+Alex Gonçalves|ST|36|0|21|10|0|1759
+Douglas Coutinho|ST|32|0|0|0|0|0
+João Veras|ST|25|0|0|0|0|0
+Golden|ST|23|0|0|0|0|0
+João Biasi|ST|19|0|0|0|0|0
+Doupit|ST|19|0|0|0|0|0
+Yhago|ST|23|0|4|0|0|50
+Luãn|ST|25|0|7|1|0|254
+@BRA4|98702|Betim Futebol
+Denivys|GK|25|0|0|0|0|0
+Enzo Gabriel|GK|19|0|0|0|0|0
+Igor Augusto|?Defensores|21|0|0|0|0|0
+Pedro Botelho|CB|36|0|4|0|0|304
+Alan Santos|CB|35|0|5|0|0|335
+Naldo|CB|36|0|3|0|0|66
+Dani Alves|CB|24|0|0|0|0|0
+Talison|CB|26|0|11|0|0|649
+Gabriel Marques|CB|29|0|10|0|0|716
+João Vitor|CB|21|0|5|0|0|117
+Jean|CB|26|0|18|0|0|1425
+Bryan Garcia|LB|34|0|5|0|0|412
+Matheus Mascarenhas|LB|28|0|1|0|0|45
+Cauã Marangoni|LB|22|0|8|0|0|197
+Isaac Bryan|LB|29|0|1|0|0|11
+Pedro Henrique|LB|22|0|21|2|0|1682
+Patrick|RB|35|0|0|0|0|0
+Danilo Belão|RB|29|0|16|0|0|1191
+Danilo|RB|23|0|2|0|0|51
+Miticov|DM|24|250|2|0|0|82
+Riquelmy|DM|24|0|16|0|0|986
+Vitinho|CM|24|0|16|1|2|971
+Juan Macías|CM|21|0|1|0|0|25
+Jhemerson|AM|29|0|18|0|0|904
+Bruno Menezes|AM|24|0|14|1|0|422
+Paulinho|LW|33|0|2|0|0|62
+Gleisinho|RW|34|0|1|0|0|25
+Robinho|RW|20|0|0|0|0|0
+Paulo Henrique|ST|33|0|20|4|1|1273
+Marcelo|ST|28|0|7|1|0|189
+Victor Michell|ST|23|0|4|1|0|49
+@BRA4|85931|Azuriz FC
+Vinícius|GK|29|0|9|0|0|810
+Leandro Matheus|GK|25|0|0|0|0|0
+Vinicius Cima|GK|26|0|0|0|0|0
+Gabriel Buzzetto|GK|24|0|4|0|0|360
+Bruno Gonçalves|CB|29|0|14|1|0|1183
+Ary Garcia|CB|23|0|18|1|0|1587
+Freddy Castañeda|CB|21|0|2|0|0|121
+Reginaldo|LB|25|0|8|0|0|578
+Lauan|LB|21|0|0|0|0|0
+Afonso Martins|LB|21|0|0|0|0|0
+Kaike Laurentino|RB|22|0|3|0|0|122
+Hygor|RB|22|0|10|0|0|624
+Carlos Biro|DM|22|0|3|0|0|134
+João Felipe|DM|24|0|5|0|0|284
+Natan Souza|DM|28|0|4|0|0|94
+Marcão|DM|21|0|13|1|0|560
+Lukas König|AM|24|0|7|0|0|367
+Pedrinho|AM|24|0|5|0|0|222
+Jorginho|AM|24|0|16|0|0|1251
+Léo Guerra|LW|23|0|6|0|0|147
+Gabriel Mineiro|LW|21|0|0|0|0|0
+Lucas Santos|LW|21|0|11|2|0|634
+Marquinhos|LW|21|0|16|2|0|823
+Kauã Giancler|LW|22|0|8|3|0|666
+Renyer|RW|23|200|0|0|0|0
+Matheus Alemão|ST|24|0|0|0|0|0
+Luizão|ST|20|0|2|0|0|39
+@BRA4|11931|Ferroviário AC
+Sivaldo Júnior|GK|25|0|25|0|0|2250
+Victor Brasil|GK|33|0|6|0|0|540
+Iago Reis|CB|26|0|16|0|0|1326
+Bruno Miranda|CB|27|0|7|0|0|371
+Thomas Luciano|RB|24|150|13|1|0|1104
+Geo|RB|22|0|17|0|0|984
+Fernando Portel|DM|26|0|17|1|0|320
+Raphael Freitas|DM|24|0|14|1|0|550
+Luan|DM|21|0|21|1|0|1103
+Victor Diotti|DM|21|0|3|0|1|33
+Paulo Rodrigo|LM|23|0|0|0|0|0
+Caio Bahia|AM|25|0|18|0|0|1485
+Brayan|AM|21|0|26|0|2|1819
+Pablinho|LW|23|0|21|1|0|614
+Thiago Pulga|LW|21|0|0|0|0|0
+Carlinhos|LW|28|0|25|4|3|1455
+Yair Mena|RW|26|50|29|4|1|2273
+Kiuan|RW|23|0|22|4|2|867
+Ciel|ST|44|0|17|7|0|1269
+Camilo|ST|28|0|13|0|0|534
+Iago Honorato|ST|21|0|0|0|0|0
+@BRA4|12279|Ceilândia EC
+Victor Hugo|GK|29|0|3|0|0|270
+Danrlei|CB|32|0|3|0|0|270
+Henrique Vermudt|CB|27|0|13|0|0|703
+Franklin|CB|27|0|6|0|0|540
+Romário|LB|34|0|3|0|0|270
+Magdiel|LB|31|0|4|1|0|239
+Sávio|RB|30|0|13|0|0|918
+Paulinho Ferdinan|RB|29|0|12|0|1|871
+Iury Marley|RB|25|0|0|0|0|0
+Fabinho|RB|24|0|11|2|0|427
+Henrique Vigia|DM|24|0|18|2|0|785
+Cleyton|DM|28|0|12|0|0|765
+Vitinho|DM|24|0|1|0|0|9
+Welington Pará|DM|27|0|6|0|0|306
+Paulo Vinicius|?Meio-Campo|24|0|0|0|0|0
+Cabralzinho|AM|33|0|19|3|0|765
+Gleidson Baianinho|LW|31|0|0|0|0|0
+Cebolinha|LW|26|0|3|0|0|25
+Vitor Alves|RW|28|175|1|0|0|45
+Sandy|RW|32|0|11|4|0|736
+Danillo Bala|RW|33|0|3|0|0|154
+Davi Araújo|RW|27|0|11|1|0|695
+Edson Reis|ST|36|0|5|0|0|65
+@BRA4|8825|Uberlândia EC
+Jefferson Luis|GK|32|0|19|0|0|1710
+Thiago Lenza|GK|21|0|0|0|0|0
+Aranha|GK|21|0|0|0|0|0
+Julio César|?Defensores|20|0|1|0|0|1
+Abner Rojas|?Defensores|20|0|0|0|0|0
+Gabriel Ferreira|CB|29|100|6|0|0|253
+Rayan Ribeiro|CB|30|0|10|0|0|855
+Marcelo Augusto|CB|33|0|16|1|0|1087
+Italo|CB|20|0|0|0|0|0
+Renan|CB|25|0|12|0|1|604
+Max Miller|CB|28|0|32|3|0|2713
+Rayne|CB|29|0|11|0|0|854
+Nathan|LB|28|0|24|0|0|1651
+Luis Felipe|LB|23|0|24|1|2|1372
+Samuel Alves|RB|22|0|13|0|0|1156
+Guilherme Carneiro|RB|26|0|0|0|0|0
+Fernandinho|RB|22|0|2|0|0|23
+Ben-Hur|RB|30|0|23|1|2|1567
+Diego Fumaça|DM|31|0|31|0|3|2630
+Rafinha|DM|30|0|10|1|0|202
+Evanderson|DM|27|0|23|1|0|1805
+Vinicyus|?Meio-Campo|19|0|0|0|0|0
+Lucas Couto|?Meio-Campo|19|0|0|0|0|0
+Longatto|DM|21|0|6|0|0|181
+Rafael Conceição|AM|22|75|9|0|0|512
+Tomas Bastos|AM|34|0|27|10|0|2244
+Jhonatan Lima|AM|21|0|12|2|0|649
+Netinho|AM|20|0|6|0|0|81
+Roger Modesto|LW|23|0|2|0|0|37
+Marcos Calazans|LW|30|0|27|7|1|1937
+Léo Reis|RW|25|0|28|4|1|1797
+Brayan Díaz|SS|21|0|7|0|0|113
+Kayke|ST|38|0|17|3|0|1042
+Pablo Thomaz|ST|27|0|4|0|0|141
+Da Silva|ST|27|0|19|2|0|714
+Patrick|ST|26|0|0|0|0|0
+Italo|ST|17|0|0|0|0|0
+Arthur Silva|ST|20|0|0|0|0|0
+@BRA4|40120|Sampaio Corrêa FE
+Zé Carlos|GK|31|0|29|0|0|2610
+Eduardo|GK|25|0|2|0|0|180
+Zé Pompeu|GK|20|0|0|0|0|0
+Kaká|GK|20|0|0|0|0|0
+Renan Diniz|CB|33|0|12|0|0|911
+Daniel Nunes|CB|23|0|27|1|1|2421
+Gabriel Almeida|CB|24|0|1|0|0|35
+Gregory|CB|23|0|13|0|0|449
+Luan Gama|LB|28|0|28|4|2|2096
+Guilherme|LB|33|0|29|3|2|2610
+Cauã|LB|19|0|0|0|0|0
+Lucas Carvalho|RB|30|0|30|0|0|2487
+Ryan Andrade|RB|22|0|8|0|0|161
+Romulo|RB|20|0|0|0|0|0
+Rodrigo Dantas|DM|36|0|7|0|1|196
+Pablo|DM|28|0|26|0|0|1977
+Magno|DM|33|0|6|0|0|127
+Gabriel Agú|DM|26|0|25|2|0|1448
+Ryan Padilha|DM|24|0|3|1|0|270
+João Martini|DM|22|0|19|0|0|592
+João Miguel|?Meio-Campo|21|0|0|0|0|0
+Alexandre Souza|DM|25|0|15|0|0|970
+Natan|DM|23|0|1|0|0|45
+Gustavo Nunes|?Meio-Campo|21|0|5|1|0|148
+MT|CM|24|0|11|0|0|417
+Paulo Victor|AM|32|100|17|1|4|922
+Walber|AM|33|0|16|1|2|994
+Caíque|AM|21|0|0|0|0|0
+Magrão|AM|21|0|1|0|0|8
+Ewerton Potiguar|LW|28|75|18|2|0|580
+Octávio|LW|29|0|27|5|2|1782
+Elias|ST|39|0|24|6|0|1434
+Jean|ST|22|0|8|0|0|89
+Alan|ST|23|0|6|1|0|129
+@BRA4|16837|Cianorte FC
+Felipe Garcia|GK|38|0|9|0|0|810
+Igor|GK|37|0|3|0|0|270
+Alesson Brotto|GK|22|0|0|0|0|0
+Mancha|CB|24|0|0|0|0|0
+Jackson|CB|25|0|22|1|0|1586
+Iago|CB|23|0|22|1|0|1790
+Ramom Soares|CB|23|0|19|0|0|1586
+Diogo Marezi|CB|21|0|0|0|0|0
+Evilazaro|CB|19|0|0|0|0|0
+Gustavo Silveira|LB|24|0|8|0|0|563
+Paulo Roberto|RB|20|150|12|0|0|689
+Cristovam|RB|36|0|19|1|0|1291
+Pedro Ivo|RB|22|0|7|0|0|273
+Nicolas Rizzardi|RB|20|0|0|0|0|0
+Dener|DM|31|0|14|0|0|1021
+Ibson|DM|22|0|24|3|0|1595
+Ygor Ortega|?Meio-Campo|20|0|5|0|0|139
+Arthur Rafael|DM|19|0|0|0|0|0
+Netto|?Meio-Campo|19|0|0|0|0|0
+Luiz Fernando|LW|28|0|7|0|0|390
+Bruno Dentinho|LW|25|0|8|1|0|442
+Reifit|RW|24|0|21|2|0|1341
+Felipe Laurindo|RW|21|0|19|0|0|516
+Pedoca|ST|24|0|3|0|0|150
+João Celeri|ST|27|0|0|0|0|0
+Carlito Thiago|ST|21|0|17|1|1|825
+Daniel Adisa|ST|21|0|10|1|0|385
+Ryan de Paula|ST|18|0|7|0|0|117
+@BRA4|7014|SE Gama
+Renan Rinaldi|GK|33|0|32|0|0|2860
+Leandro|GK|38|0|9|0|0|740
+Wellington|CB|35|0|19|0|0|1459
+Eduardo|CB|30|0|1|0|0|7
+PV|CB|28|0|5|0|0|258
+Lucas Piauí|LB|31|0|28|1|1|2345
+Jonathan|LB|22|0|0|0|0|0
+Lucão|LB|24|0|18|0|0|894
+Michel|RB|31|0|32|1|1|2698
+Iranilson|RB|33|0|6|0|0|51
+Moisés Ribeiro|DM|35|0|27|0|0|1647
+Lúcio|DM|30|0|29|2|0|2117
+David Lucas|DM|27|0|34|3|1|2142
+Gabriel Galhardo|DM|32|0|14|0|0|828
+Russo|DM|30|0|25|1|0|1252
+Renato Soares|CM|27|0|34|3|0|2492
+Lucas Lourenço|AM|25|0|8|1|0|323
+Danilinho|AM|27|0|15|0|0|485
+Luan|LW|38|0|14|2|0|361
+Kennedy|LW|29|0|29|4|0|952
+De Paula|RW|27|0|12|0|0|271
+Klenisson|RW|31|0|11|1|0|432
+Henrique Almeida|ST|35|150|28|6|0|936
+Daniel Guerreiro|ST|33|0|8|1|0|214
+@BRA4|108000|Clube Laguna SAF
+Dã Moroni|GK|23|0|6|0|0|486
+Mário|GK|21|0|0|0|0|0
+Neneca|GK|19|0|0|0|0|0
+Adalberto|CB|38|0|4|0|0|360
+Héctor Urrego|CB|33|0|3|0|0|157
+Anderson Júnior|CB|35|0|9|0|0|763
+Emmanuel|CB|23|0|8|1|0|602
+João Vitor|CB|22|0|2|0|0|68
+Victor Jacaré|CB|24|0|13|0|0|891
+Samuel|LB|18|0|0|0|0|0
+Mateus|LB|21|0|10|0|0|894
+Vini Luiz|LB|20|0|0|0|0|0
+Pajé|RB|24|0|6|0|0|414
+Éverton Luiz|DM|38|50|19|1|0|1585
+Ferrugem|DM|24|0|17|0|0|894
+JV|?Meio-Campo|23|0|3|0|0|78
+Café|DM|21|0|10|0|0|347
+Enrique Morán|DM|23|0|15|2|0|930
+Dudu|DM|20|0|5|0|0|96
+Noninha|AM|26|0|20|2|0|1341
+Rômulo Souza|LW|31|100|7|1|0|532
+Danilinho|LW|21|0|9|0|0|246
+Ryan|LW|18|0|1|0|0|8
+Breninho|RW|21|0|8|0|0|132
+@BRA4|121518|Porto SC
+Matheus Refundini|GK|27|0|0|0|0|0
+Thiago Passos|GK|40|0|10|0|0|900
+Guilherme|GK|23|0|0|0|0|0
+Victor Hugo|GK|19|0|0|0|0|0
+Everton Dias|CB|31|0|10|0|0|801
+Breno Cézar|CB|31|0|8|0|0|282
+Erick Ferreira|CB|26|0|1|0|0|90
+Anderson Bandeira|CB|33|0|19|0|0|1684
+Caio|LB|26|0|7|0|0|152
+Dijalma|LB|23|0|7|0|0|384
+Gabriel Jordan|DM|30|0|5|0|0|165
+Bruno Ferreira|DM|25|0|18|1|0|1254
+Arthur|?Meio-Campo|18|0|5|0|0|267
+Pedro Lima|CM|23|0|14|0|0|780
+Geovani|AM|33|0|8|0|0|465
+Vini|AM|26|0|8|0|0|156
+Léo Gomes|AM|26|0|4|0|0|30
+Danilinho|RW|24|0|3|0|0|50
+Firmino|ST|30|150|9|2|0|711
+João Gabriel|ST|30|0|4|0|0|63
+Gustavo Kawã|ST|22|0|2|0|0|26
+Diogo|ST|18|0|6|0|0|126
+Hélio|ST|21|0|4|0|0|64
+@BRA4|15047|EC Noroeste
+Diogo Silva|GK|40|75|0|0|0|0
+Jeferson Romário|GK|31|0|0|0|0|0
+Matheus Teixeira|GK|27|0|3|0|0|196
+Henrique Lima|GK|27|0|1|0|0|74
+Hugo Henrique|GK|25|0|0|0|0|0
+Diogo|?Defensores|22|0|0|0|0|0
+Maycon|CB|28|50|15|0|0|1173
+Ronaldo Alves|CB|37|0|8|1|0|529
+Lucas Barboza|CB|30|0|2|0|0|180
+Lucas Costa|CB|31|0|0|0|0|0
+Renan Araújo|CB|23|0|2|0|0|7
+Luiz Henrique|LB|28|0|0|0|0|0
+Leocovick|LB|27|0|16|0|1|919
+PH|LB|29|0|11|0|0|594
+Pacheco|RB|35|0|8|0|0|607
+JP Galvão|RB|25|0|0|0|0|0
+Yuri Ferraz|RB|31|0|12|1|0|768
+Léo Sena|DM|30|0|4|0|0|214
+Vini Guedes|DM|27|0|1|0|0|26
+Thiago Lopes|CM|29|0|17|1|0|811
+Tauã|CM|31|0|16|0|0|1092
+Igor|CM|23|0|7|0|0|136
+Rodolfo|AM|33|0|0|0|0|0
+Denner|AM|26|0|15|1|0|888
+Léo Ceará|AM|27|0|6|0|0|194
+Lucas Belém|AM|23|0|0|0|0|0
+João Prado|AM|23|0|0|0|0|0
+Cauã Aguiar|LW|25|0|12|1|0|450
+Francisco|LW|22|0|0|0|0|0
+Robertinho|RW|26|0|0|0|0|0
+Lucas Douglas|RW|32|0|0|0|0|0
+Elicley|RW|27|0|0|0|0|0
+Bruno Lopes|ST|31|0|7|0|0|323
+Rafael Silva|ST|31|0|8|1|0|261
+Pedro Felipe|ST|29|0|16|2|0|973
+Matheus Goiás|ST|21|0|0|0|0|0
+@BRA4|8567|Goiatuba EC
+Omar|GK|37|0|20|0|0|1800
+Marcos Daniel|GK|28|0|3|0|0|270
+Victor Hugo|?Defensores|18|0|2|0|0|41
+Renato Vischi|CB|28|0|19|0|0|1698
+Lucas Balardin|CB|31|0|10|0|0|392
+Erik Henrique|CB|29|0|9|0|0|610
+Frank|LB|25|0|23|1|0|1986
+Rafael Castro|LB|21|0|11|0|0|619
+Felipe Alves|LB|25|0|6|0|0|191
+Fabio Sá|RB|31|0|5|0|0|225
+Vinícius Tsumita|DM|28|0|23|1|0|1916
+Fagner|DM|37|0|16|1|0|628
+Matheus Obina|DM|24|0|24|1|0|1748
+Davi Alves|?Meio-Campo|18|0|0|0|0|0
+Jaqueta|?Meio-Campo|18|0|0|0|0|0
+Daniel de Pauli|AM|27|100|16|0|0|1303
+Daniel Costa|AM|38|0|14|2|0|450
+Thalles|AM|28|0|27|5|0|1750
+Pedro Pires|AM|30|0|0|0|0|0
+Alef Leite|AM|32|0|4|0|0|108
+Higor|LW|21|0|2|0|0|34
+Jean Silva|RW|37|0|24|0|0|1258
+Gabriel Silva|RW|22|0|22|5|0|1004
+Bruno Nunes|ST|36|0|22|3|0|880
+Gui Sales|ST|25|0|9|1|0|209
+Erick Monteiro|ST|22|0|3|0|0|44
+Enzo Gabriel|ST|18|0|0|0|0|0
+@BRA4|25229|Alagoinhas AC
+Leonardo|GK|29|0|4|0|0|360
+Jordan|GK|35|0|1|0|0|90
+Gabriel Bartelli|GK|22|0|2|0|0|152
+Guilherme Simzen|GK|19|0|1|0|0|45
+Edson|?Defensores|20|0|1|0|0|90
+Vinicyus|?Defensores|19|0|1|0|0|90
+Rafael Augusto|CB|33|0|3|1|0|270
+Gabriel Lima|LB|23|0|2|0|0|111
+Marquinhos|LB|31|0|1|0|0|32
+Van|RB|35|0|10|0|0|744
+Jefferson|RB|23|0|14|0|0|775
+Paulo Victor|DM|27|0|2|0|0|46
+Everson Ribeiro|DM|26|0|13|2|0|777
+Macajuba|DM|22|0|4|0|0|142
+Galeguinho|DM|24|0|6|0|0|265
+Miller|CM|33|0|9|2|0|808
+Esquerdinha|AM|36|0|12|0|0|615
+Juan Xavier|AM|24|0|7|0|0|569
+Ryan Rocha|LW|24|0|4|0|0|67
+Ruan Teles|RW|28|100|13|0|0|524
+Higor Farias|RW|23|0|14|0|0|878
+Samuel|RW|26|0|5|0|0|275
+Jeferson|ST|28|0|0|0|0|0
+Gleydisson|ST|30|0|5|0|0|140
+@BRA4|10560|GE Brasil
+Carlos Eduardo|GK|34|75|0|0|0|0
+Davi Schneider|GK|23|0|1|0|0|90
+Edson|GK|33|0|10|0|0|900
+João Lucas|GK|22|0|0|0|0|0
+Lula|CB|34|0|11|1|0|990
+Rafael Dumas|CB|31|0|0|0|0|0
+Vitor Becker|CB|25|0|0|0|0|0
+Tony Lucas|CB|22|0|6|0|0|495
+Otávio|LB|31|0|8|0|1|371
+Sony|LB|22|0|0|0|0|0
+Matheus Streit|LB|21|0|9|0|0|635
+Gedeílson|RB|34|0|0|0|0|0
+Genilson|RB|29|0|0|0|0|0
+Yuri Farias|RB|22|0|9|0|0|441
+Silas|DM|30|0|0|0|0|0
+Rael|DM|25|0|0|0|0|0
+Tetê|DM|35|0|0|0|0|0
+Denis Germano|DM|28|0|10|1|0|596
+Thiago Henrique|DM|24|0|5|0|0|82
+Venicio|DM|25|0|10|0|0|800
+Matheus Lemons|?Meio-Campo|20|0|0|0|0|0
+Thobias|DM|23|0|0|0|0|0
+Guilherme Costa|DM|21|0|0|0|0|0
+Alan Freitas|DM|28|0|4|0|0|175
+Guilherme Garré|AM|33|0|0|0|0|0
+Masson|AM|24|0|7|0|0|419
+Andrey|LW|26|0|4|0|0|229
+Silvano|RW|28|0|0|0|0|0
+Daniel Dias|RW|26|0|7|0|0|285
+Petterson|RW|23|0|0|0|0|0
+Gabriel Morbeck|ST|29|0|10|2|0|418
+Vanílson|ST|36|0|0|0|0|0
+Samuel|ST|21|0|4|0|0|63
+Adriano Ferraz|ST|20|0|1|0|0|13
+@BRA4|103697|AA Maguary
+Léo Lopes|GK|28|0|0|0|0|0
+Bruno Lopes|GK|24|0|16|0|0|1440
+Keu|GK|40|0|0|0|0|0
+Mauricio Pinto|CB|29|0|17|0|0|1276
+Guedes|CB|24|0|24|0|0|2148
+Mateus Henrique|CB|27|0|10|0|0|824
+Rychelmy Rocha|LB|24|0|15|0|0|673
+Davyson|LB|23|0|0|0|0|0
+João Batista|LB|22|0|2|0|0|56
+Tiago Cametá|RB|34|0|0|0|0|0
+Rhuan Rodrigues|RB|27|0|0|0|0|0
+Deyvson|RB|24|0|1|0|0|21
+Lucas Kawan|RB|23|0|0|0|0|0
+Ítalo|DM|24|0|21|1|0|1655
+Richardson|DM|22|0|10|0|0|472
+Alejandro Santana Viniegra|AM|24|25|0|0|0|0
+Memo|AM|38|0|4|0|0|181
+Luiz Henrique|LW|25|0|2|1|0|46
+Vitinho|LW|23|0|3|0|0|37
+Histone|LW|26|0|10|0|0|522
+Henrique Paraíba|RW|35|0|12|0|0|455
+Philippe Costa|ST|26|0|2|1|0|126
+Hericlis|ST|30|0|8|0|0|178
+@BRA4|9138|América FC
+João Gabriel|GK|34|0|3|0|0|270
+Rhuan|GK|31|0|3|0|0|270
+Guilherme|GK|33|0|3|0|0|270
+Léo Silva|GK|21|0|3|0|0|270
+Lázaro|CB|36|0|0|0|0|0
+Octávio Assis|CB|27|0|4|0|0|336
+Ryan Couto|CB|21|0|6|0|0|474
+Yan França|CB|21|0|0|0|0|0
+Alan Pires|LB|33|0|4|0|0|291
+Arthur Vignoli|LB|26|0|10|1|0|789
+Guilherme Aguiar|LB|23|0|1|0|0|18
+Raphinha|RB|22|0|4|0|0|212
+Júlio César|RB|26|0|11|1|0|868
+Nascimento|DM|27|0|8|0|0|331
+Ronald|?Meio-Campo|23|0|0|0|0|0
+Laranjeira|AM|26|0|2|0|0|70
+Henrique|AM|23|0|9|1|0|434
+Romarinho|RW|33|10|9|0|0|308
+Caio Rangel|RW|30|0|10|0|0|517
+Café|RW|32|0|3|0|0|130
+Emerson Carioca|RW|30|0|12|3|0|564
+Luã Lúcio|RW|29|0|7|1|0|560
+Luis Henrique|ST|28|0|2|0|0|42
+@BRA4|28199|União Rondonópolis EC
+Pedro Bez|GK|22|0|0|0|0|0
+Vitor Dadalt|CB|30|10|0|0|0|0
+Alemão|CB|36|0|14|1|0|1147
+Andrey|CB|21|0|2|0|0|95
+Renan|CB|22|0|10|0|0|623
+Felipe Araújo|CB|25|0|0|0|0|0
+Kauan Christhian|CB|21|0|0|0|0|0
+Miguel|LB|24|0|0|0|0|0
+Iury Cabral|LB|22|0|0|0|0|0
+Marcão|RB|26|0|6|0|0|212
+Jhuan Gabriel|RB|23|0|18|0|0|1482
+Isac Miller|RB|22|0|0|0|0|0
+Kaio César|DM|26|0|5|0|0|220
+Alex Guedes|DM|28|0|0|0|0|0
+Lucas Lourenço|DM|31|0|13|2|0|946
+João Coelho|?Meio-Campo|22|0|0|0|0|0
+Luiz Gabriel|?Meio-Campo|22|0|8|1|0|268
+Douglas Nathan|DM|24|0|0|0|0|0
+Guilherme Souza|?Meio-Campo|21|0|0|0|0|0
+Alisson Macapá|?Meio-Campo|20|0|0|0|0|0
+Luan Gós|DM|32|0|0|0|0|0
+Igor Silva|LW|30|0|4|0|0|200
+Dhiordan|LW|23|0|3|0|0|77
+Juninho|LW|22|0|7|1|0|469
+Adriel|ST|23|0|0|0|0|0
+Guilherme Farias|ST|23|0|9|0|0|662
+@BRA4|55335|EC XV de Piracicaba
+André Luiz|GK|31|0|2|0|0|180
+Filipe Costa|GK|30|0|1|0|0|90
+Gabriel Coutinho|GK|29|0|0|0|0|0
+Léo Simples|?Defensores|19|0|0|0|0|0
+Andrés Robles|CB|32|0|2|0|0|101
+Almir Luan|CB|24|0|11|0|0|835
+Luiz Gustavo|CB|21|0|6|0|0|217
+Rennan Siqueira|LB|31|0|13|0|0|1142
+João Victor|LB|28|0|14|2|0|1009
+Matusa|LB|21|0|0|0|0|0
+Gustavo Kuhn|LB|23|0|5|1|0|240
+Júnior Caiçara|RB|37|0|11|1|0|909
+Thales Oleques|RB|32|0|13|1|0|1070
+Arlen|RB|30|0|4|0|0|214
+Carlos Manuel|DM|26|0|6|0|0|101
+Richard Almeyda|CM|37|0|10|1|0|540
+Gustavo Hebling|CM|30|0|13|0|0|1141
+Dudu Vieira|CM|32|0|8|1|0|435
+Djavan|CM|30|0|1|0|0|5
+Iago|CM|23|0|0|0|0|0
+Gabriel Chagas|CM|25|0|10|0|0|443
+Serginho|AM|22|0|12|0|0|698
+Léo Santos|LW|30|0|11|1|0|509
+David Ribeiro|LW|28|0|14|3|0|1186
+Josiel|RW|27|0|0|0|0|0
+Erik Bessa|RW|30|0|9|1|0|256
+Rone Carlos|RW|31|0|0|0|0|0
+Alex Silva|RW|24|0|0|0|0|0
+Paulo Marcelo|ST|31|0|10|1|0|555
+Henry|ST|27|0|13|2|0|629
+Antônio Gabriel|ST|24|0|4|2|0|98
+@BRA4|62794|AA Altos
+Matheus Inácio|GK|34|0|6|0|0|540
+Allan|GK|27|0|16|0|0|1440
+Anderson Sobral|CB|34|0|8|0|0|720
+Geninho|CB|33|0|15|3|0|1205
+Airton|LB|37|0|11|0|0|720
+Rodolfo Potiguar|DM|38|0|12|2|0|1042
+Guilherme Martineli|DM|27|0|4|0|0|160
+Netinho|DM|32|0|7|0|0|445
+Ray Silva|DM|31|0|12|0|0|571
+Digão|DM|23|0|3|0|0|58
+Neko|CM|25|0|12|0|1|995
+Gabriel China|CM|23|0|21|2|0|1249
+Marllon|AM|35|0|2|0|0|19
+Alan Pedro|AM|24|0|8|0|0|278
+Samuel Santos|LW|25|0|6|0|0|177
+Netto|RW|28|0|0|0|0|0
+Kiko|RW|29|0|1|0|0|15
+Betinho|ST|39|0|16|6|0|1013
+Léo Bahia|ST|35|0|1|0|0|26
+Guilherme Pires|ST|24|0|21|3|0|1468
+Mikael Raitz|ST|23|0|5|0|0|211
+Fran|ST|24|0|2|0|0|54
+@BRA4|53471|Oratório RC
+Luis Felype|GK|25|0|4|0|0|360
+Diego Farias|GK|30|0|0|0|0|0
+Kaiky|GK|18|0|1|0|0|3
+Maycon|?Defensores|21|0|3|0|0|70
+Raniery|CB|26|0|8|0|0|554
+Venilson Taperaçú|CB|26|0|9|1|0|810
+Diego Santos|CB|23|0|9|1|0|349
+Rafael Rosa|CB|24|0|4|0|0|335
+Bruno|LB|25|0|6|0|0|261
+Lucca|LB|22|0|4|0|0|249
+Carlinhos|RB|37|0|15|0|0|1221
+Sanderson|RB|22|0|8|1|0|363
+Diogo|DM|26|0|13|0|0|760
+Jeferson Jari|DM|30|0|18|2|0|1549
+Matheus Estevão|DM|25|0|17|0|0|786
+Dayveson Macapá|AM|23|0|7|2|0|574
+Thiago Ribeiro|LW|40|0|6|1|0|261
+Daniel Alagoano|LW|27|0|8|2|1|500
+Dudu|LW|22|0|6|0|0|49
+Abuda|RW|40|0|7|0|0|277
+Keven|RW|20|0|8|0|0|209
+Bambelo|ST|27|0|20|2|0|1150
+João Pedro|ST|21|0|10|0|0|396
+@BRA4|36478|Real Noroeste CFC
+Alexandre Castro|GK|23|0|1|0|0|90
+Giovani|GK|30|0|10|0|0|900
+Allan Camilatto|GK|32|0|8|0|0|689
+João Victor|GK|29|0|3|0|0|210
+Ryan|GK|19|0|0|0|0|0
+Rômulo|CB|30|0|18|2|0|1615
+Fernando|CB|33|0|8|0|0|635
+Ismael|CB|27|0|12|0|0|794
+Murilo|CB|22|0|8|1|0|504
+Felipe Affonso|CB|22|0|13|2|0|432
+Arthur Neves|LB|24|0|6|0|0|274
+Francisco Arthur|LB|22|0|6|0|0|302
+Antonio Junior|LB|24|0|5|0|0|227
+Diego|RB|25|0|12|0|0|721
+Luiz Meneses|DM|29|0|6|0|0|425
+Christopher|DM|27|0|1|0|0|17
+Savinho|?Meio-Campo|25|0|17|0|0|1018
+Jeneilson|?Meio-Campo|20|0|1|0|0|13
+Matheus Recife|AM|25|0|13|0|0|765
+João Bravo|LW|26|0|10|2|0|636
+Gian Carlos|LW|33|0|5|0|0|74
+Gilbert|LW|20|0|3|0|0|102
+Juninho Potiguar|RW|36|0|10|0|0|536
+Jorge Eduardo|SS|24|0|2|0|0|94
+Italo|ST|23|0|10|1|0|447
+Heytor|ST|19|0|7|0|0|103
+Alexandre Jesus|ST|23|0|5|0|0|102
+Lucas Cezario|ST|21|0|8|0|0|375
+@BRA4|60741|SC Humaitá
+Marcão|GK|26|0|6|0|0|507
+Jhonatan|GK|19|0|5|0|0|393
+João Pedro|GK|23|0|0|0|0|0
+Liedson|?Defensores|18|0|6|0|0|429
+Daniel Fabricio|?Defensores|17|0|2|0|0|50
+André Luiz|CB|28|0|2|0|0|91
+Yojany Moreno|CB|22|0|4|0|0|111
+Jesaias|CB|22|0|6|0|0|450
+Tchê|LB|22|0|6|0|0|301
+Lucas|LB|21|0|8|2|0|673
+Paulinho|LB|18|0|5|0|0|219
+Ronald|RB|21|0|4|0|0|298
+Alan|RB|22|0|2|0|0|90
+Erick|RB|20|0|7|1|0|608
+Chorão|RB|26|0|9|0|0|794
+Michael Britto|DM|22|0|7|0|0|236
+Rodrigo Lamar|DM|21|0|10|0|0|692
+Bruno Henrique|DM|20|0|6|0|0|198
+Coutinho|DM|26|0|10|1|0|718
+João|?Meio-Campo|21|0|3|0|0|135
+Pedro Santos|DM|24|0|6|0|0|210
+Cézar|?Meio-Campo|18|0|1|0|0|6
+Derreis|?Meio-Campo|20|0|4|0|0|342
+Natan Nascimento|?Meio-Campo|19|0|6|0|0|302
+Saul|?Meio-Campo|19|0|0|0|0|0
+Daniel Fernandes|?Meio-Campo|21|0|3|0|0|93
+Francisco|?Meio-Campo|18|0|4|0|0|138
+Igor|?Meio-Campo|17|0|2|0|0|70
+Wallace|CM|26|0|1|0|0|25
+Davi Ferreira|RM|21|0|3|0|0|139
+Daniel|RM|21|0|5|0|0|131
+Ewerthon|AM|25|0|9|4|0|623
+Guizinho|AM|21|0|0|0|0|0
+André|LW|29|0|7|3|0|349
+Guilherme Banana|LW|20|0|4|0|0|297
+Aldair|RW|31|0|9|4|0|560
+Dedé|SS|32|0|9|0|0|463
+Rudwere|ST|25|0|2|0|0|50
+Alê Júnior|ST|21|0|0|0|0|0
+Gustavo Pereira|ST|22|0|8|1|0|560
+Gabriel Donato|ST|20|0|5|0|0|186
+Guilherme Oliveira|ST|21|0|2|0|0|39
+Cleiton|ST|19|0|6|0|0|526
+Carlos Davi|ST|20|0|2|0|0|131
+Kauan Nunes|ST|20|0|4|0|0|170
+Diego Carvalho|ST|17|0|2|0|0|70
+@BRA4|56341|Lagarto FC
+Patyêgo|GK|25|0|0|0|0|0
+Matheus Brandão|GK|28|0|9|0|0|810
+Guiga|GK|26|0|3|0|0|270
+Hitalo Rogério|CB|38|0|4|0|0|360
+Arthur Edeson|CB|27|0|0|0|0|0
+Gabriel Dias|CB|25|0|7|0|0|487
+Paulo Miranda|CB|25|0|9|0|0|735
+Kaio Henrique|CB|22|0|4|0|0|311
+Emanuel|LB|23|0|22|0|0|1965
+Pedro Belém|RB|21|0|13|0|1|798
+Yago Henrique|DM|31|0|10|0|0|804
+Mauro Jr|DM|30|0|0|0|0|0
+Eduardo Barreto|DM|26|0|0|0|0|0
+Antonio Carlos|DM|31|0|7|0|0|460
+Felipe Recife|CM|35|0|8|0|0|673
+Chiclete|AM|31|0|6|0|0|97
+Soares|AM|29|0|9|2|0|590
+Léo Cotia|AM|30|0|9|0|0|410
+Bruninho|AM|23|0|22|5|0|1338
+Danielzinho|AM|27|0|12|0|0|732
+Yamada|AM|31|0|3|0|0|42
+Fatel|LW|26|0|0|0|0|0
+Erik Gabriel|RW|27|0|23|5|0|1654
+Lucas Zanatelli|RW|27|0|0|0|0|0
+João Victor|RW|25|0|11|1|0|283
+Luan Oliveira|ST|23|0|3|0|0|20
+Aldair|ST|23|0|3|0|0|50
+@BRA4|60520|CE Operário Várzea-Grandense
+André Luiz|GK|26|0|2|0|0|90
+Álvaro|GK|22|0|9|0|0|810
+Prezzi|GK|30|0|5|0|0|450
+Mauricio|GK|22|0|1|0|0|90
+Felipe Cruz|LB|28|0|9|0|0|521
+Jeanderson|LB|24|0|7|0|0|622
+Jefferson|RB|22|0|6|0|0|307
+Léo Gonçalves|DM|24|0|7|0|0|308
+Maicky|DM|25|0|1|0|0|16
+Sidnei Neto|DM|23|0|18|2|0|1120
+Toti|AM|21|0|2|0|0|89
+Luiz Gustavo|LW|22|0|4|0|0|119
+Ítalo Cauã|RW|23|0|7|0|0|194
+Lyncon Filipe|SS|27|0|9|0|1|466
+Diego Papita|ST|23|0|0|0|0|0
+Wagner|ST|22|0|16|1|0|681
+@BRA4|52517|AA Portuguesa
+Vinícius Barreta|GK|27|0|2|0|0|11
+Alexandre Azizi|GK|30|0|0|0|0|0
+Diego|GK|22|0|0|0|0|0
+Bruno|GK|31|0|14|0|0|1250
+Jadson|CB|34|0|0|0|0|0
+Patrick Ramos|CB|31|0|15|0|0|563
+Carlos Henrique|CB|32|0|25|0|0|2110
+Jean|CB|22|0|0|0|0|0
+Léo Cruz|CB|28|0|4|0|0|192
+Guilherme Santos|LB|38|0|26|2|2|2135
+Lenon|RB|36|0|17|1|2|1393
+Diego Ferreira|RB|30|0|0|0|0|0
+Alex Reinaldo|RB|35|0|10|0|1|381
+Wellington Cézar|DM|32|0|15|0|0|979
+Vinícius Matheus|DM|32|0|4|0|0|124
+Jobert|DM|21|0|0|0|0|0
+Henrique Rocha|DM|27|0|22|1|0|1560
+Lucas Pereira|?Meio-Campo|19|0|0|0|0|0
+Anderson Rosa|AM|33|0|24|1|4|1668
+Bruno Mota|AM|31|0|12|0|0|507
+Romarinho|AM|33|0|19|1|0|459
+Juninho|AM|25|0|9|1|0|680
+Willian|AM|29|0|19|2|0|786
+Guilherme Silveira|AM|26|0|14|1|2|818
+Hugo Iglesias|AM|23|0|2|0|0|33
+Lucas Formiga|LW|30|0|0|0|0|0
+Kauê Dias|LW|22|0|4|0|0|252
+Juninho|RW|27|0|0|0|0|0
+Dodô|RW|28|0|0|0|0|0
+Alex|RW|27|0|0|0|0|0
+Uelber|ST|28|0|16|0|1|556
+Matheus Iacovelli|ST|28|0|13|6|0|1018
+Lohan|ST|31|0|18|11|2|1553
+Miguel Souza|ST|24|0|0|0|0|0
+Alexandre|ST|20|0|0|0|0|0
+@BRA4|52513|CSE
+Jeferson|GK|40|0|17|0|0|1527
+Bruno Pereira|GK|25|0|0|0|0|0
+Pedro|GK|20|0|1|0|0|3
+Junior|GK|19|0|0|0|0|0
+Geovani|CB|28|0|7|0|0|518
+João Rocha|CB|22|0|5|0|0|102
+Carlos Henrique|LB|26|0|7|0|0|627
+Samuel|LB|22|0|10|0|0|639
+John Lennon|RB|34|0|5|0|0|216
+Pinheirinho|RB|28|0|3|0|0|45
+Luan Silva|DM|26|0|6|0|0|102
+Douglas Lukaku|DM|23|0|2|0|0|59
+Esdras|DM|28|0|0|0|0|0
+Ed|DM|24|0|7|0|0|356
+Viriato|?Meio-Campo|21|0|0|0|0|0
+Jean Cléber|CM|36|0|15|0|0|1350
+Douglas Rafael|CM|21|0|0|0|0|0
+Jonas|AM|23|0|5|0|0|145
+Anderson Montanha|AM|31|0|9|2|0|693
+Raí|AM|22|0|2|0|0|21
+Pedro Augusto|AM|22|0|1|0|0|13
+Reninha|LW|27|0|4|1|0|254
+Geovânio|RW|29|0|3|0|0|66
+Pedro Júnior|ST|39|0|6|1|0|341
+Renê|ST|23|0|4|0|0|48
+@BRA4|46022|Manaus FC
+Holliwer|GK|21|0|0|0|0|0
+Handerson|CB|28|0|4|0|0|152
+Rapha|CB|22|0|0|0|0|0
+Henrique|LB|24|0|9|0|0|397
+Tico|RB|25|0|9|0|1|448
+Willyam Maranhão|DM|28|0|6|0|0|269
+Wallace|DM|23|0|11|0|0|895
+Charles Bahia|DM|24|0|0|0|0|0
+Bruno Bietkoski|DM|20|0|4|0|0|220
+Ronald|LW|24|0|4|0|0|156
+Pedro Marinho|LW|26|0|0|0|0|0
+Railan|LW|22|0|0|0|0|0
+Minho|RW|34|0|4|0|0|161
+Matheus Guarujá|RW|26|0|0|0|0|0
+Jonas Moreira|RW|35|0|0|0|0|0
+Jorge Quintero|ST|22|0|1|0|0|59
+Anderson Reis|ST|20|0|5|1|0|134
+@BRA4|45176|EC Água Santa
+Vanderlei|GK|42|0|12|0|0|1080
+Lucas Bento|GK|25|0|0|0|0|0
+Matheus Novaes|GK|22|0|0|0|0|0
+Hiago|CB|26|0|7|0|0|630
+Willian Bahia|LB|24|0|5|0|0|310
+Jonathan Lisboa|LB|32|0|1|0|0|45
+Thiaguinho|LB|23|0|5|0|0|213
+Auro|RB|30|0|1|0|0|26
+Victor Guilherme|RB|32|0|0|0|0|0
+Cesinha|DM|30|0|7|1|0|435
+Villian Guilherme|DM|22|0|4|1|0|198
+Johann Perea|CM|27|0|0|0|0|0
+Mansur|LM|28|0|1|0|0|16
+Felipinho|AM|28|0|0|0|0|0
+Levi|LW|30|0|10|6|0|665
+Richard Birkheun|RW|26|0|10|1|0|217
+Vitinho|RW|26|0|12|0|0|727
+Vitão|ST|26|0|2|1|0|110
+Daniel Bahia|ST|28|0|4|1|0|157
+@BRA4|41872|Parnahyba SC
+Carlos Eduardo|GK|25|0|2|0|0|127
+Vinícius|GK|27|0|0|0|0|0
+Diogo|GK|22|0|0|0|0|0
+Iure|?Defensores|21|0|1|0|0|12
+Mateus Barros|?Defensores|25|0|1|0|0|26
+Guilherme Bastos|CB|25|0|3|0|0|232
+Denílson Santos|CB|23|0|6|0|0|318
+Yuri|CB|26|0|2|0|0|170
+Renan|CB|36|0|5|0|0|312
+Julio|CB|21|0|0|0|0|0
+Kleiton|LB|27|0|5|0|0|424
+Weslley|LB|28|0|4|0|0|345
+Lucas Neres|LB|28|0|11|0|0|915
+Danilo Bala|LB|27|0|0|0|0|0
+Gleryston|LB|30|0|4|1|0|300
+Dadinha|RB|29|0|7|0|0|361
+João Antônio|RB|24|0|1|0|0|45
+Flávio|RB|24|0|3|0|0|116
+Rai|RB|25|0|1|0|0|45
+Cremosinho|RB|20|0|10|3|0|735
+Léo Santos|DM|29|0|4|0|0|155
+Leandro Sobral|DM|34|0|11|0|0|558
+Andrey|?Meio-Campo|25|0|0|0|0|0
+Wesley Kauã|DM|23|0|7|0|0|161
+Alecio|DM|23|0|6|0|0|360
+Matheus Thibura|?Meio-Campo|27|0|5|0|0|450
+Gabriel Filipe|?Meio-Campo|21|0|0|0|0|0
+Samuel|CM|31|0|4|0|0|322
+Jeffinho|RM|30|0|12|2|0|617
+Bismarck|AM|36|0|5|1|0|421
+Alex Mineiro|AM|30|0|3|0|0|125
+Matías Ferreira|AM|23|0|8|0|0|289
+Lucas Leandro|AM|24|0|5|0|0|126
+Dedé|LW|24|0|6|0|0|301
+Denis Macedo|RW|31|0|2|0|0|167
+Raí Soares|RW|24|0|3|1|0|111
+Lucas Bala|ST|26|0|5|0|0|184
+Bebeto|ST|24|0|2|0|0|34
+@BRA4|39555|AD Iguatu
+Geferson|GK|29|0|0|0|0|0
+Zé Rafael|GK|24|0|24|0|0|2160
+Hudson|?Defensores|22|0|1|0|0|19
+Diguinho|CB|25|0|10|1|0|762
+Luis Fernando|CB|36|0|14|0|0|1165
+João Pedro|CB|21|0|7|0|0|256
+Miguel Holanda|CB|21|0|14|0|0|714
+Leandro|CB|21|0|0|0|0|0
+Talys|LB|31|0|8|0|0|564
+Eric|LB|26|0|10|0|1|324
+Tafinha|LB|23|0|4|1|0|125
+Talisson Calcinha|RB|31|0|19|0|1|1492
+Roni|RB|28|0|0|0|0|0
+Marquinhos|RB|22|0|4|0|0|147
+Melk|RB|22|0|15|1|0|1054
+Marcos Vinicius|RB|22|0|0|0|0|0
+Rodrigo Correia|DM|32|0|13|0|0|986
+Kauan|?Meio-Campo|23|0|2|0|0|23
+Eric|?Meio-Campo|26|0|1|0|0|14
+Uchoa|?Meio-Campo|24|0|2|0|0|26
+Alex Pindoretama|?Meio-Campo|26|0|3|0|0|61
+Pedrinho|AM|25|0|11|0|0|729
+Klaivert|LW|22|0|13|3|0|255
+Aslen Kevin|RW|28|0|4|0|0|58
+Pedro Kauan|ST|19|0|0|0|0|0
+@BRA4|38023|Capital CF
+Jori|GK|30|0|2|0|0|180
+Jefferson|GK|28|0|0|0|0|0
+Kauan Reis|?Defensores|19|0|0|0|0|0
+Éder Lima|CB|40|0|16|1|0|1190
+Richardson|CB|34|0|29|1|0|2594
+Lucas Mufalo|CB|28|0|1|0|0|58
+Lucas Oliveira|CB|32|0|20|2|0|1383
+Renan Luis|LB|36|0|27|2|0|2301
+Ítalo|LB|25|0|5|0|0|390
+Nicolás Lugano|RB|26|0|2|0|0|180
+Felipe Guedes|DM|35|0|0|0|0|0
+Esdras|DM|36|0|6|0|0|214
+John Everson|DM|26|0|2|0|0|100
+Matheuzinho|AM|33|0|28|7|0|1908
+Jeremias|AM|29|0|8|0|0|293
+Deysinho|AM|34|0|23|6|0|1129
+Jerry|AM|32|0|20|0|0|775
+Ruan|LW|33|0|5|1|0|95
+Lessinho|LW|31|0|15|2|0|611
+Élton Martins|LW|37|0|6|0|0|227
+Erick|RW|26|0|4|0|0|63
+Tobinha|RW|32|0|15|2|0|924
+William Barbio|ST|33|0|6|0|0|292
+Ingro|ST|33|0|6|0|0|289
+@BRA4|36962|Ivinhema FC
+Paulo Mazoti|GK|26|0|1|0|0|90
+Neto Bonini|GK|31|0|25|0|0|2250
+Breno Alemão|GK|21|0|0|0|0|0
+Yago|CB|32|0|2|0|0|69
+Mina|CB|23|0|5|0|0|427
+Matheus Fernando|CB|24|0|7|0|0|176
+Bugarin|CB|26|0|25|0|0|2000
+Júnior Prego|LB|31|0|8|0|0|548
+Harinson|LB|25|0|20|0|0|1326
+João Guilherme|LB|21|0|11|1|0|690
+Adson|RB|28|0|25|0|0|2181
+Ramires|RB|24|0|3|0|0|89
+Luan|RB|26|0|17|1|0|1092
+Diogo Fogliato|DM|34|0|20|1|0|1203
+Guilherme Malheiro|DM|22|0|1|0|0|27
+Esdras|?Meio-Campo|22|0|6|0|0|316
+Luan|DM|24|0|13|2|0|770
+Guilherme Pitbull|DM|33|0|8|0|0|367
+Júlio|CM|36|0|5|0|0|254
+Alisson|AM|35|0|19|2|0|867
+Robinho|LW|26|0|10|0|0|340
+Jonatas Santos|RW|28|0|9|3|0|467
+Pedro Guedes|SS|27|0|14|2|0|686
+Jonas|SS|23|0|6|1|0|195
+Rodolfo|ST|28|0|7|3|0|290
+Americano|ST|23|0|1|0|0|4
+@BRA4|32612|Independência FC
+Rafael Bretas|GK|25|0|24|0|0|2160
+Paiva|GK|22|0|0|0|0|0
+Gigante|GK|20|0|1|0|0|90
+Nando|GK|19|0|0|0|0|0
+Duan|GK|17|0|0|0|0|0
+Gustavo|?Defensores|19|0|0|0|0|0
+Diego|?Defensores|18|0|0|0|0|0
+Alysson|?Defensores|19|0|1|0|0|17
+Lucas Lobo|CB|30|0|12|0|0|942
+Léo Japão|CB|28|0|17|0|0|1289
+Bruno Santos|CB|24|0|1|0|0|83
+Iury Bortoleto|CB|27|0|1|0|0|26
+João Monteiro|CB|22|0|6|0|0|409
+Victor Hugo|CB|20|0|0|0|0|0
+Ronaldo|CB|27|0|21|0|0|1693
+Rafael França|RB|28|0|22|0|0|1481
+Baré|RB|35|0|9|1|0|642
+Joel|DM|34|0|5|0|0|138
+Kayque Guedes|DM|24|0|2|0|0|43
+Diogo|?Meio-Campo|20|0|0|0|0|0
+Yan|?Meio-Campo|22|0|1|0|0|7
+Kaká|CM|28|0|15|0|0|741
+Ancelmo|AM|36|0|10|2|0|329
+Thiago Leite|AM|36|0|12|0|1|316
+Thiago Moreira|AM|26|0|14|0|0|275
+Dalmoro|AM|22|0|21|1|0|1204
+Felipinho|RW|28|0|2|0|0|119
+Cauã|RW|22|0|5|1|0|320
+Biel|RW|30|0|20|3|0|1449
+Luiz Fernando|ST|18|0|3|0|0|31
+Caique Gomes|ST|31|0|22|7|0|1476
+@BRA4|80647|IF São Joseense
+Márcio|GK|21|0|0|0|0|0
+Samuel Deuner|GK|26|0|13|0|0|1170
+Willian Rocha|CB|37|0|2|0|0|63
+Caio César|CB|36|0|19|0|1|1649
+Bernardo Rodrigues|CB|21|0|0|0|0|0
+Eduardo Noal|CB|20|0|0|0|0|0
+Pedrinho|LB|26|0|18|2|0|1399
+Leonardo|LB|18|0|4|0|0|237
+Lucas Bauru|RB|23|0|1|0|0|32
+Murillo Lima|RB|24|0|15|0|0|843
+Felipe Vieira|DM|23|0|20|0|0|1740
+Brian Carvalho|DM|23|0|10|0|0|237
+Kawan Gabriel|CM|24|0|10|0|0|374
+David Lustosa|AM|33|0|2|0|0|100
+Elias Carioca|LW|26|0|4|0|0|85
+Niltinho|RW|33|0|16|2|0|946
+Patrick Leonardo|ST|36|0|2|0|0|150
+Danilo Mariotto|ST|30|0|14|0|0|586
+Lucas Gaúcho|ST|35|0|13|1|0|678
+@BRA4|119625|Monte Roraima FC
+Henrique|GK|28|0|2|0|0|91
+Bruno Costa|?Defensores|26|0|4|0|0|360
+Davi|?Defensores|17|0|1|1|0|23
+Luís Gustavo|CB|34|0|8|1|0|720
+Rodolfo Oliveira|CB|33|0|0|0|0|0
+Dedé|CB|31|0|7|0|0|401
+Boca|CB|31|0|2|0|0|83
+Pedro Gustavo|CB|24|0|0|0|0|0
+Jonathan Nascimento|LB|24|0|6|1|0|420
+Leozinho|LB|31|0|12|2|0|1074
+Weslley|LB|25|0|3|0|0|154
+Lázaro|RB|29|0|10|0|0|393
+Ferrugem|DM|38|0|5|0|0|50
+Léo Carvalho|DM|27|0|12|1|1|936
+Lucas Dante|?Meio-Campo|25|0|11|0|0|252
+Kayo|CM|24|0|19|0|0|929
+Lucas Sudário|CM|28|0|2|1|0|170
+Felipe Brisola|AM|36|0|10|1|1|502
+Marquinhos do Sul|LW|32|0|7|0|2|368
+Héctor Bustamante|LW|31|0|4|0|0|306
+Xandy|LW|26|0|12|3|0|1033
+Elielton|RW|33|0|10|0|0|454
+Gustavo Barbosa|ST|29|0|10|3|0|490
+Romarinho|ST|36|0|10|6|0|755
+Fabrício|ST|19|0|0|0|0|0
+@BRA4|115027|ABECAT Ouvidorense
+Pablo|CB|27|0|10|0|0|489
+Alan Bald|LB|31|0|3|1|0|181
+Kadu|DM|30|0|9|1|0|556
+Josimar|DM|21|0|0|0|0|0
+Thiago Campos|DM|21|0|0|0|0|0
+João Victor|AM|21|0|5|0|0|98
+Marcos Vinicius|RW|24|0|10|1|0|653
+@BRA4|98845|Primavera AC
+João Inácio|GK|22|0|0|0|0|0
+Zemarcio|CB|26|0|4|0|0|115
+Jordan|CB|29|0|24|0|0|2156
+Tallys|CB|27|0|1|0|0|34
+Tabata|DM|25|0|8|0|0|539
+Kaleb|?Meio-Campo|17|0|0|0|0|0
+Ronald Belé|CM|25|0|2|0|0|87
+Renatinho|AM|37|0|3|0|0|72
+Luan Oliveira|AM|24|0|13|1|0|659
+Yorkis Martinez|LW|20|0|4|0|0|83
+David Batista|ST|37|0|5|0|0|67
+Wallace Moraes|ST|25|0|11|0|0|434
+Maicon Marinho|ST|24|0|4|0|0|145
+@BRA4|94182|Manauara EC
+Guilherme Boer|GK|27|0|0|0|0|0
+Matheus|GK|26|0|0|0|0|0
+Éverson|CB|29|0|11|1|0|882
+Felipe Camargo|CB|27|0|6|0|0|279
+Paulinho|CB|30|0|15|1|0|1260
+Maicon|CB|31|0|8|0|0|626
+Caio Ribeiro|LB|30|0|10|1|0|557
+Arthur Gomes|LB|20|0|0|0|0|0
+Wesley|RB|29|0|6|0|0|350
+Fabrício|RB|29|0|12|1|0|601
+Juninho|DM|26|0|15|1|0|1295
+Paulo Matheus|DM|27|0|3|0|0|136
+Giba|DM|31|0|5|0|0|130
+Luis Fernando|CM|28|0|8|0|0|426
+Pablo Pardal|AM|27|0|9|2|1|625
+Falcão|AM|25|0|6|1|0|202
+David|LW|23|0|3|0|0|88
+Fabrício Pereira|RW|28|0|4|1|0|131
+Quadrado|RW|31|0|6|1|1|186
+Rafael Ibiapino|ST|34|0|9|1|0|447
+Clessione|ST|32|0|10|2|0|629
+Paulo Galvão|ST|21|0|3|0|0|45
+@BRA4|94170|CEFAT Tirol
+Rayr|GK|27|0|7|0|0|630
+Frank|GK|27|0|12|0|0|1080
+Wenderson|?Defensores|16|0|0|0|0|0
+Igor|CB|36|0|6|0|0|374
+Lucas Gomes|CB|30|0|5|0|0|402
+Jairo|CB|34|0|12|0|0|1080
+Willian|CB|29|0|2|0|0|111
+Max|LB|28|0|8|0|0|399
+Thauã|LB|26|0|5|0|0|232
+Zé Augusto|RB|33|0|18|0|0|1569
+Berg|RB|27|0|0|0|0|0
+César Sampaio|DM|36|0|3|0|0|169
+Welton Santana|DM|31|0|10|1|0|704
+Sidin|DM|29|0|16|0|0|1207
+Mayquinho|?Meio-Campo|24|0|0|0|0|0
+Isaias|DM|26|0|6|0|0|266
+Guilherme Paracuru|?Meio-Campo|18|0|1|0|0|12
+Janeudo|AM|36|0|15|1|0|789
+Jeffinho|LW|30|0|12|3|0|786
+Topete|RW|25|0|6|0|0|192
+Vitor Gabriel|ST|29|0|1|0|0|9
+@BRA4|87822|GA Sampaio
+Katê|GK|33|0|22|0|0|1921
+David Cauã|GK|23|0|5|0|0|415
+Eliomar Júnior|GK|24|0|0|0|0|0
+Athos|GK|20|0|0|0|0|0
+Kauã|GK|17|0|1|0|0|4
+Samuel Victor|?Defensores|21|0|1|0|0|66
+Kayo Silva|?Defensores|17|0|1|0|0|24
+Albert González|CB|30|0|16|0|0|1109
+Werick Castro|CB|26|0|8|0|0|498
+Ely Jesus|LB|24|0|15|0|0|1069
+Matheus Velasque|LB|29|0|16|0|0|1245
+Vitinho|RB|23|0|21|0|0|1486
+Ruan Gago|RB|29|0|18|0|0|1244
+Bebeto|DM|29|0|11|0|0|384
+Felipe Tiririca|DM|29|0|1|0|0|86
+Thalles Patrick|?Meio-Campo|32|0|14|1|0|510
+Diego Chapa|?Meio-Campo|27|0|12|0|0|681
+Luiz Miguel|?Meio-Campo|16|0|2|0|0|135
+Bruno|?Meio-Campo|16|0|1|0|0|4
+Eric Bahia|LW|26|0|16|8|0|834
+Anderson|LW|21|0|3|0|0|63
+Elmi Besuska|ST|23|0|15|2|0|662
+Diguinho|ST|28|0|13|0|0|817
+Isaac|ST|17|0|1|0|0|24
+Max|ST|17|0|1|0|0|36
+Joaquim|ST|19|0|0|0|0|0
+@BRA4|87821|Guaporé FC
+Lennon|GK|30|0|2|0|0|180
+Arthur|GK|28|0|5|0|0|371
+Daniel Felipe|CB|33|0|34|3|0|2473
+Matheus Rodrigues|CB|30|0|4|0|0|266
+Nathan Sousa|CB|24|0|34|2|0|2728
+Marlon|LB|41|0|31|2|0|2106
+Caetano|LB|33|0|14|0|0|909
+Mateus Botelho|RB|25|0|2|0|0|64
+Alex|RB|34|0|10|0|0|657
+Caetano|DM|29|0|26|0|0|2090
+Marquinhos Acreano|DM|30|0|25|3|0|1572
+Edinho Guerreiro|DM|30|0|10|0|0|680
+Edson|DM|31|0|16|0|0|708
+Matheus Oliveira|DM|33|0|3|0|0|119
+Robson|?Meio-Campo|34|0|2|0|0|13
+Lucas Gomes|CM|24|0|7|0|0|213
+Patrick Felipe|AM|32|0|5|2|0|288
+Anthony|AM|28|0|13|0|0|460
+Diogo Amaral|AM|24|0|12|1|0|435
+Dieguinho|AM|21|0|2|0|0|16
+Brayan Lucumí|LW|32|0|17|1|0|887
+Andreo|LW|28|0|22|0|0|1523
+Igor Goularte|RW|30|0|6|1|1|214
+Rafinha|RW|24|0|11|0|0|270
+Will|RW|23|0|34|4|0|2282
+Watthimen|ST|36|0|30|7|0|1230
+Antônio|ST|24|0|8|0|0|140
+Lucas Pessoa|ST|22|0|19|6|0|829
+@BRA4|87817|Fluminense EC
+Mauro Iguatu|GK|38|0|11|0|0|910
+Jerfesson|GK|34|0|13|0|0|1170
+Webert|GK|19|0|0|0|0|0
+Kelvin|CB|26|0|9|0|0|664
+Rafhael|CB|31|0|8|0|0|501
+Lucão|CB|35|0|5|0|0|424
+Tiago Marques|CB|23|0|1|0|0|65
+Deivid|CB|21|0|4|0|0|326
+Durkheim|CB|23|0|14|0|0|805
+Rhuan|LB|27|0|21|1|0|1462
+Raimundinho|DM|29|0|23|2|0|1341
+Gabriel Macapá|DM|24|0|3|0|0|80
+Rian Rennê|DM|23|0|20|1|0|1346
+Gabriel Henrique|CM|19|0|7|0|0|282
+Gabriel Vieira|AM|24|0|5|0|0|261
+Reny Max|LW|27|0|23|0|0|1715
+Matheusinho|LW|23|0|2|0|0|63
+Adson|RW|25|0|12|1|0|680
+Paul Henry|ST|24|0|6|0|0|227
+Naelson|ST|21|0|3|0|0|121
+@BRA4|87160|IAPE FC
+Claudyson|GK|20|0|18|0|0|1620
+Yan Mafra|CB|32|0|8|0|0|675
+Emerson|CB|21|0|5|0|0|198
+Vitor Maranhão|LB|31|0|1|0|0|12
+Michael Heberth|LB|32|0|17|3|0|1496
+George|LB|20|0|1|0|0|5
+Icaro|RB|21|0|6|0|0|227
+Rômulo|DM|34|0|10|1|0|716
+Vitão|DM|26|0|0|0|0|0
+Jadiel|DM|27|0|7|0|0|429
+Luann Douglas|DM|21|0|6|0|0|247
+Esquerdinha|?Meio-Campo|19|0|6|1|0|122
+Deydson|?Meio-Campo|18|0|11|0|0|692
+Marcos Vinícius|AM|32|0|7|0|0|385
+Tagarela|LW|22|0|7|3|0|475
+Alexandre|RW|26|0|2|0|0|97
+Lúcio Maranhão|ST|38|0|3|0|0|165
+Sérgio Gomes|ST|21|0|3|0|0|56
+@BRA4|63296|Maricá FC
+Neguete|GK|36|0|10|0|0|900
+Gerson Dida|GK|41|0|5|0|0|450
+Yuri Duarte|GK|29|0|7|0|0|630
+Júlio César|GK|40|0|0|0|0|0
+Allan Vitor|GK|22|0|0|0|0|0
+Sandro|CB|38|0|14|0|0|1095
+Rafael Forster|CB|36|0|5|0|1|442
+Felipe Carvalho|CB|33|0|8|0|0|574
+Victor Pereira|CB|34|0|10|2|0|797
+Heltton|CB|32|0|2|1|0|35
+Paulo César|CB|27|0|5|0|0|430
+Erick Landini|CB|30|0|6|0|0|478
+Rafael Carioca|LB|34|0|8|0|0|585
+Paulo Victor|LB|27|0|0|0|0|0
+Marcelinho|LB|23|0|10|0|0|767
+Magno Nunes|RB|34|0|17|0|0|1329
+Ronaldo|RB|27|0|9|0|0|626
+Almir Sóta|RB|32|0|12|0|1|759
+Wellington|DM|35|0|5|0|0|337
+Mauro Silva|DM|32|0|8|0|0|632
+Jorge Pedra|DM|27|0|9|0|0|776
+Magno Souza|DM|36|0|7|0|0|480
+Matheus Lira|DM|28|0|15|0|0|697
+Yan|?Meio-Campo|19|0|0|0|0|0
+Alexis Quiñonez|?Meio-Campo|22|0|2|0|0|22
+Marcelo|CM|38|0|17|2|1|1107
+Bernardo|CM|21|0|6|0|0|172
+Octávio|AM|32|0|8|0|0|253
+Caio Vitor|AM|26|0|9|0|1|465
+Luizinho|RW|30|0|6|0|0|347
+Café|RW|26|0|18|0|0|875
+Alex|ST|36|0|11|1|0|411
+Vinicius Henrique|ST|21|0|3|0|0|82
+Diogo Bolt|ST|25|0|0|0|0|0
+@BRA4|76156|Retrô FC Brasil
+Darley|GK|36|0|0|0|0|0
+Paulo Ricardo|GK|30|0|17|0|0|1530
+Jefferson Paulino|GK|34|0|10|0|0|900
+David Lucas|GK|21|0|0|0|0|0
+Dankler|CB|34|0|16|1|0|1321
+Denílson|CB|31|0|0|0|0|0
+João Rafael|CB|24|0|5|0|0|372
+Lucas Sampaio|LB|31|0|17|0|1|1213
+Renilson|LB|23|0|0|0|0|0
+David Junio|RB|32|0|20|0|0|1315
+Israel|RB|32|0|5|1|0|450
+Kadi|DM|30|0|23|1|0|1566
+Danillo|DM|22|0|13|0|0|598
+Kevin Rivas|DM|22|0|3|0|0|186
+Murilo|CM|21|0|8|0|0|367
+Luiz Henrique|AM|29|0|20|2|0|1481
+Jhonn Jhonn|AM|21|0|7|0|0|213
+Diego Guerra|AM|19|0|22|2|0|1368
+Fernandinho|LW|40|0|9|4|0|763
+Douglas|LW|27|0|17|1|1|903
+Jean Uba|RW|22|0|0|0|0|0
+Abner|ST|29|0|0|0|0|0
+Bruno Marques|ST|27|0|12|4|0|565
+@BRA4|76155|Decisão FC
+Mateus Raffler|GK|26|0|1|0|0|90
+Adriel|GK|21|0|0|0|0|0
+Breno Lima|GK|19|0|0|0|0|0
+José Guilherme|?Defensores|18|0|0|0|0|0
+Thiago Jesus|CB|24|0|8|0|0|655
+Pedrão|CB|23|0|6|0|0|385
+Ricardo Batista|CB|25|0|5|0|0|280
+Wesley|LB|26|0|10|0|0|440
+Luca Caio|RB|25|0|7|0|0|395
+Marolla|RB|24|0|1|0|0|45
+Dayvisson|DM|23|0|1|0|0|45
+Alessandro|DM|23|0|0|0|0|0
+Henrique|CM|22|0|2|0|0|38
+Gabriel Cardoso|AM|23|0|7|0|0|266
+Arthur Cordouro|LW|27|0|0|0|0|0
+Mosquito|LW|25|0|16|0|0|827
+Rodrigo Dias|RW|21|0|8|0|0|371
+Ruan Vieira|ST|25|0|1|0|0|15

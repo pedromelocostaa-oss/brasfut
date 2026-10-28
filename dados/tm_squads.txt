@@ -1,0 +1,581 @@
+# Elencos da Série A 2026 coletados do Transfermarkt (plantel detalhado, temporada 2026) em 2026-10-02.
+# Formato: nome | posição (código do jogo) | idade | valor de mercado em milhares de euros
+# Seleção por clube: 3 goleiros mais valiosos + 25 jogadores de linha mais valiosos (elenco do jogo tem até 30).
+## BAH
+Ronaldo|GK|30|2000
+Guido Herrera|GK|34|1500
+Léo Vieira|GK|36|200
+Luciano Juba|LB|27|16000
+Jean Lucas|CM|28|15000
+Erick Pulga|LW|26|13000
+Nicolás Acevedo|DM|27|10000
+Rodrigo Nestor|CM|26|9000
+Ruan Pablo|LW|18|8000
+Alejo Veliz|ST|23|7000
+Caio Alexandre|DM|27|7000
+Cristian Olivera|RW|24|5000
+Erick|DM|28|5000
+Dell|ST|18|4000
+Kauê Furquim|RW|17|3500
+Kanu|CB|29|2500
+Michel Araújo|RW|30|2500
+Mateo Sanabria|LW|22|2000
+Román Gómez|RB|22|1500
+David Duarte|CB|31|1500
+Ademir|RW|31|1200
+Willian José|ST|34|1200
+David Martins|AM|19|1000
+Everton Ribeiro|AM|37|1000
+Marco Moreno|CB|25|900
+Luiz Gustavo|CB|20|600
+Marcos Victor|CB|24|450
+Zé Guilherme|LB|21|400
+## BOT
+Gabriel Batista|GK|28|4000
+Warleson|GK|30|2000
+Cristhian Loor|GK|20|350
+Danilo|CM|25|32000
+Álvaro Montoro|LW|19|14000
+Vitinho|RB|27|9000
+Arthur Cabral|ST|28|9000
+Cristian Medina|CM|24|8000
+Matheus Martins|LW|23|6000
+Arthur Chaves|CB|25|5000
+Nahuel Ferraresi|CB|27|5000
+Huguinho|DM|19|3000
+Mateo Ponte|RB|23|3000
+Júnior Santos|RW|31|3000
+Alex Telles|LB|33|2800
+Jordan Barrera|AM|20|2500
+Hakim Ziyech|RW|33|2200
+Lucas Emanuel|ST|17|2000
+Kadir Barría|ST|19|2000
+Kaio|CB|31|1800
+Gabriel Justino|CB|20|1500
+Domingos Andrade|DM|23|1500
+Lucas Monzón|CB|25|1500
+Lucas Villalba|RW|25|1500
+Danilo|ST|27|1500
+Wallace Davi|DM|19|1000
+Kauan Toledo|RW|20|1000
+Allan|DM|35|1000
+## CAM
+Gabriel Delfim|GK|24|3000
+Everson|GK|36|900
+Pedro Cobra|GK|20|600
+Renan Lodi|LB|28|11000
+Victor Hugo|CM|22|8000
+Tomás Cuello|LW|26|8000
+Mateo Cassierra|ST|29|8000
+Alan Minda|RW|23|6000
+Alexsander|DM|22|5000
+Kevin Castaño|DM|26|5000
+Natanael|RB|24|4500
+Alan Franco|CM|28|4500
+Lyanco|CB|29|4500
+Gustavo Scarpa|AM|32|4500
+Fred|CM|33|4500
+Reinier|AM|24|4000
+Ruan|CB|27|4000
+Thiago Borbas|ST|24|3500
+Angelo Preciado|RB|28|3500
+Tomás Pérez|DM|21|3000
+Kauã Pascini|LB|18|2500
+Mamady Cissé|CM|19|2500
+Igor Gomes|AM|27|2500
+Maycon|CM|29|2000
+Léo Duarte|CB|30|2000
+Vitão|CB|18|1500
+Cauã Soares|ST|18|1500
+Dudu|LW|34|800
+## CAP
+Mycael|GK|22|5000
+Santos|GK|36|400
+Matheus Soares|GK|21|0
+Kevin Viveros|ST|26|20000
+Arthur Dias|CB|19|15000
+João Cruz|CM|20|8000
+Lucas Esquivel|LB|24|8000
+Dudu|AM|20|7000
+Juan Portilla|CM|28|5000
+Bruno Zapelli|AM|24|4500
+Carlos Terán|CB|26|4000
+Kerwin Vargas|RW|24|3500
+Gastón Benavídez|RB|30|3500
+Léo Derik|LB|21|3000
+Chiqueti|AM|21|3000
+Leozinho|RW|27|3000
+Gilberto Junior|RB|21|2500
+Gilberto|RB|33|2200
+Jorge Rivaldo|ST|23|2000
+Juan Felipe Aguirre|CB|30|2000
+Renan Peixoto|ST|26|1500
+Léo|CB|30|1200
+Felipinho|CM|24|1000
+Jádson|CM|33|1000
+Dantas|CB|22|700
+Alejandro García|CM|25|700
+Stiven Mendoza|LW|34|600
+Renan Viana|ST|23|225
+## CFC
+Pedro Morisco|GK|22|9000
+Pedro Rangel|GK|26|1000
+Keiller|GK|29|500
+Joaquín Lavega|LW|21|6000
+Lucas Ronier|RW|21|6000
+Nicolás Fonseca|DM|27|3000
+Jacy|CB|29|3000
+Breno Lopes|LW|30|3000
+Felipe Jonatan|LB|28|2000
+Fabricio Bustos|RB|30|1800
+Sebastián Gómez|CM|30|1800
+Paulo Roberto|ST|21|1500
+Tiago Cóser|CB|22|1500
+Pedro Rocha|ST|32|1500
+Renato Marques|ST|22|1000
+Fabinho|RW|26|1000
+Brian Ocampo|LW|27|1000
+Tissi|DM|19|600
+Lucas Taverna|RB|19|500
+Gustavo|AM|24|500
+Rodrigo Rodrigues|ST|30|500
+Richard|DM|32|500
+Tinga|RB|33|450
+Vini Paulista|CM|25|400
+Josué|AM|36|350
+Rodrigo Gelado|LB|23|300
+Keno|LW|37|300
+Éberth|ST|23|250
+## CHA
+Anderson|GK|28|450
+Matheus Aurélio|GK|27|250
+Rafael Santos|GK|37|75
+Carvalheira|DM|27|2500
+Camilo|DM|27|2000
+Tulio Eduardo|ST|21|1500
+Franco Rossi|ST|24|1500
+Doma|CB|28|1200
+Yago Felipe|CM|31|1200
+Robert Santos|AM|23|1000
+Dylan Borrero|LW|24|1000
+Maurício Garcez|LW|29|800
+Dudu|RB|29|700
+Marcinho|RW|31|650
+Max|AM|25|600
+Victor Caetano|CB|28|600
+João Paulo|CB|29|600
+Rubens|RW|23|500
+Mancha|LB|25|500
+Bruno Matias|CM|27|500
+Heitor|RB|25|450
+Fernando|LB|27|400
+Vinicius Balieiro|DM|27|400
+Bruno Tubarão|RW|31|400
+Kevin Ramírez|LW|32|400
+Miguel Carvalho|AM|21|325
+Kauan Faria|CB|23|300
+Everton|RB|31|300
+## COR
+Hugo Souza|GK|27|12000
+Kauê|GK|22|1000
+Felipe Longo|GK|21|500
+Breno Bidon|CM|21|25000
+Yuri Alberto|ST|25|23000
+André|CM|20|16000
+Rodrigo Garro|AM|28|12000
+Matheuzinho|RB|26|10000
+Matheus Bidu|LB|27|8000
+Gui Negão|ST|19|6000
+Memphis Depay|ST|32|6000
+Dieguinho|RW|19|5000
+Kaio César|RW|22|5000
+João Pedro Tchoca|CB|22|4000
+Raniele|DM|29|4000
+Iago Machado|CB|17|3000
+Allan|DM|29|2000
+Kayke|LW|22|1500
+Pedro Milans|RB|24|1500
+Matheus Pereira|CM|28|1500
+Pedro Raul|ST|29|1500
+Jesse Lingard|AM|33|1500
+Alex Santana|CM|31|1000
+André Carrillo|CM|35|800
+Charles|DM|30|750
+Hugo|LB|29|700
+Vitinho|LW|32|700
+Gustavo Henrique|CB|33|600
+## CRU
+Otávio|GK|20|10000
+Léo Aragão|GK|24|800
+Cássio|GK|39|250
+Kaio Jorge|ST|24|25000
+Gerson|CM|29|18000
+Matheus Pereira|AM|30|14000
+Keny Arroyo|RW|20|12000
+Jonathan Jesus|CB|22|12000
+Luis Sinisterra|LW|27|11000
+Fabrício Bruno|CB|30|10000
+Luciano Rodríguez|ST|23|9000
+Zé Lucas|DM|18|8000
+Gabriel Pec|RW|25|7000
+Matheus Henrique|CM|28|6000
+Wesley|LW|21|4000
+Néiser Villarreal|ST|21|4000
+Gabriel Rojas|LB|29|4000
+Kauã Moraes|RB|20|3000
+Kaique Kenji|LW|20|3000
+João Marcelo|CB|26|3000
+Wanderson|LW|31|3000
+João Costa|RW|21|2500
+Marquinhos|RW|23|2500
+Matías Viña|LB|28|2500
+William|RB|31|2500
+Lucas Romero|DM|32|2500
+Felipe Morais|AM|18|2000
+Lucas Villalba|CB|32|1700
+## FLA
+Agustín Rossi|GK|31|10000
+Andrew|GK|25|5000
+Dyogo Alves|GK|22|400
+Lucas Paquetá|AM|29|27000
+Pedro|ST|29|22000
+Samuel Lino|LW|26|20000
+Jorge Carrascal|AM|28|15000
+Evertton Araújo|DM|23|14000
+Giorgian de Arrascaeta|AM|32|14000
+Léo Ortiz|CB|30|12000
+Léo Pereira|CB|30|12000
+Vitão|CB|26|10000
+Gonzalo Plata|RW|25|9000
+Nicolás de la Cruz|CM|29|7000
+Luiz Araújo|RW|30|7000
+Emerson Royal|RB|27|5000
+Erick Pulgar|DM|32|4500
+Ayrton Lucas|LB|29|4000
+Jorginho|DM|34|3500
+Joaquín Freitas|ST|19|2000
+Anthony Valencia|RW|23|1800
+Danilo|CB|35|1500
+Saúl Ñíguez|CM|31|1000
+Guillermo Varela|RB|33|1000
+Alex Sandro|LB|35|1000
+João Souza|CB|19|800
+Bruno Henrique|ST|35|750
+## FLU
+Vitor Eudes|GK|27|400
+Marcelo Pitaluga|GK|23|200
+Fábio|GK|46|75
+Martinelli|DM|24|18000
+Hércules|CM|25|15000
+John Kennedy|ST|24|12000
+Agustín Canobbio|RW|28|9000
+Jefferson Savarino|AM|29|8000
+Riquelme|RW|19|6000
+Rodrigo Castillo|ST|27|6000
+Guilherme Arana|LB|29|6000
+Juan Pablo Freytes|CB|26|5000
+Kevin Serna|RW|28|5000
+Luciano Acosta|AM|32|5000
+Julián Millán|CB|28|4000
+Ignácio|CB|29|3500
+Jemmes|CB|26|3000
+Yeferson Soteldo|LW|29|3000
+Guga|RB|28|2000
+Nonato|CM|28|2000
+Igor Rabello|CB|31|1400
+Wesley Natã|LW|18|1000
+Otávio|DM|32|1000
+Hulk|ST|40|1000
+Alisson|CM|33|800
+Julio Fidelis|RB|19|500
+Germán Cano|ST|38|500
+Thiago Silva|CB|42|500
+## GRE
+Gabriel Grando|GK|26|1500
+Weverton|GK|38|700
+Gabriel Menegon|GK|17|0
+Francis Amuzu|LW|27|8000
+Juan Nardoni|CM|24|7000
+Tetê|RW|26|7000
+Erick Noriega|DM|24|6000
+Carlos Vinícius|ST|31|6000
+Gustavo Martins|CB|24|5000
+Mathías Villasanti|DM|29|4000
+Marlon|LB|29|3500
+Wallace|CB|21|3000
+José Enamorado|RW|27|2500
+Cristian Pavón|RW|30|2500
+Pedro Gabriel|LB|19|2000
+Riquelme|AM|20|2000
+Matheus Nascimento|ST|22|2000
+Wagner Leonardo|CB|27|2000
+Danilo Barbosa|DM|30|2000
+Diego Caito|RB|22|1500
+Caio Paulista|LB|28|1500
+Jovane Cabral|LW|28|1500
+Filip Krovinovic|DM|31|1500
+João Pedro|RB|29|1000
+Martin Braithwaite|ST|35|750
+Fabián Balbuena|CB|35|700
+Luis Eduardo|CB|18|500
+Tiago Augusto|CM|18|500
+## INT
+Anthoni|GK|24|3000
+Matheus Cunha|GK|25|2500
+Sergio Rochet|GK|33|1800
+Alexandro Bernabei|LB|26|8000
+Bruno Gomes|RB|25|7000
+Johan Carbonero|LW|27|7000
+Victor Gabriel|CB|22|4000
+Kayky|RW|23|4000
+Vitinho|LW|27|4000
+Rodrigo Villagra|DM|25|3500
+Niclas Eliasson|CM|30|3000
+Braian Aguirre|RB|26|2500
+Alerrandro|ST|26|2500
+Matheus Bahia|LB|27|2500
+Ronaldo|DM|29|2000
+Thiago Maia|DM|29|2000
+Guillermo Maripán|CB|32|2000
+Alan Patrick|AM|35|2000
+Antonio Sanabria|ST|30|1800
+Calebe|AM|26|1500
+Raykkonen|ST|18|1000
+Allex|AM|20|1000
+Paulinho Paula|CM|29|1000
+Félix Torres|CB|29|800
+Juninho|CB|31|700
+Yago Noal|AM|19|500
+Bruno Henrique|CM|36|300
+Gabriel Mercado|CB|39|100
+## MIR
+Walter|GK|38|150
+Alex Muralha|GK|36|75
+Georgemy|GK|31|50
+Igor Formiga|RB|27|4000
+Negueba|RW|26|2500
+Alesson|LW|27|2500
+Denilson|CM|25|2000
+Willian Machado|CB|29|2000
+Neto Moura|DM|30|1800
+Aldo Filho|CM|28|1500
+João Victor|CB|29|1500
+Edson Carioca|ST|29|1500
+Japa|CM|22|1000
+Shaylon|AM|29|1000
+Gustavo Silva|RW|29|1000
+Lucas Oliveira|CB|30|1000
+André Luis|ST|32|1000
+Wallisson|DM|29|900
+Gabriel|CB|22|700
+Fernandinho|LW|29|600
+Eduardo|AM|36|600
+Elias|RB|27|550
+Carlos Eduardo|RW|29|500
+Gustavo Cazonatti|DM|30|450
+Reinaldo|LB|37|350
+Victor Luís|LB|33|300
+Daniel Borges|RB|33|300
+Zé Roberto|ST|33|300
+## PAL
+Carlos Miguel|GK|27|9000
+Marcelo Lomba|GK|39|75
+Bruno Bertinato|GK|28|0
+Vitor Roque|ST|21|38000
+José Manuel López|ST|25|30000
+Mauricio|AM|25|18000
+Jhon Arias|RW|29|15000
+Andreas Pereira|CM|30|14000
+Joaquín Piquerez|LB|28|12000
+Agustín Giay|RB|22|11000
+Ramón Sosa|LW|27|10000
+Paulinho|ST|26|7000
+Khellven|RB|25|6000
+Marlon Freitas|DM|31|6000
+Emiliano Martínez|DM|27|5000
+Murilo|CB|29|5000
+Alexander Barboza|CB|31|4500
+Luis Benedetti|CB|20|4000
+Arthur Gabriel|LB|21|4000
+Jefté|LB|22|4000
+Bruno Fuchs|CB|27|4000
+Lucas Evangelista|CM|31|4000
+Gustavo Gómez|CB|33|3500
+Luis Pacheco|DM|18|1500
+Erick Belé|AM|19|1000
+Larson|CM|21|1000
+Felipe Anderson|LW|33|1000
+## RBB
+Cleiton|GK|29|3500
+Tiago Volpi|GK|35|900
+Fabrício|GK|26|100
+Lucas Barbosa|RW|25|8000
+Juninho Capixaba|LB|29|8000
+Isidro Pitta|ST|27|7500
+Rodriguinho|AM|22|7000
+Gustavo Marques|CB|24|7000
+Ignacio Sosa|CM|23|5000
+Fabinho|DM|24|5000
+Henry Mosquera|LW|24|5000
+Wallace Yan|ST|21|4000
+Alix|CB|26|4000
+Gustavo Neves|CM|22|3500
+Vinicinho|LW|22|3500
+Guzmán Rodríguez|CB|26|3500
+Eric Ramires|CM|26|3500
+Agustín Sant'Anna|RB|29|3500
+Vanderlan|LB|24|3000
+José Andrés Hurtado|RB|24|3000
+José Herrera|RW|23|2500
+Patrick|DM|22|1500
+Fernando|ST|27|1500
+Praxedes|CM|24|1200
+Ryan Augusto|RB|19|1000
+Bruninho|AM|23|1000
+Matheus Fernandes|DM|28|1000
+Gabriel|DM|34|900
+## REM
+Ivan|GK|29|700
+Ygor Vinhas|GK|32|50
+Marcelo Rangel|GK|38|50
+Antonio Galeano|RW|26|3000
+Leonel Picco|DM|27|2500
+Jajá|LW|27|1500
+Zé Ivaldo|CB|29|1500
+Gabriel Taliari|ST|29|1500
+Tchamba|CB|28|1000
+João Lucas|RB|28|1000
+Zé Welison|DM|31|1000
+Vitor Bueno|AM|32|1000
+Matheus Alexandre|RB|27|700
+David Braga|DM|24|650
+Matheus Felipe|CB|27|650
+Jáderson|LW|26|600
+Marcelinho|RB|28|600
+Alef Manga|LW|31|600
+Zé Ricardo|DM|27|500
+Yago Pikachu|RW|34|500
+Mayk|LB|27|400
+Edson Fernando|DM|28|400
+Gabriel Poveda|ST|28|400
+Patrick|CM|34|400
+Franco Catarozzi|CM|26|350
+Léo Andrade|CB|28|350
+Cristian Tassano|CB|30|350
+Marllon|CB|34|350
+## SAN
+Gabriel Brazão|GK|25|12000
+João Paulo|GK|31|2000
+Diógenes|GK|25|200
+Gabriel Bontempo|CM|21|12000
+Benjamín Rollheiser|RW|26|11000
+Neymar|AM|34|8000
+Gabriel Menino|RB|26|7000
+Álvaro Barreal|LW|26|7000
+Everton|LW|30|6000
+João Ananias|CB|19|5000
+Miguelito|AM|22|5000
+Vinicius Lira|LB|18|4000
+Gabriel Barbosa|ST|30|4000
+Lucas Veríssimo|CB|31|4000
+Arthur Melo|DM|30|3500
+Rony|ST|31|3000
+Philippe Coutinho|AM|34|2500
+Gustavinho|DM|21|2000
+Igor Vinícius|RB|29|2000
+Lima|AM|30|2000
+Moisés|LW|30|2000
+Alexis Duarte|CB|26|1800
+Christian Oliva|DM|30|1400
+Nadson|AM|17|1000
+Gustavo Caballero|LW|25|1000
+Thaciano|AM|31|1000
+Gonzalo Escobar|LB|29|800
+Rodinei|RB|34|800
+## SAO
+Carlos Coronel|GK|29|1500
+Rafael|GK|37|300
+Young|GK|24|100
+Marcos Antônio|CM|26|14000
+Damián Bobadilla|CM|25|8000
+Artur|RW|28|8000
+Ryan Francisco|ST|19|4000
+Pedro Lima|RB|20|4000
+Pablo Maia|DM|24|4000
+Lucca|LW|19|3000
+Newton|DM|26|3000
+Ferreirinha|LW|28|3000
+Iago|LB|29|3000
+Enzo Díaz|LB|30|3000
+André Silva|ST|29|2500
+Djhordney|CM|19|2000
+Cauly|AM|31|2000
+Victor Sá|LW|32|2000
+Lucas Moura|RW|34|2000
+Aurélio Buta|RB|29|1500
+Jonathan Calleri|ST|33|1500
+Wendell|LB|33|1200
+Tetê|LW|19|1000
+Gustavo Santana|ST|21|1000
+Sabino|CB|29|1000
+Danielzinho|CM|31|1000
+Luciano|ST|33|1000
+Matheus Belém|CB|23|800
+## VAS
+Léo Jardim|GK|31|7000
+Daniel Fuzato|GK|29|900
+Pablo|GK|23|50
+Andrés Gómez|LW|24|15000
+Robert Renan|CB|22|12000
+Cuiabano|LB|23|12000
+Carlos Cuesta|CB|27|8000
+Santiago Sosa|DM|27|8000
+Alan Lescano|AM|24|7500
+Cauan Barros|DM|22|7000
+Nuno Moreira|RW|27|7000
+Lucas Piton|LB|25|6000
+Gabriel Pereira|CB|26|6000
+Facundo Colidio|ST|26|6000
+Paulo Henrique|RB|30|6000
+Ramon Rique|CM|19|5000
+Marino Hinestroza|RW|24|4000
+Lucas Freitas|CB|25|4000
+Brenner|ST|26|4000
+Bruno Duarte|ST|30|4000
+Johan Rojas|AM|24|3800
+Claudio Spinelli|ST|29|3000
+Adson|RW|25|2500
+José Luis Rodríguez|RB|29|2000
+David|LW|30|1500
+Alan Saldivia|CB|24|1200
+Mateus Carvalho|DM|24|1200
+Loide Augusto|RW|26|1200
+## VIT
+Lucas Arcanjo|GK|28|4000
+Fintelman|GK|25|100
+Yuri Sena|GK|25|0
+Renê|LW|22|5000
+Erick|RW|28|4000
+Luan Cândido|LB|25|3000
+Matheuzinho|AM|28|3000
+Diego Tarzia|LW|23|2500
+Baralhas|DM|27|2500
+Tomás Pochettino|AM|30|2500
+Ramon|LB|25|2000
+Walace|DM|31|2000
+Riccieli|CB|28|1800
+Nathan Mendes|RB|24|1500
+Fabiano|RB|26|1500
+Cacá|CB|27|1500
+Rúben Ismael|DM|27|1200
+Emmanuel Martínez|AM|32|1200
+Ignacio Laquintana|RW|27|1000
+Zé Marcos|CB|28|1000
+Renato Kayzer|ST|30|1000
+Fabri|ST|25|900
+Edu Ribeiro|CB|26|800
+Mateus Silva|RB|27|800
+Jamerson|LB|28|800
+Zé Vitor|CM|26|750
+Lucas Silva|RW|27|700
+Dudu|DM|27|600

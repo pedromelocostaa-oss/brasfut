@@ -1,0 +1,141 @@
+# Restante dos elencos (Transfermarkt, temporada 2026, coletado em 2026-10-02): jogadores que ficaram fora do corte de 28.
+# Formato: nome | posição | idade | valor em milhares de euros
+## BAH
+Victor|GK|20|0
+Lautaro López|DM|21|400
+Everaldo|ST|35|350
+Roger Gabriel|AM|19|0
+Fredi Gomes|CB|20|0
+## BOT
+Tiquinho Soares|ST|35|800
+Paulinho|LB|31|400
+Anthony|CB|21|300
+Edenilson|CM|36|250
+Marçal|LB|37|200
+Jhoan Hernández|LB|20|150
+Kawan|CB|23|0
+## CAM
+Robert|GK|21|0
+Bernard|LW|34|600
+Vitor Hugo|CB|35|500
+Índio|CM|18|0
+## CAP
+Luiz Gustavo|DM|39|200
+Claudinho|LB|20|0
+## CFC
+Benassi|GK|22|50
+Bruno Melo|LB|33|250
+Thiago Santos|CB|37|100
+Maicon|CB|38|100
+Rodrigo Moledo|CB|38|100
+## CHA
+Gabriel Werner|GK|23|0
+Rafael Thyere|CB|33|250
+Bruno Pacheco|LB|34|250
+David Antunes|CM|21|200
+Giovanni Augusto|AM|37|150
+Yannick Bolasie|ST|37|150
+Vinicius Eduardo|CB|21|0
+Gustavo Talles|RB|23|0
+Da Silva|LB|26|0
+Rosivan|DM|26|0
+## COR
+André Ramalho|CB|34|600
+Léo Mana|RB|22|500
+Gabriel Paulista|CB|35|500
+Fabrizio Angileri|LB|32|400
+Zakaria Labyad|AM|33|400
+Bahia|CM|20|0
+Renato Santos|CB|21|0
+## CRU
+Bruno Rodrigues|LW|29|1200
+Fabrizio Peralta|CM|24|800
+Lucas Silva|DM|33|450
+Fagner|RB|37|200
+## FLA
+## FLU
+Renê|LB|34|400
+Jhonny|RB|24|350
+Ganso|AM|36|300
+Samuel Xavier|RB|36|200
+Matheus Reis|LW|19|0
+Léo Jance|LB|21|0
+Luis Fernando|DM|21|0
+Yago Ferreira|AM|25|0
+## GRE
+Thiago Beltrame|GK|23|0
+Dodi|DM|30|500
+Roger|RW|18|400
+Walter Kannemann|CB|35|350
+Marcos Rocha|RB|37|150
+Athos Thawan|CB|21|0
+## INT
+Diego Esser|GK|21|0
+Kauan|GK|23|0
+Benjamin|DM|20|0
+## MIR
+Thomazella|GK|36|0
+Bruno Santos|ST|29|200
+Chico Kim|AM|35|150
+Wesley Santos|RB|22|100
+Luiz Filipe|RW|25|100
+## PAL
+## RBB
+Gustavo Reis|GK|21|0
+Eduardo|CB|28|750
+Gabriel Novaes|ST|27|600
+Cauê Nascimento|LB|19|500
+Eduardo Sasha|ST|34|500
+Davi Gomes|LW|21|400
+Marcelinho Braz|AM|22|400
+Kawê|RW|24|300
+## REM
+Marlon|LB|32|300
+Eduardo Melo|ST|25|75
+Tico|RW|20|0
+Caio Magalhães|RB|21|0
+Edson Kauã|LB|22|0
+## SAN
+Rodrigo Falcão|GK|21|0
+João Fernandes|GK|22|0
+Willian Arão|DM|34|800
+Luan Peres|CB|32|700
+João Schmidt|DM|33|700
+Mateus Xavier|LW|19|400
+João Alencar|CB|19|0
+Pepê Fermino|AM|19|0
+Enzo Boer|RW|21|0
+Andrey Quintino|RW|24|0
+## SAO
+João Pedro|GK|20|0
+Felipe Preis|GK|20|0
+Domingos Duarte|CB|31|800
+Rafael Tolói|CB|35|800
+Lucas Ramon|RB|32|700
+Luis Osorio|CB|20|500
+Cédric Soares|RB|35|500
+Robert Arboleda|CB|34|300
+Nicolas|LB|19|0
+Igor Felisberto|RB|19|0
+Pedro Ferreira|AM|19|0
+Isac|CB|20|0
+## VAS
+Lukas Zuccarello|AM|19|1000
+Guilherme Estrella|AM|21|1000
+Thiago Mendes|DM|34|1000
+Tchê Tchê|CM|34|800
+Riquelme|LB|24|700
+Paulinho|LB|22|600
+Jair|DM|32|600
+JV Fonseca|RB|21|500
+Walace Falcão|CB|21|0
+Euder|DM|21|0
+## VIT
+Caíque Gonçalves|DM|30|500
+Emanuel Brítez|CB|34|500
+Alex Bruno|ST|27|300
+Anderson Pato|LW|24|250
+Camutanga|CB|33|250
+Marinho|RW|36|200
+Osvaldo|RW|39|75
+Darlan|CB|23|0
