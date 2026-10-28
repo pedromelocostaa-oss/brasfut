@@ -293,6 +293,8 @@ Antes de fechar nisso, quatro pontos.
 
 **Minha recomendação:** testar B ou D antes de A. Mas é a sua chamada, e dá para mudar depois do app no ar.
 
+**Decidido em 27/10/2026: modelo A.** Fica registrado que eu recomendei outro. O desenho do paywall tem que compensar o ponto fraco do A, que é cobrar antes de prender. Duas ideias para a fase 10: estender o grátis até o fim do primeiro turno da Série A em vez de parar no estadual, e deixar a carreira salva visível na tela de pagamento, para o pai ver o que o filho construiu.
+
 **Outra linha de receita que o concorrente já usa:** publicidade de marca dentro do jogo, declarada. A proposta de patrocínio "hoov" vem marcada como parceiro pagante. Isso tem implicação regulatória séria para público infantil, na seção 7.
 
 ---
@@ -328,14 +330,21 @@ Se a resposta for parcial, dá para desenhar o app usando só o que está cobert
 
 ## 8. Decisões em aberto
 
-Lista curta do que trava trabalho. Cada uma precisa de uma resposta sua.
+### Já decididas (27 de outubro de 2026)
+
+| # | Decisão | Resposta do Pedro |
+|---|---|---|
+| 1 | Calendário | Converter para data real e dinheiro mensal. Decisão delegada a mim; eu escolhi converter. |
+| 2 | Monetização | **Modelo A**: estadual grátis, depois assinatura. Eu recomendei B ou D e ele escolheu testar o A. A decisão é reversível antes da fase 10. |
+| 4 | Direitos de imagem | Tudo real: marca, escudo, nome de jogador. Ver a ressalva abaixo. |
+
+**Ressalva que eu registro aqui porque ela não foi respondida:** "tudo real" cobre escudo e nome de clube e de jogador, que é o que a permissão dele alcança. Não cobre automaticamente logo de patrocinador de terceiro (Bradesco, Sadia, Mercado Livre, Samsung) nem foto de jogador de agência, que são direitos de outros donos. Eu não baixo nem desenho logo de marca; eu embuto o arquivo que o Pedro mandar.
+
+### Ainda em aberto
 
 | # | Decisão | Trava o quê |
 |---|---|---|
-| 1 | Converter o calendário para data real e dinheiro mensal | Frentes B, C, D, E, G, H. Praticamente tudo. |
-| 2 | Modelo de monetização: A, B, C ou D | Fase 10 e o desenho do paywall |
 | 3 | App declarado para crianças ou público geral | Cadastro, publicidade, assinatura |
-| 4 | Alcance da permissão de escudo, foto e marca | Frente I1 e a submissão nas lojas |
 | 5 | Ordem das fases: segue a da seção 5 ou puxa alguma coisa para frente | O que eu começo depois da fase 0 |
 
 ---
