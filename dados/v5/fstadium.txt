@@ -1,0 +1,51 @@
+xEST|Jorge Luis Hirschi|32530
+xDIM|Estadio Atanasio Girardot|45943
+xNAC|Gran Parque Central|37000
+xCOQ|Francisco Sánchez Rumoroso|17750
+xTOL|Estadio Manuel Murillo Toro|28100
+xBOL|Estadio Hernando Siles|42000
+xLAG|Estadio Olímpico de la Ciudad Universitaria|24900
+xIRV|Bautista Gargantini|24000
+xBOC|Alberto J. Armando|54000
+xUCA|Claro Arena - San Carlos de Apoquindo|20249
+xBSC|Monumental Banco Pichincha|57267
+xPEN|Campeón del Siglo|40700
+xSFE|Estadio Nemesio Camacho (El Campín)|36343
+xPLA|Ciudad de Vicente López|28530
+xCCP|Estadio General Pablo Rojas|45000
+xJUN|Metropolitano Roberto Meléndez|46692
+xLDU|Rodrigo Paz Delgado|45575
+xLAN|Ciudad de Lanús - Néstor Díaz Pérez|46619
+xALW|Estadio Municipal El Alto|25000
+xIDV|Estadio Banco Guayaquil|12000
+xLIB|Estadio La Huerta|10000
+xRCE|Gigante de Arroyito|46755
+xUCV|Estadio Olímpico de la Ciudad Universitaria|24900
+xAME|Estadio Olímpico Pascual Guerrero|42300
+xTIG|José Dellagiovanna|26282
+xAPC|Complejo Deportivo Vistamar|8000
+xJUV|Estadio Juventud Parque Artigas|6148
+xMIL|Estadio Nemesio Camacho (El Campín)|36343
+xBOS|Estadio Campeones Olímpicos de Florida|5124
+xOHI|El Teniente|14450
+xSLO|Pedro Bidegain|47964
+xCUE|Estadio Alejandro Serrano Aguilar|22000
+xREC|Estadio Ricardo Gregor|4000
+xRAC|Presidente Perón|55000
+xCAR|Estadio Olímpico de la Ciudad Universitaria|23940
+xIPE|Estadio Olímpico Patria|30700
+xPAE|Municipal de La Cisterna|8000
+xMCT|Estadio Charrúa|14000
+xRIE|Guillermo Laza|10000
+xOLI|Estadio Ueno Osvaldo Dominguez Dibb|20000
+xAUD|Bicentenario de La Florida|11367
+xBAR|Claudio Chiqui Tapia|18000
+xRIV|Mâs Monumental|85018
+xBLO|Estadio Ramón Tahuichi Aguilera|38000
+xCRB|Polideportivo Misael Delgado|10000
+xCUS|Estadio Inca Garcilaso de la Vega|45000
+xUNI|Estadio Monumental de Lima|80093
+xSCR|Estadio Alberto Gallardo|11600
+xMAC|Estadio Bellavista|18000
+xALI|Estadio Campeones del 36|12000
+xCIE|Estadio Garcilaso de la Vega|42056

@@ -353,8 +353,21 @@
   }
 
   // ---------- partidas ----------
-  function aiSide(st, clubId, oppId, isHome, rng) {
-    const c = st.clubs[clubId]; const squad = squadOf(st, clubId);
+  // quantos titulares o clube poupa nesta partida. Clube da Série A trata a Sul-Americana como
+  // prioridade menor que o Brasileirão e gira o time, igual ao que acontece de verdade.
+  function rotCount(st, clubId, mt) {
+    if (!mt || mt.comp !== 'SUL') return 0;
+    const c = st.clubs[clubId]; if (!c || c.div !== 'A') return 0;
+    return 3;
+  }
+  function aiSide(st, clubId, oppId, isHome, rng, mt) {
+    const c = st.clubs[clubId]; let squad = squadOf(st, clubId);
+    const rot = rotCount(st, clubId, mt);
+    if (rot > 0) {
+      const poupa = new Set(squad.filter(p => p.pos !== 'GK' && p.inj <= 0 && p.sus <= 0)
+        .sort((a, b) => b.ovr - a.ovr).slice(0, rot).map(p => p.id));
+      if (squad.filter(p => p.inj <= 0 && p.sus <= 0).length - poupa.size >= 14) squad = squad.filter(p => !poupa.has(p.id));
+    }
     const lu = E.autoLineup(squad, c.formation);
     const ment = E.aiMentality(strength(st, clubId) - strength(st, oppId), isHome);
     return { club: clubId, xi: E.lineupFrom(clubId, st.players, lu), bench: lu.bench.map(i => st.players[i]), ment, persona: null, morale: 50 };
@@ -424,7 +437,7 @@
   function prepareUserMatch(st) {
     const fx = userFixture(st); if (!fx) return null;
     const rng = rngFor(st, 'match', st.round, 'user');
-    const me = userSide(st); const opp = aiSide(st, fx.opp, st.coach.club, !fx.isHome && !fx.neutral, rng);
+    const me = userSide(st); const opp = aiSide(st, fx.opp, st.coach.club, !fx.isHome && !fx.neutral, rng, fx.mt);
     if (!fx.neutral) { (fx.isHome ? me : opp).crowd = crowd(st, fx.h, fx.mt).fill; (fx.isHome ? me : opp).alt = altFactor(st, fx.h, fx.a); }
     me.xi.forEach(o => { if (o.p) o.p.condStart = o.p.cond; });
     const m = E.newMatch({ home: fx.isHome ? me : opp, away: fx.isHome ? opp : me, rng, neutral: fx.neutral });
@@ -438,8 +451,8 @@
     weekFixtures(st).forEach((mt, gi) => {
       if (mt.h === me || mt.a === me) return;
       const rng = rngFor(st, 'match', st.round, gi);
-      const home = aiSide(st, mt.h, mt.a, !mt.neutral, rng); if (!mt.neutral) { home.crowd = crowd(st, mt.h, mt).fill; home.alt = altFactor(st, mt.h, mt.a); }
-      const m = E.newMatch({ home, away: aiSide(st, mt.a, mt.h, false, rng), rng, neutral: mt.neutral });
+      const home = aiSide(st, mt.h, mt.a, !mt.neutral, rng, mt); if (!mt.neutral) { home.crowd = crowd(st, mt.h, mt).fill; home.alt = altFactor(st, mt.h, mt.a); }
+      const m = E.newMatch({ home, away: aiSide(st, mt.a, mt.h, false, rng, mt), rng, neutral: mt.neutral });
       E.playFull(m); m.mt = mt; out.push(m);
     });
     return out;

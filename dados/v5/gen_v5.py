@@ -56,7 +56,7 @@ for cid, name, city, country, c1, c2, fan, alt, _q in CLUBS:
     sname, cap = stad.get(cid, ('', 0))
     db.append([cid, name, city, country, 'X', c1, c2, cap or 30000, fan, sname, alt])
 
-with open(os.path.join(HERE, '..', '..', 'foreign.js'), 'w') as f:
+with open(os.path.join(HERE, '..', '..', 'jogo', 'foreign.js'), 'w') as f:
     f.write('/* Clubes estrangeiros da Libertadores e da Sul-Americana 2026. Grupos: sorteio real de 2026. Elencos: Transfermarkt. '
             'Clube: [sigla, nome, cidade, país, "X", cor 1, cor 2, capacidade, torcida 0-1, estádio, altitude aproximada em metros]. '
             'Jogador: mesmo formato de rosters.js (atributos estimados). Cores, torcida e altitude são estimativas do jogo. */\n')
