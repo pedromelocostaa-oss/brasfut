@@ -293,6 +293,42 @@ Antes de fechar nisso, quatro pontos.
 
 **Minha recomendação:** testar B ou D antes de A. Mas é a sua chamada, e dá para mudar depois do app no ar.
 
+---
+
+### Decidido em 5 de novembro de 2026: o desenho final
+
+Pedro delegou a precificação. O que ficou:
+
+**Onde o paywall entra:** fim do primeiro turno do Brasileirão, 19 de julho de 2026 no calendário do jogo. Estadual inteiro mais 19 rodadas de graça, entre 2 e 4 horas. Não é o modelo A puro (fim do estadual, 30 a 60 minutos), porque o próprio Pedro disse que o jogador precisa "pegar gosto de uso" antes de ver preço, e 40 minutos não é gosto de uso.
+
+**Preços:**
+
+| | Preço | O que destrava |
+|---|---|---|
+| Grátis | R$ 0 | Estadual e primeiro turno, para sempre, em qualquer carreira |
+| Passe de Técnico | R$ 49,90, uma vez | Temporadas sem limite, Libertadores e Sul-Americana, trocar de clube, várias carreiras, save na nuvem |
+| Mensal | R$ 12,90/mês | O mesmo, enquanto estiver ativo |
+
+Âncora de preço: o Google Play Pass custa R$ 9,90 por mês com 650 jogos. R$ 30 por mês em um jogo só estava fora da realidade do mercado brasileiro.
+
+**Extras cosméticos** (nenhum muda uma partida): uniforme alternativo R$ 7,90, prancheta (tema visual) R$ 7,90, pacote de técnico (avatar) R$ 12,90, passe de temporada com trilha grátis em paralelo R$ 19,90.
+
+**O que não entra, decidido e fechado:**
+
+| Mecânica | Motivo |
+|---|---|
+| Caixa de recompensa aleatória, pacote surpresa, sorteio de jogador | Jogo de azar com outro nome. Público infantil. Bloqueia a classificação nas lojas. |
+| Comprar jogador, dinheiro ou nota | Pay-to-win. Mecânica predatória clássica com criança. |
+| Espera que se paga para pular | Fricção artificial vendida como solução. É o dark pattern que custou US$ 245 milhões à Epic num acordo com a FTC. |
+
+**Conta para não dar prejuízo:** receita líquida de um passe de R$ 49,90 é cerca de R$ 35 pela loja (comissão de 30%) e cerca de R$ 49 pelo PWA com Pix (cerca de 1%). Com custo fixo de aproximadamente R$ 700 por mês entre servidor e taxas anuais das lojas, o ponto de equilíbrio é de 20 passes por mês pela loja ou 14 pelo PWA.
+
+### Decidido: não declarar na categoria infantil
+
+A Kids Category da App Store é opcional. Entrar nela proíbe mandar qualquer informação de dispositivo para terceiro sem consentimento explícito dos pais (o que mata analytics), exige revisão humana de todo anúncio e parental gate em toda compra e todo link externo. O app vai com classificação 9+ ou 12+ e marketing mirado em quem jogou Brasfoot.
+
+[Não verificado] Isso não isenta do ECA Digital (Lei 15.211/2025), em vigor desde 17 de março de 2026, que exige verificação de idade e consentimento parental e veda práticas comerciais abusivas voltadas ao público infantil. Precisa de advogado antes de escalar.
+
 **Decidido em 27/10/2026: modelo A.** Fica registrado que eu recomendei outro. O desenho do paywall tem que compensar o ponto fraco do A, que é cobrar antes de prender. Duas ideias para a fase 10: estender o grátis até o fim do primeiro turno da Série A em vez de parar no estadual, e deixar a carreira salva visível na tela de pagamento, para o pai ver o que o filho construiu.
 
 **Outra linha de receita que o concorrente já usa:** publicidade de marca dentro do jogo, declarada. A proposta de patrocínio "hoov" vem marcada como parceiro pagante. Isso tem implicação regulatória séria para público infantil, na seção 7.
