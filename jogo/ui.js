@@ -452,7 +452,7 @@
       ${offers ? `<div class="notice info row between" style="margin-top:8px"><span><b>${offers} ${plural(offers, 'proposta', 'propostas')}</b> por jogadores seus</span><button class="btn" data-act="goSell">Responder</button></div>` : ''}
       ${!a && !offers ? `<p class="small muted" style="margin:0">${w.open ? 'Procure reforços ou coloque jogadores à venda para receber propostas.' : 'Fora da janela você pode olhar o mercado, mas nada fecha.'}</p>` : ''}</section>`;
     c2 += centralClubCard();
-    cols.push(`<div class="stack">${c2}</div>`);
+    cols.push(`<div class="stack">${c2}${passeCard()}</div>`);
     // coluna 3: tabela e noticias
     cols.push(`<div class="stack">${miniTable()}<section class="card"><div class="head"><h2>Notícias${hint('O que aconteceu no campeonato e no seu clube: resultados, transferências, evoluções e contratos.')}</h2></div><ul class="news">${S.news.slice(0, 7).map(n => `<li><span class="r">${n.r > G.WEEKS ? 'Fim' : T.dateLabel(n.y || S.year, n.r - 1, true)}</span>${esc(n.txt)}</li>`).join('')}</ul></section></div>`);
     return `<div class="grid g-hub">${cols.join('')}</div>`;
@@ -975,6 +975,35 @@
       <div class="stack" style="gap:12px">${opts}</div>`;
   }
 
+  // ---------- Passe de Técnico ----------
+  const brl = c => 'R$ ' + (c / 100).toFixed(2).replace('.', ',');
+  function planoBox(pl, destaque) {
+    return `<div class="verba" style="${destaque ? 'border-color:var(--ouro);border-width:2px' : ''}">
+      <div class="row between" style="align-items:baseline"><b style="font-size:19px">${pl.nome}</b>${destaque ? '<span class="tag gold">Melhor escolha</span>' : ''}</div>
+      <div class="disp" style="font-size:38px;line-height:1;margin:4px 0 2px">${brl(pl.preco)}</div>
+      <div class="tiny muted" style="margin-bottom:10px">${pl.tipo === 'uma vez' ? 'Pagamento único. Não renova, não cobra de novo.' : 'Cobrado todo mês. Cancela quando quiser.'}</div>
+      <ul class="why" style="margin:0 0 10px">${pl.itens.map(i => `<li><span>${esc(i)}</span><span>${IC.check}</span></li>`).join('')}</ul>
+      <button class="btn ${destaque ? 'gold' : ''} block" data-act="comprarPasse" data-k="${pl.id}">${pl.tipo === 'uma vez' ? 'Quero o passe' : 'Quero o mensal'}</button></div>`;
+  }
+  function sheetPasse() {
+    const pi = G.passeInfo(S); const P = pi.precos;
+    return `<div class="row between nowrap" style="margin-bottom:12px;gap:10px"><h2 class="disp sheet-t" style="text-transform:uppercase;line-height:1;flex:1;min-width:0">Passe de Técnico</h2><button class="btn" style="flex:none;white-space:nowrap" data-act="closeSheet">Agora não</button></div>
+      <p style="margin:0 0 4px;font-size:17px">${pi.naHora ? 'Você fechou o primeiro turno. Daqui para a frente o jogo pede o passe.' : 'O primeiro turno é de graça. Depois dele, o passe libera o resto.'}</p>
+      <p class="small muted" style="margin:0 0 14px">O que você já jogou fica salvo. Estadual e primeiro turno são de graça para sempre, em qualquer carreira.</p>
+      <div class="stack" style="gap:12px">${planoBox(P.passe, true)}${planoBox(P.mensal, false)}</div>
+      <p class="tiny muted" style="margin:14px 0 0">A cobrança ainda não está ligada. Por enquanto o jogo segue liberado e esta tela serve para você ver a oferta. Quando o pagamento entrar no ar, quem já estiver jogando continua de onde parou.</p>`;
+  }
+  function passeCard() {
+    if (G.temPasse(S)) return '';
+    const pi = G.passeInfo(S);
+    const txt = pi.naHora
+      ? 'Primeiro turno fechado. O passe libera as temporadas seguintes, as copas da Conmebol e a troca de clube.'
+      : `Grátis até o fim do primeiro turno, que cai em ${T.dateLabel(S.year, pi.data)}. Faltam ${pi.faltam} ${plural(pi.faltam, 'data', 'datas')}.`;
+    return `<section class="card" style="${pi.naHora ? 'border-color:var(--ouro);border-width:2px' : ''}"><div class="head"><h2>Passe de Técnico</h2>${pi.naHora ? '<span class="tag gold">Na hora</span>' : `<span class="tag">${brl(G.PRECOS.passe.preco)}</span>`}</div>
+      <p class="small" style="margin:0 0 10px">${txt}</p>
+      <button class="btn ${pi.naHora ? 'gold' : ''} block" data-act="verPasse">Ver o que o passe libera</button></section>`;
+  }
+
   function vClube() {
     const c = club(me()); const wb = G.wageBill(S, me());
     const lv = S.coach.level; const inf = G.infra(S);
@@ -1314,7 +1343,7 @@
   }
   function renderSheet() {
     let el = document.getElementById('sheet');
-    const html = !U.sheet || (!S && U.sheet.type !== 'clubPreview') ? null : U.sheet.type === 'clubPreview' ? sheetClubPreview() : U.sheet.type === 'avatar' ? sheetAvatar() : U.sheet.type === 'pick' || U.sheet.type === 'bench' ? sheetPick() : U.sheet.type === 'player' ? sheetPlayer() : U.sheet.type === 'offer' ? sheetOffer() : U.sheet.type === 'moment' ? sheetMoment() : U.sheet.type === 'verba' ? sheetVerba() : '';
+    const html = !U.sheet || (!S && U.sheet.type !== 'clubPreview') ? null : U.sheet.type === 'clubPreview' ? sheetClubPreview() : U.sheet.type === 'avatar' ? sheetAvatar() : U.sheet.type === 'pick' || U.sheet.type === 'bench' ? sheetPick() : U.sheet.type === 'player' ? sheetPlayer() : U.sheet.type === 'offer' ? sheetOffer() : U.sheet.type === 'moment' ? sheetMoment() : U.sheet.type === 'verba' ? sheetVerba() : U.sheet.type === 'passe' ? sheetPasse() : '';
     // o editor de visual atualiza no lugar, sem reabrir a folha a cada toque
     if (el && html !== null && U.sheet.type === 'avatar' && el.dataset.type === 'avatar') { const sh = el.querySelector('.sheet'); const y = sh.scrollTop; sh.innerHTML = `<div class="grab"></div>${html}`; sh.scrollTop = y; return; }
     if (el) el.remove();
@@ -1471,6 +1500,8 @@
     release: el => { const p = G.infra(S).prospects.find(x => x.id === +el.dataset.pid); G.releaseProspect(S, +el.dataset.pid); U.relConfirm = null; save(); render(); if (p) toast(`${esc(p.n)} foi dispensado.`); },
     ticket: el => { G.infra(S).ticket = +el.dataset.v; save(); render(); },
     verba: () => { U.sheet = { type: 'verba' }; renderSheet(); },
+    verPasse: () => { U.sheet = { type: 'passe' }; renderSheet(); },
+    comprarPasse: el => { G.ativarPasse(S, el.dataset.k); save(); closeSheet(); render(); confetti(60); toast('Passe ligado nesta carreira. A cobrança de verdade entra depois.', 'gold'); },
     askVerba: el => { const r = G.askVerba(S, el.dataset.k); if (!r.ok) return; U.sheet.res = r; save(); render(); renderSheet(); if (r.approved) { confetti(40); toast(`Verba aprovada: ${fmt(r.amount)}.`, 'gold'); } else toast('A diretoria negou a verba.', 'bad'); },
   };
   function flushAch() { const ks = (S._newAch || []).splice(0); delete S._newAch; ks.forEach((k, i) => setTimeout(() => toast(`<span class="ti">${IC.star}</span><span>Conquista: <b>${G.ACH[k][0]}</b> · +50 XP</span>`, 'gold', 4000), 600 + i * 800)); if (ks.length) save(); }

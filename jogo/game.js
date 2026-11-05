@@ -11,6 +11,28 @@
   // SEM_ANO é a quantidade de rodadas do calendário antigo, usada só para manter o caixa dos clubes
   // no mesmo patamar de antes da virada para data real. Não é um número de jogo, é de calibragem.
   const MESES_FOLHA = 13, MESES_TV = 12, SEM_ANO = 58;
+
+  // ---------- Passe de Técnico ----------
+  // A primeira meia temporada é de graça: estadual inteiro e os 19 jogos do primeiro turno.
+  // Dali em diante o jogo pede o passe. PASSE_TRAVA desliga a trava enquanto o pagamento
+  // não está ligado de verdade: a tela aparece, explica e deixa seguir.
+  const PASSE_DATA = C.ligaWeek(18);             // domingo do fim do primeiro turno
+  const PASSE_TRAVA = false;                      // vira true quando a cobrança estiver no ar
+  const PRECOS = {
+    passe: { id: 'passe', nome: 'Passe de Técnico', preco: 4990, tipo: 'uma vez',
+      itens: ['Temporadas sem limite, de 2026 em diante', 'Libertadores e Sul-Americana', 'Trocar de clube quando quiser', 'Várias carreiras salvas ao mesmo tempo', 'Carreira salva na nuvem, para trocar de aparelho'] },
+    mensal: { id: 'mensal', nome: 'Mensal', preco: 1290, tipo: 'por mês',
+      itens: ['O mesmo do passe, enquanto a assinatura estiver ativa', 'Cancela quando quiser'] },
+  };
+  function temPasse(st) { return !!(st.passe && st.passe.ativo); }
+  // true quando o jogador chegou no ponto em que o jogo pede o passe
+  function passeNaHora(st) { return !temPasse(st) && (st.round > PASSE_DATA || (st.history || []).length > 0); }
+  function passeTrava(st) { return PASSE_TRAVA && passeNaHora(st); }
+  function passeInfo(st) {
+    return { naHora: passeNaHora(st), trava: passeTrava(st), tem: temPasse(st), data: PASSE_DATA,
+      faltam: Math.max(0, PASSE_DATA - st.round), precos: PRECOS };
+  }
+  function ativarPasse(st, id) { st.passe = { ativo: true, tipo: id, desde: { y: st.year, r: st.round + 1 } }; return st.passe; }
   // janelas: do início até a 3ª rodada e da 16ª à 21ª rodada do Brasileirão (datas base 0)
   const WINDOWS = [[0, C.ligaWeek(2)], [C.ligaWeek(15), C.ligaWeek(20)]];
   const isMid = w => !!(C.CAL[w] && C.CAL[w].mid);
@@ -1730,6 +1752,6 @@
     return `${s}R$ ${a.toLocaleString('pt-BR')}`;
   }
 
-  const api = { WEEKS, SEASON_WEEKS, isMid, CONT_PRIZE, USD, contGroups, WINDOWS, LEVELS, LEVEL_TITLES, UNLOCKS, ACH, TICKET, CUP_QUOTA, cupQuota, CAP_MAX, capAt, rngFor, hashSeed, levelFromXp, formationsFor, squadOf, wageBill, strength, windowOpen, windowInfo, strengthRanks, divClubs, targetFor, newCareer, startSeason, weekFixtures, userFixture, nextUserWeek, leagueKey, sortedTable, position, prepareUserMatch, suggestMent, sponsorOffers, signSponsor, sponsorPending, sponsorPerf, migrate, BRANDS, withB, finishRound, simWeek, askPrice, sellerAsk, disposition, interest, marketWage, buyTerms, signPlayer, loanTerms, loanIn, INTEREST_OK, mValue, prestige, loanFee, respondOffer, endLoans, aiMarketTick, marketList, wageRoom, makeOffer, acceptOffer, quickSell, auctionBid, auctionRivalTick, auctionClose, nextSeason, restartAfterFire, fireOffers, fmt, userSide, LIC, LIC_ORDER, COURSES, life, hasLic, licNeed, xpMult, studyOptions, startStudy, answerPresser, answerEvent, checkLicense, PRESETS, PRESET_COMP, compKind, savePreset, loadPreset, applyPresetFor, INFRA, PROSPECTS, TICKET_MULT, TICKET_NAME, BASE_MAX, PENEIRA_WEEK, SQUAD_MAX, infra, infraCost, infraStart, infraMaint, infraLabel, ctBonus, crowd, lojaInfo, idolOf, kitPrice, promoteProspect, releaseProspect, verbaInfo, askVerba };
+  const api = { WEEKS, SEASON_WEEKS, isMid, PRECOS, PASSE_DATA, temPasse, passeNaHora, passeTrava, passeInfo, ativarPasse, CONT_PRIZE, USD, contGroups, WINDOWS, LEVELS, LEVEL_TITLES, UNLOCKS, ACH, TICKET, CUP_QUOTA, cupQuota, CAP_MAX, capAt, rngFor, hashSeed, levelFromXp, formationsFor, squadOf, wageBill, strength, windowOpen, windowInfo, strengthRanks, divClubs, targetFor, newCareer, startSeason, weekFixtures, userFixture, nextUserWeek, leagueKey, sortedTable, position, prepareUserMatch, suggestMent, sponsorOffers, signSponsor, sponsorPending, sponsorPerf, migrate, BRANDS, withB, finishRound, simWeek, askPrice, sellerAsk, disposition, interest, marketWage, buyTerms, signPlayer, loanTerms, loanIn, INTEREST_OK, mValue, prestige, loanFee, respondOffer, endLoans, aiMarketTick, marketList, wageRoom, makeOffer, acceptOffer, quickSell, auctionBid, auctionRivalTick, auctionClose, nextSeason, restartAfterFire, fireOffers, fmt, userSide, LIC, LIC_ORDER, COURSES, life, hasLic, licNeed, xpMult, studyOptions, startStudy, answerPresser, answerEvent, checkLicense, PRESETS, PRESET_COMP, compKind, savePreset, loadPreset, applyPresetFor, INFRA, PROSPECTS, TICKET_MULT, TICKET_NAME, BASE_MAX, PENEIRA_WEEK, SQUAD_MAX, infra, infraCost, infraStart, infraMaint, infraLabel, ctBonus, crowd, lojaInfo, idolOf, kitPrice, promoteProspect, releaseProspect, verbaInfo, askVerba };
   if (NODE) module.exports = api; else root.Game = api;
 })(typeof window !== 'undefined' ? window : globalThis);

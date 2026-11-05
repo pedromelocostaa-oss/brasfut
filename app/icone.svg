@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#10201A"/>
+  <!-- prancheta: campo riscado a giz sobre o verde -->
+  <g>
+    <rect x="96" y="72" width="320" height="368" rx="28" fill="#22744A"/>
+    <rect x="96" y="72" width="320" height="368" rx="28" fill="none" stroke="#1E6842" stroke-width="8"/>
+    <!-- faixas do gramado -->
+    <g fill="#1E6842" opacity=".55">
+      <rect x="96" y="118" width="320" height="46"/>
+      <rect x="96" y="210" width="320" height="46"/>
+      <rect x="96" y="302" width="320" height="46"/>
+      <rect x="96" y="394" width="320" height="46"/>
+    </g>
+    <!-- linhas de giz -->
+    <g fill="none" stroke="#F0F8F3" stroke-width="9" opacity=".9" stroke-linejoin="round">
+      <rect x="126" y="102" width="260" height="308" rx="8"/>
+      <line x1="126" y1="256" x2="386" y2="256"/>
+      <circle cx="256" cy="256" r="52"/>
+      <path d="M186 102 h140 v62 h-140 z"/>
+      <path d="M186 410 h140 v-62 h-140 z"/>
+    </g>
+    <!-- presilha da prancheta -->
+    <rect x="208" y="40" width="96" height="56" rx="18" fill="#E8B400"/>
+    <rect x="226" y="24" width="60" height="40" rx="16" fill="#C79A00"/>
+  </g>
+</svg>
