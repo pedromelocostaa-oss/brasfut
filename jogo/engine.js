@@ -147,7 +147,7 @@
   const NICK = ['Biel', 'Kaká', 'Juninho', 'Dudu', 'Guga', 'Pedrinho', 'Netinho', 'Tiquinho', 'Zé Rafael', 'Marquinhos', 'Luizão', 'Fabinho', 'Paulinho', 'Rony', 'Vitinho', 'Tchê', 'Gabigol', 'Léo', 'Nenê', 'Cacá', 'Tuca', 'Nandinho', 'Kiko', 'Lelê', 'Tavinho', 'Duda', 'Bruninho'];
   const SQUAD_TEMPLATE = [['GK', 3], ['CB', 4], ['RB', 2], ['LB', 2], ['DM', 2], ['CM', 3], ['AM', 2], ['RW', 2], ['LW', 2], ['ST', 3]];
 
-  function wageFor(ovr) { return Math.round(6000 * Math.pow(1.17, ovr - 55) / 1000) * 1000; } // por rodada
+  function wageFor(ovr) { return Math.round(26770 * Math.pow(1.17, ovr - 55) / 1000) * 1000; } // salário por mês
   function valueFor(ovr, age, pos) {
     const am = age <= 20 ? 1.5 : age <= 23 ? 1.25 : age <= 27 ? 1 : age <= 30 ? 0.8 : age <= 33 ? 0.55 : 0.3;
     const pm = pos === 'GK' ? 0.82 : 1;

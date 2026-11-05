@@ -107,7 +107,7 @@
   function shell(content) {
     const c = club(me());
     const navBtns = NAV.map(([k, l]) => `<button data-act="go" data-v="${k}" ${tipA(NAV_TIP[k])} ${U.view === k ? 'aria-current="page"' : ''}>${IC[k]}<span>${l}</span></button>`).join('') + `<button class="only-wide" data-act="go" data-v="liga" ${tipA(NAV_TIP.liga)} ${U.view === 'liga' ? 'aria-current="page"' : ''}>${IC.liga}<span>Liga</span></button>`;
-    const roundLbl = S.seasonOver ? `Temporada ${S.year} encerrada` : `${DIVN[c.div]} · semana ${T.weekNo(S.round)} de ${G.SEASON_WEEKS}${G.isMid(S.round) ? ' · meio de semana' : ''}`;
+    const roundLbl = S.seasonOver ? `Temporada ${S.year} encerrada` : `${DIVN[c.div]} · ${T.dateLabel(S.year, S.round, true)} de ${S.year}${T.isMonthEnd(S.year, S.round) ? ' · dia de pagamento' : ''}`;
     return `<div class="shell ${U.view === 'match' ? 'focus' : ''}">
       <nav class="nav" aria-label="Menu principal"><div class="nav-brand">Pran<i>cheta</i></div>${navBtns}</nav>
       <div class="content">
@@ -326,7 +326,7 @@
   const MORAL_TIP = 'Humor do elenco. Acima de 50, os jogadores rendem mais; abaixo, rendem menos. Sobe com vitórias e cai com derrotas.';
   const XP_TIP = 'Nível do técnico. O XP vem de resultados, objetivos dos jogos, conquistas, títulos, acesso e do fim de temporada. Cada nível libera formações e recursos.';
   const JANELA_TIP = 'Janela de transferências: semanas 1 a 14 e 31 a 38. Fora dela dá para olhar e negociar, mas nada fecha.';
-  const FOLHA_TIP = 'Limite de salários por semana que a diretoria aceita. Sobe 25% com o acesso. Cumprir a meta da temporada aumenta o teto em 8%.';
+  const FOLHA_TIP = 'Limite de salários por mês que a diretoria aceita. Sobe 25% com o acesso. Cumprir a meta da temporada aumenta o teto em 8%.';
   const TABELA_TIP = 'Sua liga. Verde ou azul: zona de classificação ou acesso. Vermelho: zona de rebaixamento. Entre as séries, 4 sobem e 4 descem por temporada.';
   const SPONS_TIP = 'Contrato longo: 3 temporadas, luvas na assinatura e valor fixo. Valor alto: 1 temporada pagando mais; a renovação acompanha a campanha. Bônus por vitória: fixo menor e extra a cada vitória. Bônus por título: extra se ganhar a sua série ou a Copa do Brasil, só para favoritos.';
   const MATCH_TIP = { 'Posse': 'Tempo com a bola de cada time.', 'Finalizações': 'Chutes a gol de cada time.', 'Gols esperados': 'Soma da qualidade das chances criadas. Mostra quem mereceu mais, mesmo sem gol.' };
@@ -421,11 +421,11 @@
       } else {
         const nx = G.nextUserWeek(S, S.round + 1);
         c1 += `<section class="hero" aria-label="Semana sem jogo"><div class="inner">
-          <div class="row between"><span class="eyebrow">Semana ${T.weekNo(S.round)} de ${G.SEASON_WEEKS}${G.isMid(S.round) ? ' · meio de semana' : ''} · ${S.year}</span><span class="tag" style="background:rgba(0,0,0,.3);color:#fff">Sem jogo</span></div>
-          <p style="margin:6px 0 0;font-size:17px">${esc(club(me()).name)} não joga nesta semana.</p>
-          ${nx ? `<div class="scout"><b>Próximo jogo:</b> ${esc(nx.fx.label)}, ${nx.fx.neutral ? 'em campo neutro' : nx.fx.isHome ? 'em casa' : 'fora'}, contra o ${esc(club(nx.fx.opp).name)}, na semana ${T.weekNo(nx.w)}${G.isMid(nx.w) ? ', no meio de semana' : ''}.</div>` : `<div class="scout">Seu time não tem mais jogos nesta temporada. Os outros campeonatos seguem até a semana ${G.SEASON_WEEKS}.</div>`}
-          <button class="btn gold big block" data-act="skipWeek" ${pend ? 'aria-disabled="true" style="opacity:.6"' : ''} ${tipA('Joga a semana dos outros clubes. Salários, cota de TV e patrocínio entram normalmente.')}>Avançar uma semana</button>
-          ${nx && nx.w > S.round + 1 ? `<button class="btn block" style="background:rgba(0,0,0,.25);border-color:transparent;color:#fff" data-act="skipTo" ${tipA('Simula todas as semanas até o próximo jogo do seu time.')}>Avançar até o próximo jogo (${nx.w - S.round} semanas)</button>` : ''}
+          <div class="row between"><span class="eyebrow">${T.dateLabel(S.year, S.round)} de ${S.year}</span><span class="tag" style="background:rgba(0,0,0,.3);color:#fff">Sem jogo</span></div>
+          <p style="margin:6px 0 0;font-size:17px">${esc(club(me()).name)} não joga nesta data.</p>
+          ${nx ? `<div class="scout"><b>Próximo jogo:</b> ${esc(nx.fx.label)}, ${nx.fx.neutral ? 'em campo neutro' : nx.fx.isHome ? 'em casa' : 'fora'}, contra o ${esc(club(nx.fx.opp).name)}, ${T.dateLabel(S.year, nx.w)}.</div>` : `<div class="scout">Seu time não tem mais jogos nesta temporada. Os outros campeonatos seguem até ${T.dateLabel(S.year, G.WEEKS - 1)}.</div>`}
+          <button class="btn gold big block" data-act="skipWeek" ${pend ? 'aria-disabled="true" style="opacity:.6"' : ''} ${tipA('Joga a data dos outros clubes. Na virada do mês entram a cota de TV, a folha e o patrocínio.')}>Avançar uma data</button>
+          ${nx && nx.w > S.round + 1 ? `<button class="btn block" style="background:rgba(0,0,0,.25);border-color:transparent;color:#fff" data-act="skipTo" ${tipA('Simula todas as semanas até o próximo jogo do seu time.')}>Avançar até o próximo jogo (${nx.w - S.round} ${plural(nx.w - S.round, 'data', 'datas')})</button>` : ''}
           ${!nx ? `<button class="btn block" style="background:rgba(0,0,0,.25);border-color:transparent;color:#fff" data-act="skipTo" ${tipA('Simula as semanas restantes e mostra o fim da temporada.')}>Simular até o fim da temporada</button>` : ''}
         </div></section>`;
         c1 += eventCard();
@@ -438,7 +438,7 @@
     let c2 = `<section class="card"><div class="head"><h2>Seu momento</h2><button class="btn ghost" data-act="go" data-v="clube" ${tipA('Abre a página do Clube com as regras da diretoria e as finanças.')}>Detalhes</button></div>
       <div class="meters">
         <div class="meter ${conf < 30 ? 'warn' : ''}" ${tipA(CONF_TIP)}><div class="lbl">Confiança</div><div class="v num">${conf}</div><div class="bar"><i style="width:${conf}%"></i></div></div>
-        <div class="meter" ${tipA('Dinheiro em mãos. Embaixo, quanto a folha salarial custa por semana.')}><div class="lbl">Caixa</div><div class="v num money ${c.cash < 0 ? 'neg-c' : ''}">${money(c.cash)}</div><div class="tiny muted">folha ${fmt(wb)}/sem.</div></div>
+        <div class="meter" ${tipA('Dinheiro em mãos. Embaixo, quanto a folha salarial custa por mês.')}><div class="lbl">Caixa</div><div class="v num money ${c.cash < 0 ? 'neg-c' : ''}">${money(c.cash)}</div><div class="tiny muted">folha ${fmt(wb)}/mês</div></div>
         <div class="meter" ${tipA(MORAL_TIP)}><div class="lbl">Moral</div><div class="v num">${Math.round(S.morale)}</div><div class="bar"><i style="width:${S.morale}%"></i></div></div>
       </div>
       <p class="small" style="margin:12px 0 0"><b>Meta:</b> ${S.board.target.label}. Hoje: ${G.position(S)}º ${club(me()).div === 'D' ? 'no grupo' : 'na ' + DIVN[club(me()).div]}.</p></section>`;
@@ -454,7 +454,7 @@
     c2 += centralClubCard();
     cols.push(`<div class="stack">${c2}</div>`);
     // coluna 3: tabela e noticias
-    cols.push(`<div class="stack">${miniTable()}<section class="card"><div class="head"><h2>Notícias${hint('O que aconteceu no campeonato e no seu clube: resultados, transferências, evoluções e contratos.')}</h2></div><ul class="news">${S.news.slice(0, 7).map(n => `<li><span class="r">${n.r > G.WEEKS ? 'Fim' : 'S' + T.weekNo(n.r - 1)}</span>${esc(n.txt)}</li>`).join('')}</ul></section></div>`);
+    cols.push(`<div class="stack">${miniTable()}<section class="card"><div class="head"><h2>Notícias${hint('O que aconteceu no campeonato e no seu clube: resultados, transferências, evoluções e contratos.')}</h2></div><ul class="news">${S.news.slice(0, 7).map(n => `<li><span class="r">${n.r > G.WEEKS ? 'Fim' : T.dateLabel(n.y || S.year, n.r - 1, true)}</span>${esc(n.txt)}</li>`).join('')}</ul></section></div>`);
     return `<div class="grid g-hub">${cols.join('')}</div>`;
   }
 
@@ -493,6 +493,7 @@
       <div><div class="eyebrow">Campeões de ${h.year}</div><div class="champs">${[['Série A', h.champs.A], ['Série B', h.champs.B], ['Série C', h.champs.C], ['Série D', h.champs.D], ['Copa do Brasil', h.champs.CDB]].concat(h.champs.LIB ? [['Libertadores', h.champs.LIB], ['Sul-Americana', h.champs.SUL]] : []).map(([l, id]) => `<div><span class="muted">${l}</span>${champ(id)}</div>`).join('')}</div></div>
       <div><div class="eyebrow">Artilheiros da ${esc(h.league)}</div><ol class="small" style="margin:6px 0 0;padding-left:20px">${h.scorers.map(s => `<li>${esc(s.n)} (${esc(club(s.club).name)}): ${s.g} gols</li>`).join('')}</ol></div>
       <div class="small">Premiação: <b>${fmt(h.prize + (h.cupPrize || 0) + (h.contPrize || 0))}</b>${h.titleBonus ? ` · Bônus de título do patrocinador: <b>${fmt(h.titleBonus)}</b>` : ''} · XP da temporada: <b>+${h.xp}</b></div>
+      ${h.dezembro ? `<div class="small muted">Dezembro sem jogo: entrou <b class="pos-c">${fmt(h.dezembro.tv)}</b> de TV e saíram <b class="neg-c">${fmt(h.dezembro.wage)}</b> de folha mais décimo terceiro.</div>` : ''}
       ${G.sponsorPending(S) ? '<div class="notice info small">O contrato de patrocínio terminou. As novas propostas aparecem na Central quando a temporada começar.</div>' : ''}
       <button class="btn primary big block" data-act="nextSeason" ${tipA('Aplica acessos e rebaixamentos, envelhece o elenco e começa um novo ano com estaduais, Copa do Brasil e Brasileirão.')}>Começar temporada ${h.year + 1}${nextDiv !== h.div ? ' na ' + DIVN[nextDiv] : ''}</button>
     </section>`;
@@ -502,7 +503,7 @@
   // nome da empresa no nosso estilo (sem logo e sem as cores da marca); a faixa lateral usa a cor do setor, da nossa paleta
   const SECTOR = { 'Banco': 'ima', 'Banco digital': 'ima', 'Pagamentos': 'ima', 'Bebidas': 'cartao', 'Alimentos': 'ouro', 'Tecnologia': 'verde', 'Telefonia': 'verde', 'Varejo': 'ouro', 'Moda': 'cartao', 'Beleza': 'cartao', 'Limpeza': 'verde', 'Energia': 'ouro', 'Combustível': 'ouro', 'Aviação': 'ima', 'Saúde': 'verde', 'Aluguel de carros': 'verde', 'Automóveis': 'ima', 'Delivery': 'cartao' };
   function brandMark(b, sm) { return `<span class="brandmark ${sm ? 'sm' : ''}" style="--bs:var(--${SECTOR[b.cat] || 'ima'})"><b>${esc(b.name)}</b>${sm ? '' : `<span>${esc(b.cat)}</span>`}</span>`; }
-  function seasonsLbl(r) { const s = Math.round(r / G.SEASON_WEEKS); return `${s} ${plural(s, 'temporada', 'temporadas')}`; }
+  function seasonsLbl(r) { const s = Math.round(r / 12); return s >= 1 ? `${s} ${plural(s, 'temporada', 'temporadas')}` : `${r} ${plural(r, 'mês', 'meses')}`; }
   function sponsorCard() {
     const offers = S.sponsorOffers || []; const renew = (S.history || []).length > 0 || S.round > 0;
     const perf = G.sponsorPerf(S); const pp = Math.round((perf - 1) * 100);
@@ -518,7 +519,7 @@
           ${o.signing ? `<span>Luvas na assinatura${hint('Dinheiro pago de uma vez, assim que você assina.')}</span><b class="num pos-c">+${fmt(o.signing)}</b>` : ''}
           ${o.winBonus ? `<span>Por vitória</span><b class="num pos-c">+${fmt(o.winBonus)}</b>` : ''}
           ${o.titleBonus ? `<span>Se for campeão</span><b class="num pos-c">+${fmt(o.titleBonus)}</b>` : ''}
-          <span class="tot">Garantido em ${seasonsLbl(o.rounds)}${hint('Valor por semana vezes a duração, mais as luvas. Bônus por vitória e por título vêm por cima e não estão somados.')}</span><b class="tot num">${fmt(o.total + (o.signing || 0))}</b>
+          <span class="tot">Garantido em ${seasonsLbl(o.rounds)}${hint('Valor por mês vezes a duração, mais as luvas. Bônus por vitória e por título vêm por cima e não estão somados.')}</span><b class="tot num">${fmt(o.total + (o.signing || 0))}</b>
         </div>
         <p class="tiny muted offer-txt">${esc(o.pitch)}</p>
         <button class="btn primary block" data-act="signSponsor" data-i="${i}">Assinar</button>
@@ -527,7 +528,7 @@
   }
   function sponsorRows() {
     const sp = S.sponsor; if (!sp) return `<span>Patrocínio</span><b class="muted">sem contrato</b>`;
-    return `<span>Patrocínio · ${esc(sp.brand.name)}</span><b class="num pos-c">+${fmt(sp.per)} por semana</b>${sp.winBonus ? `<span>Bônus por vitória</span><b class="num pos-c">+${fmt(sp.winBonus)}</b>` : ''}${sp.titleBonus ? `<span>Bônus por título</span><b class="num pos-c">+${fmt(sp.titleBonus)}</b>` : ''}<span>Contrato</span><b>${sp.left} ${plural(sp.left, 'semana restante', 'semanas restantes')}</b><span>Recebido até agora</span><b class="num">${fmt(sp.earned)}</b>`;
+    return `<span>Patrocínio · ${esc(sp.brand.name)}</span><b class="num pos-c">+${fmt(sp.per)} por mês</b>${sp.winBonus ? `<span>Bônus por vitória</span><b class="num pos-c">+${fmt(sp.winBonus)}</b>` : ''}${sp.titleBonus ? `<span>Bônus por título</span><b class="num pos-c">+${fmt(sp.titleBonus)}</b>` : ''}<span>Contrato</span><b>${sp.left} ${plural(sp.left, 'mês restante', 'meses restantes')}</b><span>Recebido até agora</span><b class="num">${fmt(sp.earned)}</b>`;
   }
 
   function vFired() {
@@ -648,9 +649,9 @@
       <div class="stats3" style="grid-template-columns:repeat(4,1fr)">${[['Jogos', p.apps], ['Gols', p.g], ['Assist.', p.a], ['Nota média', avg]].map(([l, x]) => `<div class="stat"><div class="lbl">${l}</div><div class="disp" style="text-align:center;font-size:24px;font-weight:900">${x}</div></div>`).join('')}</div>
       ${attrBars(p)}
       ${p.s26 ? `<p class="tiny muted" style="margin:6px 0 0">Na vida real em 2026 (Transfermarkt, até 3 de outubro): ${p.s26[0]} jogos, ${p.s26[1]} gols, ${p.s26[2]} assistências.</p>` : p.youth ? '<p class="tiny muted" style="margin:6px 0 0">Garoto da base gerado pelo jogo (nome fictício).</p>' : ''}
-      <div class="fin" style="margin-top:14px"><span>Condição física</span><span>${fadiga(p.cond)}</span><span>Valor de mercado${hint('Estimativa pela nota, idade e posição. Serve de base para propostas e vendas.')}</span><b class="num">${fmt(v)}</b><span>Salário</span><b class="num">${fmt(p.wage)} por semana</b>${p.inj > 0 ? `<span>Lesão</span><b class="neg-c">${p.inj} ${plural(p.inj, 'semana', 'semanas')}</b>` : ''}</div>
+      <div class="fin" style="margin-top:14px"><span>Condição física</span><span>${fadiga(p.cond)}</span><span>Valor de mercado${hint('Estimativa pela nota, idade e posição. Serve de base para propostas e vendas.')}</span><b class="num">${fmt(v)}</b><span>Salário</span><b class="num">${fmt(p.wage)} por mês</b>${p.inj > 0 ? `<span>Lesão</span><b class="neg-c">${p.inj} ${plural(p.inj, 'semana', 'semanas')}</b>` : ''}</div>
       ${mine ? `<div class="row" style="margin-top:16px"><button class="btn ${p.listed ? '' : 'primary'}" data-act="listToggle" data-pid="${p.id}" ${tipA(p.listed ? 'Tira o jogador da lista de venda: para de receber propostas.' : 'Avisa o mercado. Com a janela aberta, chegam propostas a cada rodada; você responde em Mercado, aba Vender.')}>${p.listed ? 'Tirar da venda' : 'Pôr à venda'}</button>${w ? `<button class="btn danger" data-act="quickSell" data-pid="${p.id}" ${tipA('Vende na hora por 75% do valor de mercado.')}>Venda rápida · ${fmt(Math.round(v * 0.75 / 10000) * 10000)}</button>` : ''}</div>
-      <p class="tiny muted" style="margin:8px 0 0">${p.listed ? 'Clubes interessados mandam propostas na próxima semana.' : 'À venda, ele recebe propostas a cada semana com a janela aberta.'}${w ? '' : ' A janela está fechada: vendas só fecham quando abrir.'}</p>` : ''}`;
+      <p class="tiny muted" style="margin:8px 0 0">${p.listed ? 'Clubes interessados mandam propostas na próxima data.' : 'À venda, ele recebe propostas a cada semana com a janela aberta.'}${w ? '' : ' A janela está fechada: vendas só fecham quando abrir.'}</p>` : ''}`;
   }
 
   // ---------- tabela ----------
@@ -734,7 +735,7 @@
     const tabs = [['buy', 'Comprar'], ['sell', `Vender${nOff ? ' · ' + nOff : ''}`], ['loans', `<span class="wide-only">Empréstimos</span><span class="narrow-only">Emprést.</span>${myLoans.length ? ' · ' + myLoans.length : ''}`], ['feed', '<span class="wide-only">Movimentações</span><span class="narrow-only">Geral</span>']].concat(a ? [['auction', 'Leilão']] : []);
     if (!tabs.some(x => x[0] === m.tab)) m.tab = 'buy';
     const head = `<section class="card stack" style="gap:12px"><div class="head" style="margin:0"><h2>Mercado${hint(JANELA_TIP + ' O caixa paga a transferência e o salário precisa caber no teto da folha.')}</h2><span class="tag ${w.open ? 'good' : ''}">${w.open ? `Janela aberta · fecha em ${w.closesIn} ${plural(w.closesIn, 'semana', 'semanas')}` : w.opensIn ? `Janela fechada · abre em ${w.opensIn} ${plural(w.opensIn, 'semana', 'semanas')}` : `Janela fechada até ${S.year + 1}`}</span></div>
-      <div class="fin small"><span>Caixa</span><b class="num">${fmt(club(me()).cash)}</b><span>Espaço na folha${hint(FOLHA_TIP)}</span><b class="num ${G.wageRoom(S) < 0 ? 'neg-c' : ''}">${fmt(G.wageRoom(S))} por semana</b><span>Elenco${hint('Limite de 42 jogadores, contando quem veio emprestado. Mínimo de 18.')}</span><b>${myPlayers().length} de 42</b></div>
+      <div class="fin small"><span>Caixa</span><b class="num">${fmt(club(me()).cash)}</b><span>Espaço na folha${hint(FOLHA_TIP)}</span><b class="num ${G.wageRoom(S) < 0 ? 'neg-c' : ''}">${fmt(G.wageRoom(S))} por mês</b><span>Elenco${hint('Limite de 42 jogadores, contando quem veio emprestado. Mínimo de 18.')}</span><b>${myPlayers().length} de 42</b></div>
       ${(() => { const vi = G.verbaInfo(S); return `<div class="row between" style="gap:8px"><span class="small muted">${vi.used ? 'Verba já pedida nesta janela.' : vi.open ? 'Precisa de dinheiro para reforços? Peça à diretoria.' : 'Verba extra só com a janela aberta.'}</span><button class="btn" data-act="verba" ${tipA('Pede dinheiro extra para reforços. Uma vez por janela; a chance depende da confiança.')}>Pedir verba</button></div>`; })()}
       <div class="seg wide" role="tablist">${tabs.map(([k, l]) => `<button role="tab" data-act="mktTab" data-v="${k}" aria-pressed="${m.tab === k}">${l}</button>`).join('')}</div></section>`;
     let body = '';
@@ -746,7 +747,7 @@
       const cash = club(me()).cash, room = G.wageRoom(S);
       const fits = p => G.askPrice(S, p) * 0.86 <= cash && p.wage <= room;
       const list = G.marketList(S, { pos: m.pos || null, maxAge: m.young ? 23 : null, div: m.div || null, q: m.q || null }).filter(p => !m.fit || fits(p) || p.loan).slice(0, 40);
-      body = `<section class="card"><input id="mkt-q" class="txt" type="search" placeholder="Buscar jogador ou clube" value="${esc(m.q || '')}" aria-label="Buscar jogador ou clube" style="margin-bottom:10px"><div class="chips" style="margin-bottom:6px">${divChips}</div><div class="chips" style="margin-bottom:8px">${chips}</div><div class="plist">${list.map(p => `<button class="prow ${fits(p) ? '' : 'dim'}" data-act="mktSel" data-pid="${p.id}">${ovr(p.ovr)}<span class="who"><b>${esc(p.n)} ${p.ovr > (myBest[p.pos] || 0) ? '<span class="tag gold" data-tip="Nota acima do seu melhor jogador nesta posição.">reforço</span>' : ''}${p.loan ? ' <span class="tag">emprestado</span>' : ''}</b><span>${posLbl(p.pos)} · ${p.age} anos · ${esc(club(p.club).name)} <span class="muted">(${club(p.club).div})</span> ${attrMini(p)}</span></span><span class="end"><b class="num gold-c">${fmt(G.askPrice(S, p))}</b><span class="tiny muted">${fmt(p.wage)}/sem.</span><span class="ct-cue">Contratar</span></span></button>`).join('') || `<div class="empty">Nenhum jogador com esse filtro.${m.fit ? ' Desligue “Cabe no orçamento” para ver todos, ou venda alguém para abrir caixa e folha.' : ''}</div>`}</div><p class="tiny muted" style="margin:8px 0 0">O valor da lista é o pedido do clube. Toque no jogador para ver se ele topa vir e fazer proposta de compra ou de empréstimo.</p></section>`;
+      body = `<section class="card"><input id="mkt-q" class="txt" type="search" placeholder="Buscar jogador ou clube" value="${esc(m.q || '')}" aria-label="Buscar jogador ou clube" style="margin-bottom:10px"><div class="chips" style="margin-bottom:6px">${divChips}</div><div class="chips" style="margin-bottom:8px">${chips}</div><div class="plist">${list.map(p => `<button class="prow ${fits(p) ? '' : 'dim'}" data-act="mktSel" data-pid="${p.id}">${ovr(p.ovr)}<span class="who"><b>${esc(p.n)} ${p.ovr > (myBest[p.pos] || 0) ? '<span class="tag gold" data-tip="Nota acima do seu melhor jogador nesta posição.">reforço</span>' : ''}${p.loan ? ' <span class="tag">emprestado</span>' : ''}</b><span>${posLbl(p.pos)} · ${p.age} anos · ${esc(club(p.club).name)} <span class="muted">(${club(p.club).div})</span> ${attrMini(p)}</span></span><span class="end"><b class="num gold-c">${fmt(G.askPrice(S, p))}</b><span class="tiny muted">${fmt(p.wage)}/mês</span><span class="ct-cue">Contratar</span></span></button>`).join('') || `<div class="empty">Nenhum jogador com esse filtro.${m.fit ? ' Desligue “Cabe no orçamento” para ver todos, ou venda alguém para abrir caixa e folha.' : ''}</div>`}</div><p class="tiny muted" style="margin:8px 0 0">O valor da lista é o pedido do clube. Toque no jogador para ver se ele topa vir e fazer proposta de compra ou de empréstimo.</p></section>`;
     } else if (m.tab === 'sell') {
       const idolId = (G.idolOf(S).p || {}).id; const idolPct = (G.lojaInfo(S).idol || {}).pct || 0;
       const offs = S.market.offers.map(o => {
@@ -811,14 +812,14 @@
         ${seg3('loanOblig', m.oblig ? 1 : 0, [[0, 'Só empréstimo'], [1, 'Com compra']])}
         <span class="eyebrow">Salário${hint('Acima do mercado, o jogador fica mais interessado.')}</span>
         ${seg3('offerSal', m.sal || 0, [[0, 'De mercado'], [15, '+15 %'], [30, '+30 %']])}
-        <p class="small muted" style="margin:0">${fmt(T.wage)} por semana · você paga ${fmt(T.myWage)} · taxa de empréstimo ${fmt(T.fee)}${T.buyFee ? ` · compra obrigatória de ${fmt(T.buyFee)} no fim` : ''}.</p>` : `
+        <p class="small muted" style="margin:0">${fmt(T.wage)} por mês · você paga ${fmt(T.myWage)} · taxa de empréstimo ${fmt(T.fee)}${T.buyFee ? ` · compra obrigatória de ${fmt(T.buyFee)} no fim` : ''}.</p>` : `
         <span class="eyebrow">Valor ao clube${hint('O pedido do clube já considera se ele é titular, jovem ou um dos melhores. Abaixo do pedido só passa se o clube tiver motivo para vender; um dos 3 melhores só sai acima do pedido.')}</span>
         ${seg3('offerValor', m.valor || 0, [[-1, '−15 %'], [0, 'Pedido'], [1, '+15 %']])}
         <span class="eyebrow">Luvas${hint('Bônus pago ao jogador na assinatura, em % do valor da transferência. Aumenta muito o interesse.')}</span>
         ${seg3('offerLuvas', m.luvas || 0, [[0, 'Sem luvas'], [15, '+15 %'], [30, '+30 %']])}
         <span class="eyebrow">Salário${hint('Salário de mercado é o da nota dele. Acima disso, o interesse sobe.')}</span>
         ${seg3('offerSal', m.sal || 0, [[0, 'De mercado'], [15, '+15 %'], [30, '+30 %']])}
-        <p class="small muted" style="margin:0">${fmt(T.wage)} por semana · contrato de 3 anos${T.luvasV ? ` · luvas de ${fmt(T.luvasV)}` : ''}.</p>`;
+        <p class="small muted" style="margin:0">${fmt(T.wage)} por mês · contrato de 3 anos${T.luvasV ? ` · luvas de ${fmt(T.luvasV)}` : ''}.</p>`;
     return `<div class="contratar">
       <h2 class="disp ct-t">${loan ? 'Empréstimo' : 'Contratar'}</h2>
       <div class="seg wide" style="margin-top:10px">${[['buy', 'Comprar'], ['loan', 'Pedir emprestado']].map(([k, l]) => `<button data-act="offerMode" data-v="${k}" aria-pressed="${(m.mode || 'buy') === k}">${l}</button>`).join('')}</div>
@@ -828,7 +829,7 @@
         ${interestBox(T.it)}
         <div class="notice ${T.club.ok ? 'good' : 'bad'} small" style="margin:4px 0 0"><b>Clube:</b> ${esc(T.club.txt)}${!loan ? ` Pedido: ${fmt(T.ask)} (valor de mercado ${fmt(T.value)}).` : ''}</div>
         ${rows}
-        <p class="small muted" style="margin:0">Seu caixa: ${fmt(club(me()).cash)}${(S.infra || {})[me()] && G.verbaInfo(S).open && !G.verbaInfo(S).used ? ' · dá para pedir verba à diretoria' : ''}. Espaço na folha: ${fmt(G.wageRoom(S))} por semana.</p>
+        <p class="small muted" style="margin:0">Seu caixa: ${fmt(club(me()).cash)}${(S.infra || {})[me()] && G.verbaInfo(S).open && !G.verbaInfo(S).used ? ' · dá para pedir verba à diretoria' : ''}. Espaço na folha: ${fmt(G.wageRoom(S))} por mês.</p>
       </div>
       ${r ? `<div class="notice ${r.ok ? 'good' : 'bad'}" style="margin-top:12px">${esc(r.msg)}</div>` : ''}
       ${T.blocked ? `<div class="notice bad small" style="margin-top:12px">${esc(T.blocked)}</div>` : !T.club.ok ? '' : !T.it.ok ? `<div class="notice warn small" style="margin-top:12px">${esc(p.n)} ainda não topa (precisa de ${G.INTEREST_OK}). ${loan ? 'Tente um salário maior.' : 'Luvas e salário maior aumentam o interesse.'}</div>` : ''}
@@ -838,7 +839,7 @@
   function auctionCard(a) {
     const p = S.players[a.pid]; const t = U.auction ? U.auction.left : 30;
     return `<section class="card auction stack"><div class="head" style="margin:0"><h2>Leilão relâmpago${hint('Jogador sem clube. São 30 segundos: cada lance sobe 10% e os rivais podem cobrir. Quem estiver na frente no fim leva.')}</h2><span class="timer num" id="auc-timer">${t}s</span></div>
-      <div class="row nowrap">${ovr(p.ovr)}<div><b>${esc(p.n)}</b><div class="small muted">${E.POS_NAME[p.pos]} · ${p.age} anos · sem clube · ${fmt(E.wageFor(p.ovr))} por semana</div></div></div>
+      <div class="row nowrap">${ovr(p.ovr)}<div><b>${esc(p.n)}</b><div class="small muted">${E.POS_NAME[p.pos]} · ${p.age} anos · sem clube · ${fmt(E.wageFor(p.ovr))} por mês</div></div></div>
       <div class="fin"><span>Lance atual</span><b class="num" id="auc-bid">${fmt(a.bid)}</b><span>Na frente</span><b id="auc-lead">${a.leader === 'me' ? 'Você' : a.leader ? esc(club(a.leader).name) : 'Ninguém'}</b></div>
       <div id="auc-msg"></div>
       ${U.auction ? `<button class="btn gold big block" data-act="bid">Dar lance de ${fmt(Math.round(a.bid * 1.1 / 10000) * 10000)}</button>` : `<button class="btn primary big block" data-act="startAuction">Entrar no leilão (30 segundos)</button>`}
@@ -849,8 +850,8 @@
   // ---------- estrutura do clube: CT, base, estádio e loja ----------
   const dec = (v, n = 1) => v.toLocaleString('pt-BR', { minimumFractionDigits: n, maximumFractionDigits: n });
   const INFRA_TIP = {
-    ct: 'Centro de Treinamento. Cada nível acima do 1 recupera mais condição por semana, aumenta a chance de evolução dos jovens e encurta lesões. Tem manutenção semanal.',
-    base: `Categorias de base. Em cada peneira (início da temporada e semana ${G.PENEIRA_WEEK + 1}) chegam garotos de 16 e 17 anos. Nível maior traz mais garotos, nota inicial maior e potencial mais preciso.`,
+    ct: 'Centro de Treinamento. Cada nível acima do 1 recupera mais condição por semana, aumenta a chance de evolução dos jovens e encurta lesões. Tem manutenção mensal.',
+    base: `Categorias de base. Em cada peneira (uma no início da temporada e outra no meio do ano) chegam garotos de 16 e 17 anos. Nível maior traz mais garotos, nota inicial maior e potencial mais preciso.`,
     estadio: 'Estádio. O preço do ingresso muda o público e a renda. Casa cheia empurra o time. Ampliação soma lugares e só rende se o estádio costuma lotar.',
     loja: 'Loja oficial. Vende camisas toda semana sozinha: o tamanho da torcida, a fase do time, os grandes momentos e o ídolo do elenco decidem quanto. O lucro cai no caixa toda semana.',
   };
@@ -862,7 +863,8 @@
   };
   const pips = (l, max) => `<span class="pips" aria-hidden="true">${Array.from({ length: max }, (_, i) => `<i class="${i < l ? 'on' : ''}"></i>`).join('')}</span>`;
   const cmp = (now, nxt) => nxt == null || nxt === now ? `<b class="num">${now}</b>` : `<b class="num">${now} <span class="nx">→ ${nxt}</span></b>`;
-  function maintOf(k, l) { const inf = G.infra(S); const D = G.INFRA[k]; return Math.round(inf.ref * D.maint * Math.max(0, l - D.min) / 1000) * 1000; }
+  // manutenção mensal de um nível de estrutura (a regra guarda o valor por rodada; aqui vira conta de mês)
+  function maintOf(k, l) { const inf = G.infra(S); const D = G.INFRA[k]; return Math.round(inf.ref * D.maint * Math.max(0, l - D.min) * 58 / 12 / 1000) * 1000; }
   function buildBar(k) {
     const b = G.infra(S).build; if (!b || (k && b.k !== k)) return '';
     const pct = Math.round((b.total - b.left) / b.total * 100);
@@ -874,10 +876,10 @@
     if (to > D.max) return `<span class="tag good">${k === 'estadio' ? 'Todas as ampliações feitas' : 'Nível máximo'}</span>`;
     const cost = G.infraCost(S, k);
     if (!cost) return `<p class="small muted" style="margin:0">O estádio já está no limite de ${G.CAP_MAX.toLocaleString('pt-BR')} lugares.</p>`;
-    const busy = inf.build; const poor = c.cash < cost; const after = c.cash - cost; const thin = !busy && !poor && after < G.wageBill(S, me()) * 2;
+    const busy = inf.build; const poor = c.cash < cost; const after = c.cash - cost; const thin = !busy && !poor && after < G.wageBill(S, me()) * 1.5;
     const why = busy ? `Uma obra por vez: espere ${G.INFRA[busy.k].short === 'Base' ? 'a da base' : busy.k === 'loja' ? 'a da loja' : busy.k === 'estadio' ? 'a do estádio' : 'a do CT'} terminar.` : poor ? `Falta ${fmt(cost - c.cash)} no caixa.` : '';
     const lbl = k === 'estadio' ? `Ampliar para ${G.capAt(inf.cap0, to).toLocaleString('pt-BR')} lugares` : `Construir nível ${to}`;
-    return `<button class="btn ${busy || poor ? '' : 'primary'} block" data-act="infraUp" data-k="${k}" ${busy || poor ? 'aria-disabled="true"' : ''} ${tipA(`Paga a obra agora e espera ${D.weeks[to]} semanas. A manutenção semanal sobe junto.`)}>${lbl} · ${fmt(cost)} · ${D.weeks[to]} sem.</button>${why ? `<p class="tiny muted" style="margin:6px 0 0">${why}</p>` : thin ? `<p class="tiny" style="margin:6px 0 0;color:var(--alerta)">Depois da obra o caixa fica em ${fmt(after)}, menos de 2 semanas de folha.</p>` : ''}`;
+    return `<button class="btn ${busy || poor ? '' : 'primary'} block" data-act="infraUp" data-k="${k}" ${busy || poor ? 'aria-disabled="true"' : ''} ${tipA(`Paga a obra agora e espera ${D.weeks[to]} semanas. A manutenção mensal sobe junto.`)}>${lbl} · ${fmt(cost)} · ${D.weeks[to]} sem.</button>${why ? `<p class="tiny muted" style="margin:6px 0 0">${why}</p>` : thin ? `<p class="tiny" style="margin:6px 0 0;color:var(--alerta)">Depois da obra o caixa fica em ${fmt(after)}, menos de uma folha e meia.</p>` : ''}`;
   }
   function infraCard(k, rows, extra = '') {
     const inf = G.infra(S); const D = G.INFRA[k]; const l = inf[k];
@@ -895,13 +897,13 @@
       `<span>Recuperação extra${hint('Condição a mais que cada jogador seu recupera por semana, além da recuperação normal.')}</span>${cmp('+' + dec(a.rec) + ' por semana', b && '+' + dec(b.rec))}`
       + `<span>Chance de evolução${hint('Multiplica a chance de jogadores de até 23 anos subirem a nota depois de boas atuações.')}</span>${cmp('×' + dec(a.evo, 2), b && '×' + dec(b.evo, 2))}`
       + `<span>Lesões${hint('Quanto encolhe o tempo de recuperação de uma lesão.')}</span>${cmp(a.inj ? a.inj + '% mais curtas' : 'duração normal', b && b.inj + '% mais curtas')}`
-      + `<span>Manutenção</span>${cmp(fmt(maintOf('ct', l)) + '/sem.', to && fmt(maintOf('ct', to)) + '/sem.')}`);
+      + `<span>Manutenção</span>${cmp(fmt(maintOf('ct', l)) + '/mês', to && fmt(maintOf('ct', to)) + '/mês')}`);
   }
   function baseCard() {
     const inf = G.infra(S); const l = inf.base; const to = l < 5 ? l + 1 : null;
     const ovrs = myPlayers().map(p => p.ovr).sort((x, y) => x - y); const med = ovrs.length ? ovrs[Math.floor(ovrs.length / 2)] : 60;
     const nota = lv => Math.max(45, Math.round(med - 15 + 1.5 * lv));
-    const next = S.round <= G.PENEIRA_WEEK ? `semana ${G.PENEIRA_WEEK + 1}` : `início de ${S.year + 1}`;
+    const next = S.round <= G.PENEIRA_WEEK ? T.dateLabel(S.year, G.PENEIRA_WEEK, true) : `início de ${S.year + 1}`;
     const full = inf.prospects.length >= G.BASE_MAX;
     const list = inf.prospects.map(p => `<div class="prow pros" style="cursor:default">${ovr(p.ovr)}<span class="who"><b>${esc(p.n)}</b><span>${posLbl(p.pos)} · ${p.age} anos · potencial <b>${p.potLo}${p.potHi > p.potLo ? '–' + p.potHi : ''}</b> ${attrMini(p)}</span></span><span class="row nowrap" style="gap:4px">${U.relConfirm === p.id ? `<button class="btn danger" data-act="release" data-pid="${p.id}">Confirmar</button><button class="btn ghost" data-act="relCancel">Voltar</button>` : `<button class="btn primary" data-act="promote" data-pid="${p.id}" ${tipA('Leva o garoto para o elenco profissional com salário de formação (60% do normal). Ele passa a jogar e pode evoluir em campo.')}>Subir</button><button class="btn ghost" data-act="relAsk" data-pid="${p.id}" ${tipA('Libera a vaga na base. Não tem volta.')}>Dispensar</button>`}</span></div>`).join('');
     return infraCard('base',
@@ -909,7 +911,7 @@
       + `<span>Nota inicial${hint('Nota aproximada com que os garotos chegam, a partir do nível do seu elenco.')}</span>${cmp('cerca de ' + nota(l), to && String(nota(to)))}`
       + `<span>Precisão do potencial${hint('Largura da faixa de potencial mostrada. No nível 5 o potencial aparece quase exato.')}</span>${cmp(`faixa de ${6 - l} ${plural(6 - l, 'ponto', 'pontos')}`, to && `${6 - to}`)}`
       + `<span>Próxima peneira</span><b>${next}</b>`
-      + `<span>Manutenção</span>${cmp(fmt(maintOf('base', l)) + '/sem.', to && fmt(maintOf('base', to)) + '/sem.')}`,
+      + `<span>Manutenção</span>${cmp(fmt(maintOf('base', l)) + '/mês', to && fmt(maintOf('base', to)) + '/mês')}`,
       `<div class="eyebrow" style="margin-top:14px">Na base · ${inf.prospects.length} de ${G.BASE_MAX}${hint('Garotos ficam na base até os 20 anos. Quem não subir até lá vai embora. Com a base cheia, a peneira não traz ninguém.')}</div>
        ${list ? `<div class="plist">${list}</div>` : `<p class="small muted" style="margin:6px 0 0">Ninguém na base agora. A próxima peneira é na ${next}.</p>`}${full ? '<p class="tiny" style="margin:6px 0 0;color:var(--alerta)">Base cheia: a próxima peneira só traz garotos se abrir vaga.</p>' : ''}`);
   }
@@ -922,7 +924,7 @@
       `<span>Estádio</span><b>${esc(c.stadium || '–')}</b>`
       + `<span>Capacidade</span>${cmp(c.cap.toLocaleString('pt-BR'), to && G.capAt(inf.cap0, to) > c.cap ? G.capAt(inf.cap0, to).toLocaleString('pt-BR') : null)}`
       + `<span>Público médio${hint('Média dos últimos jogos em casa do seu time nesta carreira.')}</span><b class="num">${avg != null ? avg.toLocaleString('pt-BR') + ' (' + Math.round(avg / c.cap * 100) + '%)' : 'sem jogos ainda'}</b>`
-      + `<span>Manutenção</span>${cmp(fmt(maintOf('estadio', l)) + '/sem.', to && fmt(maintOf('estadio', to)) + '/sem.')}`,
+      + `<span>Manutenção</span>${cmp(fmt(maintOf('estadio', l)) + '/mês', to && fmt(maintOf('estadio', to)) + '/mês')}`,
       `<div class="eyebrow" style="margin-top:14px">Ingresso · ${G.TICKET_NAME[inf.ticket]}${hint('Preço mais baixo enche o estádio e aumenta a pressão da torcida; mais alto rende mais quando o estádio lota.')}</div>
        <div class="seg wide tix" role="radiogroup" aria-label="Preço do ingresso" style="margin-top:6px">${seg}</div>
        <div class="notice info small" style="margin-top:10px">Num jogo da liga em casa agora: <b>${cw.att.toLocaleString('pt-BR')}</b> pessoas (${Math.round(cw.fill * 100)}%), renda de <b>${fmt(cw.gate)}</b>. Pressão da torcida: <b>${push >= 0 ? '+' : '−'}${dec(Math.abs(push))}%</b> de chances.${cw.demand > 1.05 ? ' Procura maior que a capacidade: dá para subir o preço ou ampliar.' : ''}</div>`);
@@ -936,7 +938,7 @@
       `<span>Camisa${hint('Preço da camisa oficial na sua série e quanto fica para o clube em cada uma.')}</span><b class="num">R$ ${li.price} <span class="muted">· lucro R$ ${li.profit}</span></b>`
       + `<span>Por semana${hint('Camisas que a torcida compra por semana agora e o lucro que isso deixa no caixa.')}</span><b class="num">${li.demand.toLocaleString('pt-BR')} · <span class="pos-c">+${fmt(li.weekProfit)}</span></b>`
       + `<span>Pontos de venda${hint('Cada nível vende 35% a mais que o nível 1.')}</span>${cmp('×' + dec(li.lv, 2), to && '×' + dec(1 + 0.35 * (to - 1), 2))}`
-      + `<span>Manutenção</span>${cmp(fmt(maintOf('loja', l)) + '/sem.', to && fmt(maintOf('loja', to)) + '/sem.')}`,
+      + `<span>Manutenção</span>${cmp(fmt(maintOf('loja', l)) + '/mês', to && fmt(maintOf('loja', to)) + '/mês')}`,
       `<div class="eyebrow" style="margin-top:14px">O que move a venda</div>
        <ul class="why">
          <li><span>Torcida${hint('Tamanho da torcida e série do clube. É a base da venda.')}</span><span class="num">${li.base.toLocaleString('pt-BR')} camisas</span></li>
@@ -950,7 +952,7 @@
     const inf = G.infra(S);
     return `<section class="card"><div class="head"><h2>Estrutura do clube${hint('Obras melhoram o clube de vez, mas custam caixa agora e manutenção toda semana. Só uma obra por vez.')}</h2><span class="small muted">Caixa <b class="num ${club(me()).cash < 0 ? 'neg-c' : ''}">${fmt(club(me()).cash)}</b></span></div>
         ${inf.build ? buildBar(null) : '<p class="small" style="margin:0">Nenhuma obra em andamento. Escolha a próxima abaixo: uma por vez.</p>'}
-        <p class="tiny muted" style="margin:8px 0 0">Manutenção total: ${fmt(G.infraMaint(inf))} por semana. Os níveis iniciais são uma estimativa do jogo pelo tamanho do clube, não a estrutura real.</p></section>
+        <p class="tiny muted" style="margin:8px 0 0">Manutenção total: ${fmt(G.infraMaint(inf) * 58 / 12)} por mês. Os níveis iniciais são uma estimativa do jogo pelo tamanho do clube, não a estrutura real.</p></section>
       <div class="grid g2">${ctCard()}${baseCard()}${estadioCard()}${lojaCard()}</div>`;
   }
   function centralClubCard() {
@@ -985,9 +987,9 @@
       const cw = G.crowd(S, me(), null);
       body = `<div class="grid g2">
         <section class="card"><div class="head"><h2>Finanças${hint('Entradas: cota de TV e patrocínio toda semana, bilheteria nos jogos em casa, loja, cotas da Copa e bônus dos objetivos. Saídas: folha salarial, manutenção da estrutura e obras.')}</h2></div>
-          <div class="fin"><span>Caixa</span><b class="num ${c.cash < 0 ? 'neg-c' : ''}">${fmt(c.cash)}</b><span>Cota de TV</span><b class="num pos-c">+${fmt(c.tv)} por semana</b>${sponsorRows()}<span>Folha salarial</span><b class="num neg-c">${fmt(-wb)} por semana</b><span>Manutenção da estrutura</span><b class="num ${G.infraMaint(inf) ? 'neg-c' : ''}">${G.infraMaint(inf) ? fmt(-G.infraMaint(inf)) : 'R$ 0'} por semana</b><span>Lucro da loja (última semana)</span><b class="num pos-c">+${fmt(inf.salesWk)}</b><span>Teto da folha${hint(FOLHA_TIP)}</span><b class="num">${fmt(c.wageCap)}</b><span>Ingresso${hint('Preço atual do ingresso. Muda em Clube > Estrutura > Estádio.')}</span><b class="num">R$ ${cw.price} · ${G.TICKET_NAME[inf.ticket].toLowerCase()}</b>${S.cupEarned ? `<span>Cotas da Copa do Brasil${hint('Valores reais da CBF para 2026, pagos a cada fase que o clube disputa.')}</span><b class="num pos-c">+${fmt(S.cupEarned)} na temporada</b>` : ''}</div>
+          <div class="fin"><span>Caixa</span><b class="num ${c.cash < 0 ? 'neg-c' : ''}">${fmt(c.cash)}</b><span>Cota de TV</span><b class="num pos-c">+${fmt(c.tv)} por mês</b>${sponsorRows()}<span>Folha salarial</span><b class="num neg-c">${fmt(-wb)} por mês</b><span>Décimo terceiro (dezembro)${hint('Em dezembro o clube paga duas folhas: a do mês e o décimo terceiro. Guarde caixa para isso.')}</span><b class="num neg-c">${fmt(-wb)}</b><span>Manutenção da estrutura</span><b class="num ${G.infraMaint(inf) ? 'neg-c' : ''}">${G.infraMaint(inf) ? fmt(-G.infraMaint(inf) * 58 / 12) : 'R$ 0'} por mês</b><span>Lucro da loja (última rodada)</span><b class="num pos-c">+${fmt(inf.salesWk)}</b><span>Teto da folha${hint(FOLHA_TIP)}</span><b class="num">${fmt(c.wageCap)}</b><span>Ingresso${hint('Preço atual do ingresso. Muda em Clube > Estrutura > Estádio.')}</span><b class="num">R$ ${cw.price} · ${G.TICKET_NAME[inf.ticket].toLowerCase()}</b>${S.cupEarned ? `<span>Cotas da Copa do Brasil${hint('Valores reais da CBF para 2026, pagos a cada fase que o clube disputa.')}</span><b class="num pos-c">+${fmt(S.cupEarned)} na temporada</b>` : ''}</div>
           <div class="eyebrow" style="margin-top:16px">Últimos lançamentos${hint('Cada entrada e saída de dinheiro, da mais recente para a mais antiga.')}</div>
-          <div class="fin small" style="margin-top:6px">${S.finance.slice(0, 12).map(f => `<span>S${T.weekNo(Math.min(f.r, G.WEEKS) - 1)} · ${esc(f.txt)}</span><b class="num ${f.amount < 0 ? 'neg-c' : 'pos-c'}">${f.amount < 0 ? '' : '+'}${fmt(f.amount)}</b>`).join('') || '<span class="muted">Nada ainda. A primeira semana mexe no caixa.</span><span></span>'}</div></section>
+          <div class="fin small" style="margin-top:6px">${S.finance.slice(0, 12).map(f => `<span>${T.dateLabel(f.y || S.year, Math.min(f.r, G.WEEKS) - 1, true)} · ${esc(f.txt)}</span><b class="num ${f.amount < 0 ? 'neg-c' : 'pos-c'}">${f.amount < 0 ? '' : '+'}${fmt(f.amount)}</b>`).join('') || '<span class="muted">Nada ainda. A primeira rodada mexe no caixa.</span><span></span>'}</div></section>
         <section class="card"><div class="head"><h2>Diretoria${hint(CONF_TIP)}</h2><span class="tag ${S.board.conf < 30 ? 'bad' : 'good'}">${S.board.conf < 30 ? 'Cargo em risco' : 'Cargo estável'}</span></div>
           <div class="meter ${S.board.conf < 30 ? 'warn' : ''}"><div class="lbl">Confiança</div><div class="v num">${Math.round(S.board.conf)}</div><div class="bar"><i style="width:${S.board.conf}%"></i></div></div>
           <ul class="small" style="margin:12px 0 0;padding-left:18px"><li>Meta: ${S.board.target.label}. Hoje: ${G.position(S)}º ${c.div === 'D' ? 'no grupo' : 'na ' + DIVN[c.div]}.</li><li>Cada resultado é comparado com o esperado pela força dos elencos e pelo mando: vencer fora um time bem mais forte rende até +5; perder em casa para um bem mais fraco tira até −5.</li><li>Nos jogos da liga, a partir do 8º, longe da meta tira 1 ou 2; dentro dela soma 1.</li><li>Caixa negativo tira 2 por jogo.</li><li>A partir do 10º jogo da liga, abaixo de 15 por 3 jogos da liga seguidos e mais de 2 posições abaixo da meta: demissão.</li><li>Fim de temporada: meta cumprida soma 15; acesso soma mais 10, rebaixamento tira 10.</li>${inf.pressure ? `<li><b>Verba extra aprovada:</b> se não cumprir a meta, a confiança cai mais ${inf.pressure} no fim da temporada.</li>` : ''}</ul>
@@ -1276,7 +1278,7 @@
       ${r.evolutions.length ? `<section class="card"><div class="head"><h2>Evolução${hint('Jogadores de até 23 anos podem subir a nota quando jogam bem. Acima de 31, atuações ruins podem baixar.')}</h2></div>${r.evolutions.map(e => `<div class="evo">${ovr(e.to)}<b style="flex:1">${esc(e.n)}</b><span class="${e.to > e.from ? 'up' : 'dn'}">${e.from} → ${e.to}</span></div>`).join('')}</section>` : ''}
       <section class="card"><div class="head"><h2>Notas do time${hint('Nota de cada jogador na partida, de 4 a 10. Verde: 7 ou mais. Vermelho: abaixo de 6.')}</h2></div><div class="row" style="gap:6px">${r.myRatings.slice(0, 14).map(p => `<span class="chip" style="cursor:default">${esc(shortN(p.n))} <b class="${p.r >= 7 ? 'pos-c' : p.r < 6 ? 'neg-c' : ''}">${p.r.toFixed(1)}</b></span>`).join('')}</div></section>
       <div class="grid g2">
-        <section class="card"><div class="head"><h2>Caixa${hint('O que entrou e saiu do caixa nesta semana.')}</h2></div><div class="fin">${r.mid ? '<span class="muted" style="grid-column:1/-1">Jogo de meio de semana: salário, cota de TV e patrocínio caem na semana do Brasileirão.</span>' : `<span>Cota de TV</span><b class="num pos-c">+${fmt(fin.tv || 0)}</b>`}${fin.sponsor ? `<span>Patrocínio · ${esc(r.sponsorName || '')}</span><b class="num pos-c">+${fmt(fin.sponsor)}</b>` : ''}${fin.winBonus ? `<span>Bônus por vitória</span><b class="num pos-c">+${fmt(fin.winBonus)}</b>` : ''}${r.mid ? '' : `<span>Folha</span><b class="num neg-c">${fmt(fin.wage || 0)}</b>`}${fin.gate ? `<span>Bilheteria · ${(r.attendance || 0).toLocaleString('pt-BR')} pessoas${r.fill != null ? ` (${Math.round(r.fill * 100)}%)` : ''}</span><b class="num pos-c">+${fmt(fin.gate)}</b>` : ''}${fin.bonus ? `<span>Bônus dos objetivos</span><b class="num pos-c">+${fmt(fin.bonus)}</b>` : ''}${fin.loja ? `<span>Loja · lucro das camisas</span><b class="num pos-c">+${fmt(fin.loja)}</b>` : ''}${fin.maint ? `<span>Manutenção da estrutura</span><b class="num neg-c">${fmt(fin.maint)}</b>` : ''}${r.cupQuota ? `<span>Cota da Copa do Brasil</span><b class="num pos-c">+${fmt(r.cupQuota)}</b>` : ''}${r.contPrize ? `<span>Prêmio da CONMEBOL${hint('Valores da CONMEBOL 2026 em dólar, convertidos a R$ 5,30 (câmbio fixo do jogo): cota por jogo em casa e por vitória na fase de grupos, prêmio por fase alcançada e pela final.')}</span><b class="num pos-c">+${fmt(r.contPrize)}</b>` : ''}<span class="tot">Saldo da semana</span><b class="tot num ${total < 0 ? 'neg-c' : 'pos-c'}">${total < 0 ? '' : '+'}${fmt(total)}</b></div></section>
+        <section class="card"><div class="head"><h2>Caixa${hint('O que entrou e saiu do caixa nesta data. Folha, cota de TV e patrocínio só caem na virada do mês.')}</h2>${r.payday ? `<span class="tag gold">Fechamento de ${esc(r.payday)}</span>` : ''}</div><div class="fin">${r.payday ? `<span>Cota de TV</span><b class="num pos-c">+${fmt(fin.tv || 0)}</b>` : '<span class="muted" style="grid-column:1/-1">Fora da virada do mês só entra a bilheteria e o que a loja vende. A folha e a cota de TV caem no último jogo do mês.</span>'}${fin.sponsor ? `<span>Patrocínio · ${esc(r.sponsorName || '')}</span><b class="num pos-c">+${fmt(fin.sponsor)}</b>` : ''}${fin.winBonus ? `<span>Bônus por vitória</span><b class="num pos-c">+${fmt(fin.winBonus)}</b>` : ''}${r.payday ? `<span>Folha salarial</span><b class="num neg-c">${fmt(fin.wage || 0)}</b>` : ''}${fin.gate ? `<span>Bilheteria · ${(r.attendance || 0).toLocaleString('pt-BR')} pessoas${r.fill != null ? ` (${Math.round(r.fill * 100)}%)` : ''}</span><b class="num pos-c">+${fmt(fin.gate)}</b>` : ''}${fin.bonus ? `<span>Bônus dos objetivos</span><b class="num pos-c">+${fmt(fin.bonus)}</b>` : ''}${fin.loja ? `<span>Loja · lucro das camisas</span><b class="num pos-c">+${fmt(fin.loja)}</b>` : ''}${fin.maint ? `<span>Manutenção da estrutura</span><b class="num neg-c">${fmt(fin.maint)}</b>` : ''}${r.cupQuota ? `<span>Cota da Copa do Brasil</span><b class="num pos-c">+${fmt(r.cupQuota)}</b>` : ''}${r.contPrize ? `<span>Prêmio da CONMEBOL${hint('Valores da CONMEBOL 2026 em dólar, convertidos a R$ 5,30 (câmbio fixo do jogo): cota por jogo em casa e por vitória na fase de grupos, prêmio por fase alcançada e pela final.')}</span><b class="num pos-c">+${fmt(r.contPrize)}</b>` : ''}<span class="tot">Saldo da data</span><b class="tot num ${total < 0 ? 'neg-c' : 'pos-c'}">${total < 0 ? '' : '+'}${fmt(total)}</b></div></section>
         <section class="card"><div class="head"><h2>Diretoria${hint('Variação da confiança neste jogo: o resultado comparado com o esperado pela força dos times e pelo mando, mais o ajuste por estar dentro ou longe da meta.')}</h2></div><div class="row between"><span>Confiança</span><b class="disp" style="font-size:28px">${Math.round(S.board.conf)} <span class="${r.conf >= 0 ? 'pos-c' : 'neg-c'}" style="font-size:20px">${r.conf >= 0 ? '+' : ''}${r.conf}</span></b></div>${r.compKey && G.position(S, me(), r.compKey) ? `<div class="row between"><span>Posição · ${esc(keyName(r.compKey))}</span><b class="disp" style="font-size:28px">${G.position(S, me(), r.compKey)}º</b></div>` : ""}<p class="small muted" style="margin:6px 0 0">Meta: ${S.board.target.label}.</p>${r.offers ? `<div class="notice info small" style="margin-top:8px">${r.offers} ${plural(r.offers, 'nova proposta', 'novas propostas')} por jogadores seus.</div>` : ''}</section>
       </div>
       ${(r.promises || []).map(p => `<div class="notice ${p.ok ? 'good' : 'bad'}"><b>${p.ok ? 'Promessa cumprida' : 'Promessa quebrada'}:</b> ${esc(p.txt)}.${p.eff ? ` ${esc(p.eff.charAt(0).toUpperCase() + p.eff.slice(1))}.` : ''}</div>`).join('')}
@@ -1285,7 +1287,7 @@
       ${r.peneira ? `<div class="notice info row between"><span><b>Peneira:</b> ${r.peneira} ${plural(r.peneira, 'garoto novo', 'garotos novos')} na base.</span><button class="btn" data-act="goInfra" data-v="inf-base">Ver base</button></div>` : ''}
       ${r.sponsorEnded && !S.fired ? `<div class="notice info"><b>Acabou o contrato com ${esc(r.sponsorEnded)}.</b> Há novas propostas de patrocínio na Central.</div>` : ''}
       ${S.fired ? `<div class="notice bad"><b>A diretoria perdeu a paciência.</b> Veja as propostas na Central.</div>` : ''}
-      <p class="stop">Jogo salvo. Um bom momento para uma pausa, ou siga para a próxima semana.</p>
+      <p class="stop">Jogo salvo. Um bom momento para uma pausa, ou siga para a próxima data.</p>
       <button class="btn primary big block" data-act="postDone">${r.season ? 'Ver fim de temporada' : 'Continuar'}</button></div>`;
   }
 

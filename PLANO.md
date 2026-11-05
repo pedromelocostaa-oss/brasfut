@@ -334,11 +334,28 @@ Se a resposta for parcial, dá para desenhar o app usando só o que está cobert
 
 | # | Decisão | Resposta do Pedro |
 |---|---|---|
-| 1 | Calendário | Converter para data real e dinheiro mensal. Decisão delegada a mim; eu escolhi converter. |
+| 1 | Calendário | Converter para data real e dinheiro mensal. Decisão delegada a mim; eu escolhi converter. **Feito em 5 de novembro de 2026.** |
 | 2 | Monetização | **Modelo A**: estadual grátis, depois assinatura. Eu recomendei B ou D e ele escolheu testar o A. A decisão é reversível antes da fase 10. |
 | 4 | Direitos de imagem | Tudo real: marca, escudo, nome de jogador. Ver a ressalva abaixo. |
 
 **Ressalva que eu registro aqui porque ela não foi respondida:** "tudo real" cobre escudo e nome de clube e de jogador, que é o que a permissão dele alcança. Não cobre automaticamente logo de patrocinador de terceiro (Bradesco, Sadia, Mercado Livre, Samsung) nem foto de jogador de agência, que são direitos de outros donos. Eu não baixo nem desenho logo de marca; eu embuto o arquivo que o Pedro mandar.
+
+### Como ficou o calendário (feito)
+
+Temporada 2026 de 18 de janeiro a 29 de novembro. 46 domingos de jogo (8 rodadas de estadual e 38 do Brasileirão) e 27 datas de meio de semana (Copa do Brasil e Conmebol).
+
+| O que | Quando entra | Quanto |
+|---|---|---|
+| Bilheteria e loja | toda data com jogo em casa | varia |
+| Cota de TV | última data de cada mês, 11 vezes na temporada, mais dezembro | 12 parcelas no ano |
+| Folha salarial | mesma data | 13 parcelas no ano (12 meses e o décimo terceiro) |
+| Patrocínio e manutenção | mesma data | 12 parcelas |
+
+Dezembro não tem jogo e tem duas folhas para pagar. É a conta que o técnico precisa ter guardado.
+
+**Calibragem depois da virada:** 2,46 gols por jogo na Série A (alvo 2,48), 27 clubes de 156 terminam a temporada no vermelho, concentrados na Série C e D. A cota de TV passou a ser dimensionada pelos jogos em casa de verdade de cada série (25 na A e B, 17 na C, 12 na D) em vez de supor um jogo em casa por data, que era o erro da fórmula antiga.
+
+[Não verificado] A folha mensal do Cruzeiro no jogo fica em R$ 26 mi, contra R$ 7,8 mi no Brasileirinho. Nossa escala é 3x maior. Isso é consistente dentro do jogo, mas se você quiser bater com o concorrente é uma constante só em `engine.js`.
 
 ### Ainda em aberto
 

@@ -5,8 +5,12 @@
   const E = NODE ? require('./engine.js') : root.Engine;
   const C = NODE ? require('./comps.js') : root.Comps;
 
-  const WEEKS = C.WEEKS; // 73 datas: 58 semanas e 15 datas de meio de semana das copas continentais
-  const SEASON_WEEKS = C.SEASON_WEEKS; // 58
+  const WEEKS = C.WEEKS; // 73 datas: 46 fins de semana e 27 datas de meio de semana das copas
+  const SEASON_WEEKS = C.SEASON_WEEKS; // 46 fins de semana
+  // Dinheiro mensal: a folha sai 13 vezes por ano (12 meses e o décimo terceiro) e a cota de TV 12 vezes.
+  // SEM_ANO é a quantidade de rodadas do calendário antigo, usada só para manter o caixa dos clubes
+  // no mesmo patamar de antes da virada para data real. Não é um número de jogo, é de calibragem.
+  const MESES_FOLHA = 13, MESES_TV = 12, SEM_ANO = 58;
   // janelas: do início até a 3ª rodada e da 16ª à 21ª rodada do Brasileirão (datas base 0)
   const WINDOWS = [[0, C.ligaWeek(2)], [C.ligaWeek(15), C.ligaWeek(20)]];
   const isMid = w => !!(C.CAL[w] && C.CAL[w].mid);
@@ -187,13 +191,21 @@
     st.life.presser = genPresser(st);
     return st;
   }
-  // cota de TV semanal calibrada para cobrir a folha junto com a bilheteria esperada
+  // jogos em casa por temporada em cada série, somando liga, estadual e copas. Serve para estimar
+  // quanta bilheteria o clube arrecada no ano e dimensionar a cota de TV em cima do que falta.
+  const JOGOS_CASA = { A: 25, B: 25, C: 17, D: 12 };
+  // cota de TV mensal: cobre 94% da folha anual (13 meses) descontada a bilheteria esperada do ano,
+  // com piso de 30% da folha para quem enche o estádio e já se paga na porta.
   function setEconomy(st, c) {
-    const wb = wageBill(st, c.id);
+    const wb = wageBill(st, c.id);                 // folha mensal
+    const anoFolha = wb * MESES_FOLHA;             // 12 meses mais o décimo terceiro
     c.ticket = Math.max(10, Math.round(25 + 2.5 * (c.base - 68)));
-    const expGate = c.cap * Math.min(1, 0.30 + 0.45 * c.fan + 0.125) * c.ticket * HOME_SHARE[c.div];
-    c.tv = Math.round(Math.max(0.3 * wb, 0.97 * wb - expGate) / 1000) * 1000;
-    c.cash = Math.round(wb * Math.max(3, 5 + (c.base - 68) * 0.6) / 10000) * 10000;
+    const porJogo = c.cap * Math.min(1, 0.30 + 0.45 * c.fan + 0.125) * c.ticket * HOME_SHARE[c.div];
+    const anoGate = porJogo * JOGOS_CASA[c.div];
+    c.tv = Math.round(Math.max(0.30 * anoFolha, 0.94 * anoFolha - anoGate) / MESES_TV / 1000) * 1000;
+    // caixa inicial em folhas mensais: menos de uma folha num clube pequeno, perto de três num grande.
+    // O clube não se paga sozinho: o técnico cobre o buraco com venda, bilheteria cheia e loja.
+    c.cash = Math.round(wb * Math.max(0.8, 1.6 + (c.base - 68) * 0.12) / 10000) * 10000;
     c.wageCap = Math.round(wb * 1.12 / 1000) * 1000;
   }
 
@@ -248,10 +260,10 @@
   // longo = seguro e com luvas na assinatura; alto = mais dinheiro agora, renovação depende do desempenho;
   // vitoria = paga mais para quem ganha muito; titulo = aposta alta, só para os favoritos.
   const SPONSOR_KINDS = {
-    longo: { label: 'Contrato longo', rounds: 3 * SEASON_WEEKS, per: 0.95, signing: 3, pitch: (b, c) => `Parceria de três temporadas: ${b} paga luvas na assinatura e não mexe no valor, aconteça o que acontecer.` },
-    alto: { label: 'Valor alto', rounds: SEASON_WEEKS, per: 1.0, pitch: (b, c) => `Uma temporada só, pagando mais. Na renovação, o valor acompanha a campanha do ${c}.` },
-    vitoria: { label: 'Bônus por vitória', rounds: 2 * SEASON_WEEKS, per: 0.65, win: 0.8, pitch: (b, c) => `Fixo menor e um extra a cada vitória do ${c}. Rende mais para quem ganha muito.` },
-    titulo: { label: 'Bônus por título', rounds: 2 * SEASON_WEEKS, per: 0.85, title: 20, pitch: (b, c) => `Se o ${c} ganhar a sua série ou a Copa do Brasil, ${b} paga um bônus grande no fim da temporada.` },
+    longo: { label: 'Contrato longo', rounds: 3 * MESES_TV, per: 0.95, signing: 3, pitch: (b, c) => `Parceria de três temporadas: ${b} paga luvas na assinatura e não mexe no valor, aconteça o que acontecer.` },
+    alto: { label: 'Valor alto', rounds: MESES_TV, per: 1.0, pitch: (b, c) => `Uma temporada só, pagando mais. Na renovação, o valor acompanha a campanha do ${c}.` },
+    vitoria: { label: 'Bônus por vitória', rounds: 2 * MESES_TV, per: 0.65, win: 0.8, pitch: (b, c) => `Fixo menor e um extra a cada vitória do ${c}. Rende mais para quem ganha muito.` },
+    titulo: { label: 'Bônus por título', rounds: 2 * MESES_TV, per: 0.85, title: 20, pitch: (b, c) => `Se o ${c} ganhar a sua série ou a Copa do Brasil, ${b} paga um bônus grande no fim da temporada.` },
   };
   function sponsorPerf(st) {
     // campanha atual (ou a última) contra o lugar esperado pelo elenco (ranking de força):
@@ -282,7 +294,7 @@
     st.sponsor = { ...o, left: o.rounds, since: { y: st.year, r: st.round + 1 }, earned: 0 };
     st.sponsorOffers = [];
     if (o.signing) { money(st, 'sponsor', o.signing, `Luvas do patrocínio (${o.brand.name})`); st.sponsor.earned += o.signing; }
-    pushNews(st, 'club', `${st.clubs[st.coach.club].name} fecha com ${withB(o.brand)}: ${fmt(o.per)} por rodada${o.signing ? ` e ${fmt(o.signing)} de luvas` : ''}${o.winBonus ? ` e ${fmt(o.winBonus)} por vitória` : ''}${o.titleBonus ? ` e ${fmt(o.titleBonus)} se for campeão` : ''}.`);
+    pushNews(st, 'club', `${st.clubs[st.coach.club].name} fecha com ${withB(o.brand)}: ${fmt(o.per)} por mês${o.signing ? ` e ${fmt(o.signing)} de luvas` : ''}${o.winBonus ? ` e ${fmt(o.winBonus)} por vitória` : ''}${o.titleBonus ? ` e ${fmt(o.titleBonus)} se for campeão` : ''}.`);
     return st.sponsor;
   }
   function migrate(st) {
@@ -556,37 +568,39 @@
       // mata-mata decidido
       if (ures.tie && ures.tie.w) { report.tie = { ...ures.tie, won: ures.tie.w === me, label: fx.label }; }
     }
-    // finanças semanais de todos os clubes; no meio de semana (copas continentais) só entra a bilheteria
+    // Bilheteria entra em todo jogo em casa. Folha, cota de TV e patrocínio só na virada do mês.
     const mid = isMid(st.round);
+    const payday = C.isMonthEnd(st.year, st.round);
+    const mesNome = C.monthLabel(st.year, st.round);
     const homeGame = {}; fixtures.forEach(mt => { if (!mt.neutral) homeGame[mt.h] = mt; });
     Object.values(st.clubs).forEach(c => {
       if (c.div === 'X') return;
-      const isUser = c.id === me; const wb = wageBill(st, c.id);
+      const isUser = c.id === me; const wb = payday ? wageBill(st, c.id) : 0;
       let gate = 0;
       if (homeGame[c.id]) {
         const cw = crowd(st, c.id, homeGame[c.id]); gate = cw.gate;
         if (isUser) { report.attendance = cw.att; report.fill = cw.fill; report.ticket = cw.price; const inf = infra(st); inf.att.unshift(cw.att); if (inf.att.length > 6) inf.att.length = 6; }
       }
-      if (mid) {
-        if (isUser) { if (gate) money(st, 'gate', gate, `Bilheteria (${(report.attendance || 0).toLocaleString('pt-BR')} torcedores)`); report.finance = { tv: 0, wage: 0, gate, bonus: obj.done.length * obj.bonus, sponsor: 0, winBonus: 0 }; report.mid = true; }
-        else c.cash += gate;
-        return;
-      }
-      if (isUser) {
-        money(st, 'tv', c.tv, 'Cota de TV');
-        money(st, 'wage', -wb, 'Folha salarial');
-        if (gate) money(st, 'gate', gate, `Bilheteria (${(report.attendance || 0).toLocaleString('pt-BR')} torcedores)`);
-        report.finance = { tv: c.tv, wage: -wb, gate, bonus: obj.done.length * obj.bonus, sponsor: 0, winBonus: 0 };
-        const sp = st.sponsor;
+      if (!isUser) { c.cash += gate + (payday ? c.tv - wb : 0); return; }
+      report.finance = { tv: 0, wage: 0, gate, bonus: obj.done.length * obj.bonus, sponsor: 0, winBonus: 0 };
+      report.mid = mid;
+      if (gate) money(st, 'gate', gate, `Bilheteria (${(report.attendance || 0).toLocaleString('pt-BR')} torcedores)`);
+      const sp = st.sponsor;
+      // o bônus por vitória é do jogo, então cai no mesmo dia da partida
+      if (sp && sp.winBonus && res === 'V') { money(st, 'sponsor', sp.winBonus, `Bônus por vitória (${sp.brand.name})`); sp.earned += sp.winBonus; report.finance.winBonus = sp.winBonus; }
+      if (payday) {
+        report.payday = mesNome;
+        money(st, 'tv', c.tv, `Cota de TV de ${mesNome}`);
+        money(st, 'wage', -wb, `Folha salarial de ${mesNome}`);
+        report.finance.tv = c.tv; report.finance.wage = -wb;
         if (sp) {
-          money(st, 'sponsor', sp.per, `Patrocínio ${sp.brand.name}`); sp.earned += sp.per; report.finance.sponsor = sp.per; report.sponsorName = sp.brand.name;
-          if (sp.winBonus && res === 'V') { money(st, 'sponsor', sp.winBonus, `Bônus por vitória (${sp.brand.name})`); sp.earned += sp.winBonus; report.finance.winBonus = sp.winBonus; }
+          money(st, 'sponsor', sp.per, `Patrocínio ${sp.brand.name} (${mesNome})`); sp.earned += sp.per; report.finance.sponsor = sp.per; report.sponsorName = sp.brand.name;
           sp.left--;
           if (sp.left <= 0) { pushNews(st, 'club', `Fim do contrato com ${withB(sp.brand)}. Novas propostas de patrocínio na mesa.`); report.sponsorEnded = withB(sp.brand); st.sponsor = null; st.sponsorOffers = sponsorOffers(st); }
         }
-      } else c.cash += c.tv - wb + gate;
+      }
     });
-    infraWeek(st, report, res, fx, mid);
+    infraWeek(st, report, res, fx, mid, payday, mesNome);
     // prêmios da CONMEBOL nos jogos de grupo: mando de campo e vitória
     if (userMatch && fx && (fx.mt.comp === 'LIB' || fx.mt.comp === 'SUL') && fx.mt.key) {
       const K = fx.mt.comp === 'LIB' ? 'L' : 'S';
@@ -991,9 +1005,10 @@
   function acceptOffer(st, idx) { const o = st.market.offers[idx]; return o ? respondOffer(st, o.id, 'accept') : null; }
 
   // receita semanal esperada de um clube da IA (cota + bilheteria média): limita o que ele pode gastar em salário
-  function aiIncome(st, id) { const c = st.clubs[id]; return c.tv + c.cap * Math.min(1, 0.30 + 0.45 * c.fan + 0.125) * c.ticket * HOME_SHARE[c.div]; }
-  // espaço para salário novo: receita menos folha, mais o caixa diluído em 80 semanas (caixa negativo tira espaço)
-  function aiRoom(st, id) { return Math.min(st.clubs[id].wageCap * 1.1, aiIncome(st, id) + st.clubs[id].cash / 80) - wageBill(st, id); }
+  // receita mensal estimada do clube: cota de TV mais a bilheteria do mês (jogos em casa do ano divididos por 12)
+  function aiIncome(st, id) { const c = st.clubs[id]; return c.tv + c.cap * Math.min(1, 0.30 + 0.45 * c.fan + 0.125) * c.ticket * HOME_SHARE[c.div] * JOGOS_CASA[c.div] / MESES_TV; }
+  // espaço para salário novo: receita do mês menos folha, mais o caixa diluído em 18 meses (caixa negativo tira espaço)
+  function aiRoom(st, id) { return Math.min(st.clubs[id].wageCap * 1.1, aiIncome(st, id) + st.clubs[id].cash / 18) - wageBill(st, id); }
   // mercado entre clubes da IA: na janela, compram, vendem e emprestam pelas mesmas regras de preço
   function aiMarketTick(st) {
     if (!windowOpen(st.round)) return 0;
@@ -1528,11 +1543,12 @@
     if (res === 'V' && (ws === 3 || ws === 5 || ws === 8)) addBoost(st, 'seq', `${ws} vitórias seguidas`, 0.06 + 0.02 * (ws === 3 ? 0 : ws === 5 ? 1 : 2), 2);
   }
   // semana do clube do usuário: obra, manutenção, loja e peneira
-  function infraWeek(st, report, res, fx, mid) {
+  function infraWeek(st, report, res, fx, mid, payday, mesNome) {
     const me = st.coach.club; const c = st.clubs[me]; const inf = infra(st);
-    if (mid) { lojaMoments(st, report, res, fx); return; }
-    const maint = infraMaint(inf);
-    if (maint) money(st, 'estrutura', -maint, 'Manutenção da estrutura');
+    // a manutenção é uma conta de mês, então ela cai junto com a folha
+    const maint = payday ? r1k(infraMaint(inf) * SEM_ANO / MESES_TV) : 0;
+    if (maint) money(st, 'estrutura', -maint, `Manutenção da estrutura (${mesNome})`);
+    if (mid) { lojaMoments(st, report, res, fx); if (report.finance) report.finance.maint = -maint; return; }
     // loja: vende o que a torcida procura; o lucro entra direto no caixa
     const price = kitPrice(st, me); const sold = Math.round(lojaDemand(st, me, inf));
     const profit = r1k(sold * price * LOJA_MARGIN);
@@ -1592,6 +1608,18 @@
     const promo0 = (out.up[d] || []).includes(me) ? 'up' : null;
     // subir de divisão sempre conta como meta cumprida (vale para a Série C, que decide o acesso no quadrangular)
     const met = myPos <= st.board.target.pos || promo0 === 'up';
+    // Dezembro: mês sem jogo, com salário e décimo terceiro para pagar. É a conta que o técnico precisa ter guardado.
+    let dez = null;
+    Object.values(st.clubs).forEach(c => {
+      if (c.div === 'X') return;
+      const wb = wageBill(st, c.id);
+      if (c.id === me) {
+        money(st, 'tv', c.tv, 'Cota de TV de dezembro');
+        money(st, 'wage', -wb, 'Folha salarial de dezembro');
+        money(st, 'wage', -wb, 'Décimo terceiro salário');
+        dez = { tv: c.tv, wage: -2 * wb };
+      } else c.cash += c.tv - 2 * wb;
+    });
     const tvRef = myc.tvFull || myc.tv;
     const prize = Math.round(tvRef * Math.max(0, tab.length + 1 - myPos) * 0.22 * (d === 'D' ? 3 : 1) / 10000) * 10000;
     money(st, 'prize', prize, `Premiação: ${myPos}º lugar (${d === 'D' ? 'grupo da Série D' : C.DIV_NAME[d]})`);
@@ -1620,7 +1648,7 @@
     let licPen = 0; const pv = st.coach.provisional; if (pv && pv.year === st.year && !hasLic(st, pv.need)) { licPen = 10; st.board.conf = Math.max(0, st.board.conf - 10); pushNews(st, 'club', `Sem a ${LIC[pv.need].name}, a CBF renova a licença provisória com multa e a diretoria se irrita (confiança −10).`); }
     const divIds = new Set(divClubs(st, d));
     const scorers = Object.values(st.players).filter(p => p.club && divIds.has(p.club)).sort((a, b) => b.g - a.g).slice(0, 3).map(p => ({ n: p.n, club: p.club, g: p.g }));
-    const summary = { year: st.year, div: d, league: d === 'D' ? 'Série D' : C.DIV_NAME[d], pos: myPos, points: myRow.p, champion: out.champ[d] || null, champs: out.champ, met, target: st.board.target, prize, cupPrize, titleBonus, xp, scorers, promo, pressure, licPen, promises: promDone, cup: reach, cont: contR, contPrize: st.contEarned || 0, contNext: { L: st.contNext.L.includes(me), S: st.contNext.S.includes(me) }, est: estKey ? { name: st.comp.est[estKey].name, won: estWon, champ: out.est[estKey] || null } : null, up: out.up, down: out.down };
+    const summary = { year: st.year, div: d, league: d === 'D' ? 'Série D' : C.DIV_NAME[d], pos: myPos, points: myRow.p, champion: out.champ[d] || null, champs: out.champ, met, target: st.board.target, prize, cupPrize, titleBonus, dezembro: dez, xp, scorers, promo, pressure, licPen, promises: promDone, cup: reach, cont: contR, contPrize: st.contEarned || 0, contNext: { L: st.contNext.L.includes(me), S: st.contNext.S.includes(me) }, est: estKey ? { name: st.comp.est[estKey].name, won: estWon, champ: out.est[estKey] || null } : null, up: out.up, down: out.down };
     st.history.push(summary);
     if (out.champ.A) pushNews(st, 'club', `${st.clubs[out.champ.A].name} é campeão brasileiro de ${st.year}.`);
     if (out.champ.CDB) pushNews(st, 'club', `${st.clubs[out.champ.CDB].name} é campeão da Copa do Brasil de ${st.year}.`);

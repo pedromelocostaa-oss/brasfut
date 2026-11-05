@@ -38,6 +38,7 @@ Os três arquivos de regra (`engine.js`, `comps.js`, `game.js`) rodam no Node se
 - **Toda decisão mexe em pelo menos duas moedas:** dinheiro, tempo e humor da torcida.
 - **Avise quando a compra não vale.** Se a obra não traz retorno hoje, o jogo diz isso antes de o jogador gastar.
 - Preços do clube saem de uma constante por clube, não de número solto.
+- **Data real, dinheiro mensal.** O calendário tem dia e mês de verdade: rodada de liga e de estadual no domingo, copas no meio de semana. Folha, cota de TV, patrocínio e manutenção caem na última data de cada mês. Em dezembro o clube paga duas folhas (o mês e o décimo terceiro). Nenhuma tela fala em "semana X de Y": fala a data.
 
 ## Antes de publicar
 

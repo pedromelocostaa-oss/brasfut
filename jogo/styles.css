@@ -484,7 +484,7 @@ select.txt { appearance: auto; }
 .why li > span:last-child { text-align: right; font-variant-numeric: tabular-nums; }
 .verba { border: 1.5px solid var(--linha); border-radius: 12px; padding: 12px; }
 .seg.tix button { font-size: 15px; padding: 0 6px; min-width: 0; }
-@media (max-width: 560px) { .prow.pros { grid-template-columns: auto 1fr; } .prow.pros > .row { grid-column: 1 / -1; justify-content: flex-end; } }
+@media (max-width: 900px) { .prow.pros { grid-template-columns: auto 1fr; } .prow.pros > .row { grid-column: 1 / -1; justify-content: flex-end; } }
 .sheet h2.sheet-t { font-size: 24px; }
 
 /* ---------- bola parada e times salvos (fase 4) ---------- */

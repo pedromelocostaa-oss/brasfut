@@ -490,7 +490,7 @@ select.txt { appearance: auto; }
 .why li > span:last-child { text-align: right; font-variant-numeric: tabular-nums; }
 .verba { border: 1.5px solid var(--linha); border-radius: 12px; padding: 12px; }
 .seg.tix button { font-size: 15px; padding: 0 6px; min-width: 0; }
-@media (max-width: 560px) { .prow.pros { grid-template-columns: auto 1fr; } .prow.pros > .row { grid-column: 1 / -1; justify-content: flex-end; } }
+@media (max-width: 900px) { .prow.pros { grid-template-columns: auto 1fr; } .prow.pros > .row { grid-column: 1 / -1; justify-content: flex-end; } }
 .sheet h2.sheet-t { font-size: 24px; }
 
 /* ---------- bola parada e times salvos (fase 4) ---------- */
@@ -734,7 +734,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
   const NICK = ['Biel', 'Kaká', 'Juninho', 'Dudu', 'Guga', 'Pedrinho', 'Netinho', 'Tiquinho', 'Zé Rafael', 'Marquinhos', 'Luizão', 'Fabinho', 'Paulinho', 'Rony', 'Vitinho', 'Tchê', 'Gabigol', 'Léo', 'Nenê', 'Cacá', 'Tuca', 'Nandinho', 'Kiko', 'Lelê', 'Tavinho', 'Duda', 'Bruninho'];
   const SQUAD_TEMPLATE = [['GK', 3], ['CB', 4], ['RB', 2], ['LB', 2], ['DM', 2], ['CM', 3], ['AM', 2], ['RW', 2], ['LW', 2], ['ST', 3]];
 
-  function wageFor(ovr) { return Math.round(6000 * Math.pow(1.17, ovr - 55) / 1000) * 1000; } // por rodada
+  function wageFor(ovr) { return Math.round(26770 * Math.pow(1.17, ovr - 55) / 1000) * 1000; } // salário por mês
   function valueFor(ovr, age, pos) {
     const am = age <= 20 ? 1.5 : age <= 23 ? 1.25 : age <= 27 ? 1 : age <= 30 ? 0.8 : age <= 33 ? 0.55 : 0.3;
     const pm = pos === 'GK' ? 0.82 : 1;
@@ -1137,19 +1137,51 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
   const CONT = { L: { name: 'Libertadores', comp: 'LIB' }, S: { name: 'Sul-Americana', comp: 'SUL' } };
   const CONT_PH = { G: 'Fase de grupos', PO: 'Playoff das oitavas', R16: 'Oitavas de final', QF: 'Quartas de final', SF: 'Semifinal', F: 'Final' };
   const CONT_AFTER = { 3: ['G', 0], 5: ['G', 1], 7: ['G', 2], 9: ['G', 3], 11: ['G', 4], 13: ['G', 5], 16: ['PO', 1], 17: ['PO', 2], 19: ['R16', 1], 20: ['R16', 2], 23: ['QF', 1], 24: ['QF', 2], 28: ['SF', 1], 29: ['SF', 2], 33: ['F', 1] };
+  // Toda rodada de estadual e de liga cai num domingo. Copa do Brasil e Conmebol caem no meio de semana,
+  // como na vida real: quarta-feira depois da rodada anterior, quinta quando as duas copas jogam na mesma semana.
   const CAL = (() => {
     const cal = [];
-    ['E0', 'E1', 'Q0', 'E2', 'E3', 'Q1', 'E4', 'E5', 'Q2', 'E6', 'E7'].forEach(x => cal.push(x[0] === 'E' ? { t: 'est', r: +x.slice(1) } : { t: 'cup', ph: +x.slice(1), leg: 1 }));
+    ['E0', 'E1', 'Q0', 'E2', 'E3', 'Q1', 'E4', 'E5', 'Q2', 'E6', 'E7'].forEach(x => cal.push(x[0] === 'E' ? { t: 'est', r: +x.slice(1) } : { t: 'cup', ph: +x.slice(1), leg: 1, mid: true }));
     const after = { 2: [3, 1], 4: [3, 2], 8: [4, 1], 10: [4, 2], 15: [5, 1], 17: [5, 2], 23: [6, 1], 25: [6, 2], 30: [7, 1] };
     for (let r = 0; r < 38; r++) {
-      cal.push({ t: 'liga', r }); if (after[r]) cal.push({ t: 'cup', ph: after[r][0], leg: after[r][1] });
+      cal.push({ t: 'liga', r }); if (after[r]) cal.push({ t: 'cup', ph: after[r][0], leg: after[r][1], mid: true });
       if (CONT_AFTER[r]) cal.push({ t: 'cont', ph: CONT_AFTER[r][0], md: CONT_AFTER[r][1], mid: true });
     }
     return cal;
   })();
   const WEEKS = CAL.length; // 73 datas
-  const SEASON_WEEKS = CAL.filter(d => !d.mid).length; // 58 semanas
-  // número da semana (1 a 58) de uma data do calendário; datas de meio de semana ficam na semana da rodada anterior
+  const SEASON_WEEKS = CAL.filter(d => !d.mid).length; // 46 fins de semana
+
+  // ---------- datas reais ----------
+  const MES = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+  const MES_CURTO = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+  const DIA = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];
+  const DIA_CURTO = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
+  const DAY = 864e5;
+  // primeiro domingo em ou depois de 15 de janeiro: a temporada abre com o estadual e fecha no fim de novembro
+  function firstSunday(year) { let t = Date.UTC(year, 0, 15); while (new Date(t).getUTCDay() !== 0) t += DAY; return t; }
+  const dateMemo = {};
+  // vetor de timestamps, um por data do calendário
+  function seasonDates(year) {
+    if (dateMemo[year]) return dateMemo[year];
+    const base = firstSunday(year); const out = []; let wk = 0, lastSun = base, usados = {};
+    CAL.forEach((d, i) => {
+      if (d.mid) { const n = (usados[lastSun] = (usados[lastSun] || 0) + 1); out[i] = lastSun + (n === 1 ? 3 : 4) * DAY; }
+      else { lastSun = base + wk * 7 * DAY; wk++; out[i] = lastSun; }
+    });
+    return (dateMemo[year] = out);
+  }
+  function dateOf(year, w) { const a = seasonDates(year); return new Date(a[Math.max(0, Math.min(a.length - 1, w))]); }
+  function monthOf(year, w) { return dateOf(year, w).getUTCMonth(); }
+  // última data do calendário dentro do mês: é nela que entram os pagamentos mensais
+  function isMonthEnd(year, w) { const a = seasonDates(year); if (w >= a.length - 1) return true; return new Date(a[w]).getUTCMonth() !== new Date(a[w + 1]).getUTCMonth(); }
+  function monthsLeft(year, w) { let n = 0; for (let i = w; i < CAL.length; i++) if (isMonthEnd(year, i)) n++; return n; }
+  function dateLabel(year, w, curto) {
+    const d = dateOf(year, w), dia = d.getUTCDate(), m = d.getUTCMonth();
+    return curto ? `${DIA_CURTO[d.getUTCDay()]}, ${dia} ${MES_CURTO[m]}` : `${DIA[d.getUTCDay()]}, ${dia} de ${MES[m]}`;
+  }
+  function monthLabel(year, w) { return MES[monthOf(year, w)]; }
+  // quantas datas do calendário faltam até a data w (para "faltam 3 jogos")
   function weekNo(w) { let n = 0; for (let i = 0; i <= w && i < CAL.length; i++) if (!CAL[i].mid) n++; return Math.max(1, n); }
   function ligaWeek(r) { return CAL.findIndex(d => d.t === 'liga' && d.r === r); }
 
@@ -1434,7 +1466,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
   // artigo + preposição certo para o nome da fase: 'na 1ª fase', 'nas oitavas', 'nos 16 avos'
   function inPhase(name, prep = 'n') { const n = name.toLowerCase(); return `${prep}${/avos/.test(n) ? 'os' : /^(oitavas|quartas)/.test(n) ? 'as' : 'a'} ${n}`; }
 
-  const api = { inPhase, CAL, WEEKS, SEASON_WEEKS, weekNo, ligaWeek, CONT, CONT_PH, CONT_ORDER, contReach, CUP, D_KO, C_Q, C_F, EST_NAME, DIV_NAME, buildSeason, fixturesOf, applyResult, afterWeek, sortRows, seasonOutcome, cupReach, leagueKey, divOf, estOf, penalties, tieRef };
+  const api = { inPhase, CAL, WEEKS, SEASON_WEEKS, weekNo, ligaWeek, MES, MES_CURTO, DIA, DIA_CURTO, seasonDates, dateOf, monthOf, isMonthEnd, monthsLeft, dateLabel, monthLabel, CONT, CONT_PH, CONT_ORDER, contReach, CUP, D_KO, C_Q, C_F, EST_NAME, DIV_NAME, buildSeason, fixturesOf, applyResult, afterWeek, sortRows, seasonOutcome, cupReach, leagueKey, divOf, estOf, penalties, tieRef };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.Comps = api;
 })(typeof window !== 'undefined' ? window : globalThis);
 
@@ -1447,8 +1479,12 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
   const E = NODE ? require('./engine.js') : root.Engine;
   const C = NODE ? require('./comps.js') : root.Comps;
 
-  const WEEKS = C.WEEKS; // 73 datas: 58 semanas e 15 datas de meio de semana das copas continentais
-  const SEASON_WEEKS = C.SEASON_WEEKS; // 58
+  const WEEKS = C.WEEKS; // 73 datas: 46 fins de semana e 27 datas de meio de semana das copas
+  const SEASON_WEEKS = C.SEASON_WEEKS; // 46 fins de semana
+  // Dinheiro mensal: a folha sai 13 vezes por ano (12 meses e o décimo terceiro) e a cota de TV 12 vezes.
+  // SEM_ANO é a quantidade de rodadas do calendário antigo, usada só para manter o caixa dos clubes
+  // no mesmo patamar de antes da virada para data real. Não é um número de jogo, é de calibragem.
+  const MESES_FOLHA = 13, MESES_TV = 12, SEM_ANO = 58;
   // janelas: do início até a 3ª rodada e da 16ª à 21ª rodada do Brasileirão (datas base 0)
   const WINDOWS = [[0, C.ligaWeek(2)], [C.ligaWeek(15), C.ligaWeek(20)]];
   const isMid = w => !!(C.CAL[w] && C.CAL[w].mid);
@@ -1629,13 +1665,21 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
     st.life.presser = genPresser(st);
     return st;
   }
-  // cota de TV semanal calibrada para cobrir a folha junto com a bilheteria esperada
+  // jogos em casa por temporada em cada série, somando liga, estadual e copas. Serve para estimar
+  // quanta bilheteria o clube arrecada no ano e dimensionar a cota de TV em cima do que falta.
+  const JOGOS_CASA = { A: 25, B: 25, C: 17, D: 12 };
+  // cota de TV mensal: cobre 94% da folha anual (13 meses) descontada a bilheteria esperada do ano,
+  // com piso de 30% da folha para quem enche o estádio e já se paga na porta.
   function setEconomy(st, c) {
-    const wb = wageBill(st, c.id);
+    const wb = wageBill(st, c.id);                 // folha mensal
+    const anoFolha = wb * MESES_FOLHA;             // 12 meses mais o décimo terceiro
     c.ticket = Math.max(10, Math.round(25 + 2.5 * (c.base - 68)));
-    const expGate = c.cap * Math.min(1, 0.30 + 0.45 * c.fan + 0.125) * c.ticket * HOME_SHARE[c.div];
-    c.tv = Math.round(Math.max(0.3 * wb, 0.97 * wb - expGate) / 1000) * 1000;
-    c.cash = Math.round(wb * Math.max(3, 5 + (c.base - 68) * 0.6) / 10000) * 10000;
+    const porJogo = c.cap * Math.min(1, 0.30 + 0.45 * c.fan + 0.125) * c.ticket * HOME_SHARE[c.div];
+    const anoGate = porJogo * JOGOS_CASA[c.div];
+    c.tv = Math.round(Math.max(0.30 * anoFolha, 0.94 * anoFolha - anoGate) / MESES_TV / 1000) * 1000;
+    // caixa inicial em folhas mensais: menos de uma folha num clube pequeno, perto de três num grande.
+    // O clube não se paga sozinho: o técnico cobre o buraco com venda, bilheteria cheia e loja.
+    c.cash = Math.round(wb * Math.max(0.8, 1.6 + (c.base - 68) * 0.12) / 10000) * 10000;
     c.wageCap = Math.round(wb * 1.12 / 1000) * 1000;
   }
 
@@ -1690,10 +1734,10 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
   // longo = seguro e com luvas na assinatura; alto = mais dinheiro agora, renovação depende do desempenho;
   // vitoria = paga mais para quem ganha muito; titulo = aposta alta, só para os favoritos.
   const SPONSOR_KINDS = {
-    longo: { label: 'Contrato longo', rounds: 3 * SEASON_WEEKS, per: 0.95, signing: 3, pitch: (b, c) => `Parceria de três temporadas: ${b} paga luvas na assinatura e não mexe no valor, aconteça o que acontecer.` },
-    alto: { label: 'Valor alto', rounds: SEASON_WEEKS, per: 1.0, pitch: (b, c) => `Uma temporada só, pagando mais. Na renovação, o valor acompanha a campanha do ${c}.` },
-    vitoria: { label: 'Bônus por vitória', rounds: 2 * SEASON_WEEKS, per: 0.65, win: 0.8, pitch: (b, c) => `Fixo menor e um extra a cada vitória do ${c}. Rende mais para quem ganha muito.` },
-    titulo: { label: 'Bônus por título', rounds: 2 * SEASON_WEEKS, per: 0.85, title: 20, pitch: (b, c) => `Se o ${c} ganhar a sua série ou a Copa do Brasil, ${b} paga um bônus grande no fim da temporada.` },
+    longo: { label: 'Contrato longo', rounds: 3 * MESES_TV, per: 0.95, signing: 3, pitch: (b, c) => `Parceria de três temporadas: ${b} paga luvas na assinatura e não mexe no valor, aconteça o que acontecer.` },
+    alto: { label: 'Valor alto', rounds: MESES_TV, per: 1.0, pitch: (b, c) => `Uma temporada só, pagando mais. Na renovação, o valor acompanha a campanha do ${c}.` },
+    vitoria: { label: 'Bônus por vitória', rounds: 2 * MESES_TV, per: 0.65, win: 0.8, pitch: (b, c) => `Fixo menor e um extra a cada vitória do ${c}. Rende mais para quem ganha muito.` },
+    titulo: { label: 'Bônus por título', rounds: 2 * MESES_TV, per: 0.85, title: 20, pitch: (b, c) => `Se o ${c} ganhar a sua série ou a Copa do Brasil, ${b} paga um bônus grande no fim da temporada.` },
   };
   function sponsorPerf(st) {
     // campanha atual (ou a última) contra o lugar esperado pelo elenco (ranking de força):
@@ -1724,7 +1768,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
     st.sponsor = { ...o, left: o.rounds, since: { y: st.year, r: st.round + 1 }, earned: 0 };
     st.sponsorOffers = [];
     if (o.signing) { money(st, 'sponsor', o.signing, `Luvas do patrocínio (${o.brand.name})`); st.sponsor.earned += o.signing; }
-    pushNews(st, 'club', `${st.clubs[st.coach.club].name} fecha com ${withB(o.brand)}: ${fmt(o.per)} por rodada${o.signing ? ` e ${fmt(o.signing)} de luvas` : ''}${o.winBonus ? ` e ${fmt(o.winBonus)} por vitória` : ''}${o.titleBonus ? ` e ${fmt(o.titleBonus)} se for campeão` : ''}.`);
+    pushNews(st, 'club', `${st.clubs[st.coach.club].name} fecha com ${withB(o.brand)}: ${fmt(o.per)} por mês${o.signing ? ` e ${fmt(o.signing)} de luvas` : ''}${o.winBonus ? ` e ${fmt(o.winBonus)} por vitória` : ''}${o.titleBonus ? ` e ${fmt(o.titleBonus)} se for campeão` : ''}.`);
     return st.sponsor;
   }
   function migrate(st) {
@@ -1998,37 +2042,39 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
       // mata-mata decidido
       if (ures.tie && ures.tie.w) { report.tie = { ...ures.tie, won: ures.tie.w === me, label: fx.label }; }
     }
-    // finanças semanais de todos os clubes; no meio de semana (copas continentais) só entra a bilheteria
+    // Bilheteria entra em todo jogo em casa. Folha, cota de TV e patrocínio só na virada do mês.
     const mid = isMid(st.round);
+    const payday = C.isMonthEnd(st.year, st.round);
+    const mesNome = C.monthLabel(st.year, st.round);
     const homeGame = {}; fixtures.forEach(mt => { if (!mt.neutral) homeGame[mt.h] = mt; });
     Object.values(st.clubs).forEach(c => {
       if (c.div === 'X') return;
-      const isUser = c.id === me; const wb = wageBill(st, c.id);
+      const isUser = c.id === me; const wb = payday ? wageBill(st, c.id) : 0;
       let gate = 0;
       if (homeGame[c.id]) {
         const cw = crowd(st, c.id, homeGame[c.id]); gate = cw.gate;
         if (isUser) { report.attendance = cw.att; report.fill = cw.fill; report.ticket = cw.price; const inf = infra(st); inf.att.unshift(cw.att); if (inf.att.length > 6) inf.att.length = 6; }
       }
-      if (mid) {
-        if (isUser) { if (gate) money(st, 'gate', gate, `Bilheteria (${(report.attendance || 0).toLocaleString('pt-BR')} torcedores)`); report.finance = { tv: 0, wage: 0, gate, bonus: obj.done.length * obj.bonus, sponsor: 0, winBonus: 0 }; report.mid = true; }
-        else c.cash += gate;
-        return;
-      }
-      if (isUser) {
-        money(st, 'tv', c.tv, 'Cota de TV');
-        money(st, 'wage', -wb, 'Folha salarial');
-        if (gate) money(st, 'gate', gate, `Bilheteria (${(report.attendance || 0).toLocaleString('pt-BR')} torcedores)`);
-        report.finance = { tv: c.tv, wage: -wb, gate, bonus: obj.done.length * obj.bonus, sponsor: 0, winBonus: 0 };
-        const sp = st.sponsor;
+      if (!isUser) { c.cash += gate + (payday ? c.tv - wb : 0); return; }
+      report.finance = { tv: 0, wage: 0, gate, bonus: obj.done.length * obj.bonus, sponsor: 0, winBonus: 0 };
+      report.mid = mid;
+      if (gate) money(st, 'gate', gate, `Bilheteria (${(report.attendance || 0).toLocaleString('pt-BR')} torcedores)`);
+      const sp = st.sponsor;
+      // o bônus por vitória é do jogo, então cai no mesmo dia da partida
+      if (sp && sp.winBonus && res === 'V') { money(st, 'sponsor', sp.winBonus, `Bônus por vitória (${sp.brand.name})`); sp.earned += sp.winBonus; report.finance.winBonus = sp.winBonus; }
+      if (payday) {
+        report.payday = mesNome;
+        money(st, 'tv', c.tv, `Cota de TV de ${mesNome}`);
+        money(st, 'wage', -wb, `Folha salarial de ${mesNome}`);
+        report.finance.tv = c.tv; report.finance.wage = -wb;
         if (sp) {
-          money(st, 'sponsor', sp.per, `Patrocínio ${sp.brand.name}`); sp.earned += sp.per; report.finance.sponsor = sp.per; report.sponsorName = sp.brand.name;
-          if (sp.winBonus && res === 'V') { money(st, 'sponsor', sp.winBonus, `Bônus por vitória (${sp.brand.name})`); sp.earned += sp.winBonus; report.finance.winBonus = sp.winBonus; }
+          money(st, 'sponsor', sp.per, `Patrocínio ${sp.brand.name} (${mesNome})`); sp.earned += sp.per; report.finance.sponsor = sp.per; report.sponsorName = sp.brand.name;
           sp.left--;
           if (sp.left <= 0) { pushNews(st, 'club', `Fim do contrato com ${withB(sp.brand)}. Novas propostas de patrocínio na mesa.`); report.sponsorEnded = withB(sp.brand); st.sponsor = null; st.sponsorOffers = sponsorOffers(st); }
         }
-      } else c.cash += c.tv - wb + gate;
+      }
     });
-    infraWeek(st, report, res, fx, mid);
+    infraWeek(st, report, res, fx, mid, payday, mesNome);
     // prêmios da CONMEBOL nos jogos de grupo: mando de campo e vitória
     if (userMatch && fx && (fx.mt.comp === 'LIB' || fx.mt.comp === 'SUL') && fx.mt.key) {
       const K = fx.mt.comp === 'LIB' ? 'L' : 'S';
@@ -2433,9 +2479,10 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
   function acceptOffer(st, idx) { const o = st.market.offers[idx]; return o ? respondOffer(st, o.id, 'accept') : null; }
 
   // receita semanal esperada de um clube da IA (cota + bilheteria média): limita o que ele pode gastar em salário
-  function aiIncome(st, id) { const c = st.clubs[id]; return c.tv + c.cap * Math.min(1, 0.30 + 0.45 * c.fan + 0.125) * c.ticket * HOME_SHARE[c.div]; }
-  // espaço para salário novo: receita menos folha, mais o caixa diluído em 80 semanas (caixa negativo tira espaço)
-  function aiRoom(st, id) { return Math.min(st.clubs[id].wageCap * 1.1, aiIncome(st, id) + st.clubs[id].cash / 80) - wageBill(st, id); }
+  // receita mensal estimada do clube: cota de TV mais a bilheteria do mês (jogos em casa do ano divididos por 12)
+  function aiIncome(st, id) { const c = st.clubs[id]; return c.tv + c.cap * Math.min(1, 0.30 + 0.45 * c.fan + 0.125) * c.ticket * HOME_SHARE[c.div] * JOGOS_CASA[c.div] / MESES_TV; }
+  // espaço para salário novo: receita do mês menos folha, mais o caixa diluído em 18 meses (caixa negativo tira espaço)
+  function aiRoom(st, id) { return Math.min(st.clubs[id].wageCap * 1.1, aiIncome(st, id) + st.clubs[id].cash / 18) - wageBill(st, id); }
   // mercado entre clubes da IA: na janela, compram, vendem e emprestam pelas mesmas regras de preço
   function aiMarketTick(st) {
     if (!windowOpen(st.round)) return 0;
@@ -2970,11 +3017,12 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
     if (res === 'V' && (ws === 3 || ws === 5 || ws === 8)) addBoost(st, 'seq', `${ws} vitórias seguidas`, 0.06 + 0.02 * (ws === 3 ? 0 : ws === 5 ? 1 : 2), 2);
   }
   // semana do clube do usuário: obra, manutenção, loja e peneira
-  function infraWeek(st, report, res, fx, mid) {
+  function infraWeek(st, report, res, fx, mid, payday, mesNome) {
     const me = st.coach.club; const c = st.clubs[me]; const inf = infra(st);
-    if (mid) { lojaMoments(st, report, res, fx); return; }
-    const maint = infraMaint(inf);
-    if (maint) money(st, 'estrutura', -maint, 'Manutenção da estrutura');
+    // a manutenção é uma conta de mês, então ela cai junto com a folha
+    const maint = payday ? r1k(infraMaint(inf) * SEM_ANO / MESES_TV) : 0;
+    if (maint) money(st, 'estrutura', -maint, `Manutenção da estrutura (${mesNome})`);
+    if (mid) { lojaMoments(st, report, res, fx); if (report.finance) report.finance.maint = -maint; return; }
     // loja: vende o que a torcida procura; o lucro entra direto no caixa
     const price = kitPrice(st, me); const sold = Math.round(lojaDemand(st, me, inf));
     const profit = r1k(sold * price * LOJA_MARGIN);
@@ -3034,6 +3082,18 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
     const promo0 = (out.up[d] || []).includes(me) ? 'up' : null;
     // subir de divisão sempre conta como meta cumprida (vale para a Série C, que decide o acesso no quadrangular)
     const met = myPos <= st.board.target.pos || promo0 === 'up';
+    // Dezembro: mês sem jogo, com salário e décimo terceiro para pagar. É a conta que o técnico precisa ter guardado.
+    let dez = null;
+    Object.values(st.clubs).forEach(c => {
+      if (c.div === 'X') return;
+      const wb = wageBill(st, c.id);
+      if (c.id === me) {
+        money(st, 'tv', c.tv, 'Cota de TV de dezembro');
+        money(st, 'wage', -wb, 'Folha salarial de dezembro');
+        money(st, 'wage', -wb, 'Décimo terceiro salário');
+        dez = { tv: c.tv, wage: -2 * wb };
+      } else c.cash += c.tv - 2 * wb;
+    });
     const tvRef = myc.tvFull || myc.tv;
     const prize = Math.round(tvRef * Math.max(0, tab.length + 1 - myPos) * 0.22 * (d === 'D' ? 3 : 1) / 10000) * 10000;
     money(st, 'prize', prize, `Premiação: ${myPos}º lugar (${d === 'D' ? 'grupo da Série D' : C.DIV_NAME[d]})`);
@@ -3062,7 +3122,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
     let licPen = 0; const pv = st.coach.provisional; if (pv && pv.year === st.year && !hasLic(st, pv.need)) { licPen = 10; st.board.conf = Math.max(0, st.board.conf - 10); pushNews(st, 'club', `Sem a ${LIC[pv.need].name}, a CBF renova a licença provisória com multa e a diretoria se irrita (confiança −10).`); }
     const divIds = new Set(divClubs(st, d));
     const scorers = Object.values(st.players).filter(p => p.club && divIds.has(p.club)).sort((a, b) => b.g - a.g).slice(0, 3).map(p => ({ n: p.n, club: p.club, g: p.g }));
-    const summary = { year: st.year, div: d, league: d === 'D' ? 'Série D' : C.DIV_NAME[d], pos: myPos, points: myRow.p, champion: out.champ[d] || null, champs: out.champ, met, target: st.board.target, prize, cupPrize, titleBonus, xp, scorers, promo, pressure, licPen, promises: promDone, cup: reach, cont: contR, contPrize: st.contEarned || 0, contNext: { L: st.contNext.L.includes(me), S: st.contNext.S.includes(me) }, est: estKey ? { name: st.comp.est[estKey].name, won: estWon, champ: out.est[estKey] || null } : null, up: out.up, down: out.down };
+    const summary = { year: st.year, div: d, league: d === 'D' ? 'Série D' : C.DIV_NAME[d], pos: myPos, points: myRow.p, champion: out.champ[d] || null, champs: out.champ, met, target: st.board.target, prize, cupPrize, titleBonus, dezembro: dez, xp, scorers, promo, pressure, licPen, promises: promDone, cup: reach, cont: contR, contPrize: st.contEarned || 0, contNext: { L: st.contNext.L.includes(me), S: st.contNext.S.includes(me) }, est: estKey ? { name: st.comp.est[estKey].name, won: estWon, champ: out.est[estKey] || null } : null, up: out.up, down: out.down };
     st.history.push(summary);
     if (out.champ.A) pushNews(st, 'club', `${st.clubs[out.champ.A].name} é campeão brasileiro de ${st.year}.`);
     if (out.champ.CDB) pushNews(st, 'club', `${st.clubs[out.champ.CDB].name} é campeão da Copa do Brasil de ${st.year}.`);
@@ -3259,7 +3319,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
   function shell(content) {
     const c = club(me());
     const navBtns = NAV.map(([k, l]) => `<button data-act="go" data-v="${k}" ${tipA(NAV_TIP[k])} ${U.view === k ? 'aria-current="page"' : ''}>${IC[k]}<span>${l}</span></button>`).join('') + `<button class="only-wide" data-act="go" data-v="liga" ${tipA(NAV_TIP.liga)} ${U.view === 'liga' ? 'aria-current="page"' : ''}>${IC.liga}<span>Liga</span></button>`;
-    const roundLbl = S.seasonOver ? `Temporada ${S.year} encerrada` : `${DIVN[c.div]} · semana ${T.weekNo(S.round)} de ${G.SEASON_WEEKS}${G.isMid(S.round) ? ' · meio de semana' : ''}`;
+    const roundLbl = S.seasonOver ? `Temporada ${S.year} encerrada` : `${DIVN[c.div]} · ${T.dateLabel(S.year, S.round, true)} de ${S.year}${T.isMonthEnd(S.year, S.round) ? ' · dia de pagamento' : ''}`;
     return `<div class="shell ${U.view === 'match' ? 'focus' : ''}">
       <nav class="nav" aria-label="Menu principal"><div class="nav-brand">Pran<i>cheta</i></div>${navBtns}</nav>
       <div class="content">
@@ -3478,7 +3538,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
   const MORAL_TIP = 'Humor do elenco. Acima de 50, os jogadores rendem mais; abaixo, rendem menos. Sobe com vitórias e cai com derrotas.';
   const XP_TIP = 'Nível do técnico. O XP vem de resultados, objetivos dos jogos, conquistas, títulos, acesso e do fim de temporada. Cada nível libera formações e recursos.';
   const JANELA_TIP = 'Janela de transferências: semanas 1 a 14 e 31 a 38. Fora dela dá para olhar e negociar, mas nada fecha.';
-  const FOLHA_TIP = 'Limite de salários por semana que a diretoria aceita. Sobe 25% com o acesso. Cumprir a meta da temporada aumenta o teto em 8%.';
+  const FOLHA_TIP = 'Limite de salários por mês que a diretoria aceita. Sobe 25% com o acesso. Cumprir a meta da temporada aumenta o teto em 8%.';
   const TABELA_TIP = 'Sua liga. Verde ou azul: zona de classificação ou acesso. Vermelho: zona de rebaixamento. Entre as séries, 4 sobem e 4 descem por temporada.';
   const SPONS_TIP = 'Contrato longo: 3 temporadas, luvas na assinatura e valor fixo. Valor alto: 1 temporada pagando mais; a renovação acompanha a campanha. Bônus por vitória: fixo menor e extra a cada vitória. Bônus por título: extra se ganhar a sua série ou a Copa do Brasil, só para favoritos.';
   const MATCH_TIP = { 'Posse': 'Tempo com a bola de cada time.', 'Finalizações': 'Chutes a gol de cada time.', 'Gols esperados': 'Soma da qualidade das chances criadas. Mostra quem mereceu mais, mesmo sem gol.' };
@@ -3573,11 +3633,11 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
       } else {
         const nx = G.nextUserWeek(S, S.round + 1);
         c1 += `<section class="hero" aria-label="Semana sem jogo"><div class="inner">
-          <div class="row between"><span class="eyebrow">Semana ${T.weekNo(S.round)} de ${G.SEASON_WEEKS}${G.isMid(S.round) ? ' · meio de semana' : ''} · ${S.year}</span><span class="tag" style="background:rgba(0,0,0,.3);color:#fff">Sem jogo</span></div>
-          <p style="margin:6px 0 0;font-size:17px">${esc(club(me()).name)} não joga nesta semana.</p>
-          ${nx ? `<div class="scout"><b>Próximo jogo:</b> ${esc(nx.fx.label)}, ${nx.fx.neutral ? 'em campo neutro' : nx.fx.isHome ? 'em casa' : 'fora'}, contra o ${esc(club(nx.fx.opp).name)}, na semana ${T.weekNo(nx.w)}${G.isMid(nx.w) ? ', no meio de semana' : ''}.</div>` : `<div class="scout">Seu time não tem mais jogos nesta temporada. Os outros campeonatos seguem até a semana ${G.SEASON_WEEKS}.</div>`}
-          <button class="btn gold big block" data-act="skipWeek" ${pend ? 'aria-disabled="true" style="opacity:.6"' : ''} ${tipA('Joga a semana dos outros clubes. Salários, cota de TV e patrocínio entram normalmente.')}>Avançar uma semana</button>
-          ${nx && nx.w > S.round + 1 ? `<button class="btn block" style="background:rgba(0,0,0,.25);border-color:transparent;color:#fff" data-act="skipTo" ${tipA('Simula todas as semanas até o próximo jogo do seu time.')}>Avançar até o próximo jogo (${nx.w - S.round} semanas)</button>` : ''}
+          <div class="row between"><span class="eyebrow">${T.dateLabel(S.year, S.round)} de ${S.year}</span><span class="tag" style="background:rgba(0,0,0,.3);color:#fff">Sem jogo</span></div>
+          <p style="margin:6px 0 0;font-size:17px">${esc(club(me()).name)} não joga nesta data.</p>
+          ${nx ? `<div class="scout"><b>Próximo jogo:</b> ${esc(nx.fx.label)}, ${nx.fx.neutral ? 'em campo neutro' : nx.fx.isHome ? 'em casa' : 'fora'}, contra o ${esc(club(nx.fx.opp).name)}, ${T.dateLabel(S.year, nx.w)}.</div>` : `<div class="scout">Seu time não tem mais jogos nesta temporada. Os outros campeonatos seguem até ${T.dateLabel(S.year, G.WEEKS - 1)}.</div>`}
+          <button class="btn gold big block" data-act="skipWeek" ${pend ? 'aria-disabled="true" style="opacity:.6"' : ''} ${tipA('Joga a data dos outros clubes. Na virada do mês entram a cota de TV, a folha e o patrocínio.')}>Avançar uma data</button>
+          ${nx && nx.w > S.round + 1 ? `<button class="btn block" style="background:rgba(0,0,0,.25);border-color:transparent;color:#fff" data-act="skipTo" ${tipA('Simula todas as semanas até o próximo jogo do seu time.')}>Avançar até o próximo jogo (${nx.w - S.round} ${plural(nx.w - S.round, 'data', 'datas')})</button>` : ''}
           ${!nx ? `<button class="btn block" style="background:rgba(0,0,0,.25);border-color:transparent;color:#fff" data-act="skipTo" ${tipA('Simula as semanas restantes e mostra o fim da temporada.')}>Simular até o fim da temporada</button>` : ''}
         </div></section>`;
         c1 += eventCard();
@@ -3590,7 +3650,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
     let c2 = `<section class="card"><div class="head"><h2>Seu momento</h2><button class="btn ghost" data-act="go" data-v="clube" ${tipA('Abre a página do Clube com as regras da diretoria e as finanças.')}>Detalhes</button></div>
       <div class="meters">
         <div class="meter ${conf < 30 ? 'warn' : ''}" ${tipA(CONF_TIP)}><div class="lbl">Confiança</div><div class="v num">${conf}</div><div class="bar"><i style="width:${conf}%"></i></div></div>
-        <div class="meter" ${tipA('Dinheiro em mãos. Embaixo, quanto a folha salarial custa por semana.')}><div class="lbl">Caixa</div><div class="v num money ${c.cash < 0 ? 'neg-c' : ''}">${money(c.cash)}</div><div class="tiny muted">folha ${fmt(wb)}/sem.</div></div>
+        <div class="meter" ${tipA('Dinheiro em mãos. Embaixo, quanto a folha salarial custa por mês.')}><div class="lbl">Caixa</div><div class="v num money ${c.cash < 0 ? 'neg-c' : ''}">${money(c.cash)}</div><div class="tiny muted">folha ${fmt(wb)}/mês</div></div>
         <div class="meter" ${tipA(MORAL_TIP)}><div class="lbl">Moral</div><div class="v num">${Math.round(S.morale)}</div><div class="bar"><i style="width:${S.morale}%"></i></div></div>
       </div>
       <p class="small" style="margin:12px 0 0"><b>Meta:</b> ${S.board.target.label}. Hoje: ${G.position(S)}º ${club(me()).div === 'D' ? 'no grupo' : 'na ' + DIVN[club(me()).div]}.</p></section>`;
@@ -3606,7 +3666,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
     c2 += centralClubCard();
     cols.push(`<div class="stack">${c2}</div>`);
     // coluna 3: tabela e noticias
-    cols.push(`<div class="stack">${miniTable()}<section class="card"><div class="head"><h2>Notícias${hint('O que aconteceu no campeonato e no seu clube: resultados, transferências, evoluções e contratos.')}</h2></div><ul class="news">${S.news.slice(0, 7).map(n => `<li><span class="r">${n.r > G.WEEKS ? 'Fim' : 'S' + T.weekNo(n.r - 1)}</span>${esc(n.txt)}</li>`).join('')}</ul></section></div>`);
+    cols.push(`<div class="stack">${miniTable()}<section class="card"><div class="head"><h2>Notícias${hint('O que aconteceu no campeonato e no seu clube: resultados, transferências, evoluções e contratos.')}</h2></div><ul class="news">${S.news.slice(0, 7).map(n => `<li><span class="r">${n.r > G.WEEKS ? 'Fim' : T.dateLabel(n.y || S.year, n.r - 1, true)}</span>${esc(n.txt)}</li>`).join('')}</ul></section></div>`);
     return `<div class="grid g-hub">${cols.join('')}</div>`;
   }
 
@@ -3645,6 +3705,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
       <div><div class="eyebrow">Campeões de ${h.year}</div><div class="champs">${[['Série A', h.champs.A], ['Série B', h.champs.B], ['Série C', h.champs.C], ['Série D', h.champs.D], ['Copa do Brasil', h.champs.CDB]].concat(h.champs.LIB ? [['Libertadores', h.champs.LIB], ['Sul-Americana', h.champs.SUL]] : []).map(([l, id]) => `<div><span class="muted">${l}</span>${champ(id)}</div>`).join('')}</div></div>
       <div><div class="eyebrow">Artilheiros da ${esc(h.league)}</div><ol class="small" style="margin:6px 0 0;padding-left:20px">${h.scorers.map(s => `<li>${esc(s.n)} (${esc(club(s.club).name)}): ${s.g} gols</li>`).join('')}</ol></div>
       <div class="small">Premiação: <b>${fmt(h.prize + (h.cupPrize || 0) + (h.contPrize || 0))}</b>${h.titleBonus ? ` · Bônus de título do patrocinador: <b>${fmt(h.titleBonus)}</b>` : ''} · XP da temporada: <b>+${h.xp}</b></div>
+      ${h.dezembro ? `<div class="small muted">Dezembro sem jogo: entrou <b class="pos-c">${fmt(h.dezembro.tv)}</b> de TV e saíram <b class="neg-c">${fmt(h.dezembro.wage)}</b> de folha mais décimo terceiro.</div>` : ''}
       ${G.sponsorPending(S) ? '<div class="notice info small">O contrato de patrocínio terminou. As novas propostas aparecem na Central quando a temporada começar.</div>' : ''}
       <button class="btn primary big block" data-act="nextSeason" ${tipA('Aplica acessos e rebaixamentos, envelhece o elenco e começa um novo ano com estaduais, Copa do Brasil e Brasileirão.')}>Começar temporada ${h.year + 1}${nextDiv !== h.div ? ' na ' + DIVN[nextDiv] : ''}</button>
     </section>`;
@@ -3654,7 +3715,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
   // nome da empresa no nosso estilo (sem logo e sem as cores da marca); a faixa lateral usa a cor do setor, da nossa paleta
   const SECTOR = { 'Banco': 'ima', 'Banco digital': 'ima', 'Pagamentos': 'ima', 'Bebidas': 'cartao', 'Alimentos': 'ouro', 'Tecnologia': 'verde', 'Telefonia': 'verde', 'Varejo': 'ouro', 'Moda': 'cartao', 'Beleza': 'cartao', 'Limpeza': 'verde', 'Energia': 'ouro', 'Combustível': 'ouro', 'Aviação': 'ima', 'Saúde': 'verde', 'Aluguel de carros': 'verde', 'Automóveis': 'ima', 'Delivery': 'cartao' };
   function brandMark(b, sm) { return `<span class="brandmark ${sm ? 'sm' : ''}" style="--bs:var(--${SECTOR[b.cat] || 'ima'})"><b>${esc(b.name)}</b>${sm ? '' : `<span>${esc(b.cat)}</span>`}</span>`; }
-  function seasonsLbl(r) { const s = Math.round(r / G.SEASON_WEEKS); return `${s} ${plural(s, 'temporada', 'temporadas')}`; }
+  function seasonsLbl(r) { const s = Math.round(r / 12); return s >= 1 ? `${s} ${plural(s, 'temporada', 'temporadas')}` : `${r} ${plural(r, 'mês', 'meses')}`; }
   function sponsorCard() {
     const offers = S.sponsorOffers || []; const renew = (S.history || []).length > 0 || S.round > 0;
     const perf = G.sponsorPerf(S); const pp = Math.round((perf - 1) * 100);
@@ -3670,7 +3731,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
           ${o.signing ? `<span>Luvas na assinatura${hint('Dinheiro pago de uma vez, assim que você assina.')}</span><b class="num pos-c">+${fmt(o.signing)}</b>` : ''}
           ${o.winBonus ? `<span>Por vitória</span><b class="num pos-c">+${fmt(o.winBonus)}</b>` : ''}
           ${o.titleBonus ? `<span>Se for campeão</span><b class="num pos-c">+${fmt(o.titleBonus)}</b>` : ''}
-          <span class="tot">Garantido em ${seasonsLbl(o.rounds)}${hint('Valor por semana vezes a duração, mais as luvas. Bônus por vitória e por título vêm por cima e não estão somados.')}</span><b class="tot num">${fmt(o.total + (o.signing || 0))}</b>
+          <span class="tot">Garantido em ${seasonsLbl(o.rounds)}${hint('Valor por mês vezes a duração, mais as luvas. Bônus por vitória e por título vêm por cima e não estão somados.')}</span><b class="tot num">${fmt(o.total + (o.signing || 0))}</b>
         </div>
         <p class="tiny muted offer-txt">${esc(o.pitch)}</p>
         <button class="btn primary block" data-act="signSponsor" data-i="${i}">Assinar</button>
@@ -3679,7 +3740,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
   }
   function sponsorRows() {
     const sp = S.sponsor; if (!sp) return `<span>Patrocínio</span><b class="muted">sem contrato</b>`;
-    return `<span>Patrocínio · ${esc(sp.brand.name)}</span><b class="num pos-c">+${fmt(sp.per)} por semana</b>${sp.winBonus ? `<span>Bônus por vitória</span><b class="num pos-c">+${fmt(sp.winBonus)}</b>` : ''}${sp.titleBonus ? `<span>Bônus por título</span><b class="num pos-c">+${fmt(sp.titleBonus)}</b>` : ''}<span>Contrato</span><b>${sp.left} ${plural(sp.left, 'semana restante', 'semanas restantes')}</b><span>Recebido até agora</span><b class="num">${fmt(sp.earned)}</b>`;
+    return `<span>Patrocínio · ${esc(sp.brand.name)}</span><b class="num pos-c">+${fmt(sp.per)} por mês</b>${sp.winBonus ? `<span>Bônus por vitória</span><b class="num pos-c">+${fmt(sp.winBonus)}</b>` : ''}${sp.titleBonus ? `<span>Bônus por título</span><b class="num pos-c">+${fmt(sp.titleBonus)}</b>` : ''}<span>Contrato</span><b>${sp.left} ${plural(sp.left, 'mês restante', 'meses restantes')}</b><span>Recebido até agora</span><b class="num">${fmt(sp.earned)}</b>`;
   }
 
   function vFired() {
@@ -3800,9 +3861,9 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
       <div class="stats3" style="grid-template-columns:repeat(4,1fr)">${[['Jogos', p.apps], ['Gols', p.g], ['Assist.', p.a], ['Nota média', avg]].map(([l, x]) => `<div class="stat"><div class="lbl">${l}</div><div class="disp" style="text-align:center;font-size:24px;font-weight:900">${x}</div></div>`).join('')}</div>
       ${attrBars(p)}
       ${p.s26 ? `<p class="tiny muted" style="margin:6px 0 0">Na vida real em 2026 (Transfermarkt, até 3 de outubro): ${p.s26[0]} jogos, ${p.s26[1]} gols, ${p.s26[2]} assistências.</p>` : p.youth ? '<p class="tiny muted" style="margin:6px 0 0">Garoto da base gerado pelo jogo (nome fictício).</p>' : ''}
-      <div class="fin" style="margin-top:14px"><span>Condição física</span><span>${fadiga(p.cond)}</span><span>Valor de mercado${hint('Estimativa pela nota, idade e posição. Serve de base para propostas e vendas.')}</span><b class="num">${fmt(v)}</b><span>Salário</span><b class="num">${fmt(p.wage)} por semana</b>${p.inj > 0 ? `<span>Lesão</span><b class="neg-c">${p.inj} ${plural(p.inj, 'semana', 'semanas')}</b>` : ''}</div>
+      <div class="fin" style="margin-top:14px"><span>Condição física</span><span>${fadiga(p.cond)}</span><span>Valor de mercado${hint('Estimativa pela nota, idade e posição. Serve de base para propostas e vendas.')}</span><b class="num">${fmt(v)}</b><span>Salário</span><b class="num">${fmt(p.wage)} por mês</b>${p.inj > 0 ? `<span>Lesão</span><b class="neg-c">${p.inj} ${plural(p.inj, 'semana', 'semanas')}</b>` : ''}</div>
       ${mine ? `<div class="row" style="margin-top:16px"><button class="btn ${p.listed ? '' : 'primary'}" data-act="listToggle" data-pid="${p.id}" ${tipA(p.listed ? 'Tira o jogador da lista de venda: para de receber propostas.' : 'Avisa o mercado. Com a janela aberta, chegam propostas a cada rodada; você responde em Mercado, aba Vender.')}>${p.listed ? 'Tirar da venda' : 'Pôr à venda'}</button>${w ? `<button class="btn danger" data-act="quickSell" data-pid="${p.id}" ${tipA('Vende na hora por 75% do valor de mercado.')}>Venda rápida · ${fmt(Math.round(v * 0.75 / 10000) * 10000)}</button>` : ''}</div>
-      <p class="tiny muted" style="margin:8px 0 0">${p.listed ? 'Clubes interessados mandam propostas na próxima semana.' : 'À venda, ele recebe propostas a cada semana com a janela aberta.'}${w ? '' : ' A janela está fechada: vendas só fecham quando abrir.'}</p>` : ''}`;
+      <p class="tiny muted" style="margin:8px 0 0">${p.listed ? 'Clubes interessados mandam propostas na próxima data.' : 'À venda, ele recebe propostas a cada semana com a janela aberta.'}${w ? '' : ' A janela está fechada: vendas só fecham quando abrir.'}</p>` : ''}`;
   }
 
   // ---------- tabela ----------
@@ -3886,7 +3947,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
     const tabs = [['buy', 'Comprar'], ['sell', `Vender${nOff ? ' · ' + nOff : ''}`], ['loans', `<span class="wide-only">Empréstimos</span><span class="narrow-only">Emprést.</span>${myLoans.length ? ' · ' + myLoans.length : ''}`], ['feed', '<span class="wide-only">Movimentações</span><span class="narrow-only">Geral</span>']].concat(a ? [['auction', 'Leilão']] : []);
     if (!tabs.some(x => x[0] === m.tab)) m.tab = 'buy';
     const head = `<section class="card stack" style="gap:12px"><div class="head" style="margin:0"><h2>Mercado${hint(JANELA_TIP + ' O caixa paga a transferência e o salário precisa caber no teto da folha.')}</h2><span class="tag ${w.open ? 'good' : ''}">${w.open ? `Janela aberta · fecha em ${w.closesIn} ${plural(w.closesIn, 'semana', 'semanas')}` : w.opensIn ? `Janela fechada · abre em ${w.opensIn} ${plural(w.opensIn, 'semana', 'semanas')}` : `Janela fechada até ${S.year + 1}`}</span></div>
-      <div class="fin small"><span>Caixa</span><b class="num">${fmt(club(me()).cash)}</b><span>Espaço na folha${hint(FOLHA_TIP)}</span><b class="num ${G.wageRoom(S) < 0 ? 'neg-c' : ''}">${fmt(G.wageRoom(S))} por semana</b><span>Elenco${hint('Limite de 42 jogadores, contando quem veio emprestado. Mínimo de 18.')}</span><b>${myPlayers().length} de 42</b></div>
+      <div class="fin small"><span>Caixa</span><b class="num">${fmt(club(me()).cash)}</b><span>Espaço na folha${hint(FOLHA_TIP)}</span><b class="num ${G.wageRoom(S) < 0 ? 'neg-c' : ''}">${fmt(G.wageRoom(S))} por mês</b><span>Elenco${hint('Limite de 42 jogadores, contando quem veio emprestado. Mínimo de 18.')}</span><b>${myPlayers().length} de 42</b></div>
       ${(() => { const vi = G.verbaInfo(S); return `<div class="row between" style="gap:8px"><span class="small muted">${vi.used ? 'Verba já pedida nesta janela.' : vi.open ? 'Precisa de dinheiro para reforços? Peça à diretoria.' : 'Verba extra só com a janela aberta.'}</span><button class="btn" data-act="verba" ${tipA('Pede dinheiro extra para reforços. Uma vez por janela; a chance depende da confiança.')}>Pedir verba</button></div>`; })()}
       <div class="seg wide" role="tablist">${tabs.map(([k, l]) => `<button role="tab" data-act="mktTab" data-v="${k}" aria-pressed="${m.tab === k}">${l}</button>`).join('')}</div></section>`;
     let body = '';
@@ -3898,7 +3959,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
       const cash = club(me()).cash, room = G.wageRoom(S);
       const fits = p => G.askPrice(S, p) * 0.86 <= cash && p.wage <= room;
       const list = G.marketList(S, { pos: m.pos || null, maxAge: m.young ? 23 : null, div: m.div || null, q: m.q || null }).filter(p => !m.fit || fits(p) || p.loan).slice(0, 40);
-      body = `<section class="card"><input id="mkt-q" class="txt" type="search" placeholder="Buscar jogador ou clube" value="${esc(m.q || '')}" aria-label="Buscar jogador ou clube" style="margin-bottom:10px"><div class="chips" style="margin-bottom:6px">${divChips}</div><div class="chips" style="margin-bottom:8px">${chips}</div><div class="plist">${list.map(p => `<button class="prow ${fits(p) ? '' : 'dim'}" data-act="mktSel" data-pid="${p.id}">${ovr(p.ovr)}<span class="who"><b>${esc(p.n)} ${p.ovr > (myBest[p.pos] || 0) ? '<span class="tag gold" data-tip="Nota acima do seu melhor jogador nesta posição.">reforço</span>' : ''}${p.loan ? ' <span class="tag">emprestado</span>' : ''}</b><span>${posLbl(p.pos)} · ${p.age} anos · ${esc(club(p.club).name)} <span class="muted">(${club(p.club).div})</span> ${attrMini(p)}</span></span><span class="end"><b class="num gold-c">${fmt(G.askPrice(S, p))}</b><span class="tiny muted">${fmt(p.wage)}/sem.</span><span class="ct-cue">Contratar</span></span></button>`).join('') || `<div class="empty">Nenhum jogador com esse filtro.${m.fit ? ' Desligue “Cabe no orçamento” para ver todos, ou venda alguém para abrir caixa e folha.' : ''}</div>`}</div><p class="tiny muted" style="margin:8px 0 0">O valor da lista é o pedido do clube. Toque no jogador para ver se ele topa vir e fazer proposta de compra ou de empréstimo.</p></section>`;
+      body = `<section class="card"><input id="mkt-q" class="txt" type="search" placeholder="Buscar jogador ou clube" value="${esc(m.q || '')}" aria-label="Buscar jogador ou clube" style="margin-bottom:10px"><div class="chips" style="margin-bottom:6px">${divChips}</div><div class="chips" style="margin-bottom:8px">${chips}</div><div class="plist">${list.map(p => `<button class="prow ${fits(p) ? '' : 'dim'}" data-act="mktSel" data-pid="${p.id}">${ovr(p.ovr)}<span class="who"><b>${esc(p.n)} ${p.ovr > (myBest[p.pos] || 0) ? '<span class="tag gold" data-tip="Nota acima do seu melhor jogador nesta posição.">reforço</span>' : ''}${p.loan ? ' <span class="tag">emprestado</span>' : ''}</b><span>${posLbl(p.pos)} · ${p.age} anos · ${esc(club(p.club).name)} <span class="muted">(${club(p.club).div})</span> ${attrMini(p)}</span></span><span class="end"><b class="num gold-c">${fmt(G.askPrice(S, p))}</b><span class="tiny muted">${fmt(p.wage)}/mês</span><span class="ct-cue">Contratar</span></span></button>`).join('') || `<div class="empty">Nenhum jogador com esse filtro.${m.fit ? ' Desligue “Cabe no orçamento” para ver todos, ou venda alguém para abrir caixa e folha.' : ''}</div>`}</div><p class="tiny muted" style="margin:8px 0 0">O valor da lista é o pedido do clube. Toque no jogador para ver se ele topa vir e fazer proposta de compra ou de empréstimo.</p></section>`;
     } else if (m.tab === 'sell') {
       const idolId = (G.idolOf(S).p || {}).id; const idolPct = (G.lojaInfo(S).idol || {}).pct || 0;
       const offs = S.market.offers.map(o => {
@@ -3963,14 +4024,14 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
         ${seg3('loanOblig', m.oblig ? 1 : 0, [[0, 'Só empréstimo'], [1, 'Com compra']])}
         <span class="eyebrow">Salário${hint('Acima do mercado, o jogador fica mais interessado.')}</span>
         ${seg3('offerSal', m.sal || 0, [[0, 'De mercado'], [15, '+15 %'], [30, '+30 %']])}
-        <p class="small muted" style="margin:0">${fmt(T.wage)} por semana · você paga ${fmt(T.myWage)} · taxa de empréstimo ${fmt(T.fee)}${T.buyFee ? ` · compra obrigatória de ${fmt(T.buyFee)} no fim` : ''}.</p>` : `
+        <p class="small muted" style="margin:0">${fmt(T.wage)} por mês · você paga ${fmt(T.myWage)} · taxa de empréstimo ${fmt(T.fee)}${T.buyFee ? ` · compra obrigatória de ${fmt(T.buyFee)} no fim` : ''}.</p>` : `
         <span class="eyebrow">Valor ao clube${hint('O pedido do clube já considera se ele é titular, jovem ou um dos melhores. Abaixo do pedido só passa se o clube tiver motivo para vender; um dos 3 melhores só sai acima do pedido.')}</span>
         ${seg3('offerValor', m.valor || 0, [[-1, '−15 %'], [0, 'Pedido'], [1, '+15 %']])}
         <span class="eyebrow">Luvas${hint('Bônus pago ao jogador na assinatura, em % do valor da transferência. Aumenta muito o interesse.')}</span>
         ${seg3('offerLuvas', m.luvas || 0, [[0, 'Sem luvas'], [15, '+15 %'], [30, '+30 %']])}
         <span class="eyebrow">Salário${hint('Salário de mercado é o da nota dele. Acima disso, o interesse sobe.')}</span>
         ${seg3('offerSal', m.sal || 0, [[0, 'De mercado'], [15, '+15 %'], [30, '+30 %']])}
-        <p class="small muted" style="margin:0">${fmt(T.wage)} por semana · contrato de 3 anos${T.luvasV ? ` · luvas de ${fmt(T.luvasV)}` : ''}.</p>`;
+        <p class="small muted" style="margin:0">${fmt(T.wage)} por mês · contrato de 3 anos${T.luvasV ? ` · luvas de ${fmt(T.luvasV)}` : ''}.</p>`;
     return `<div class="contratar">
       <h2 class="disp ct-t">${loan ? 'Empréstimo' : 'Contratar'}</h2>
       <div class="seg wide" style="margin-top:10px">${[['buy', 'Comprar'], ['loan', 'Pedir emprestado']].map(([k, l]) => `<button data-act="offerMode" data-v="${k}" aria-pressed="${(m.mode || 'buy') === k}">${l}</button>`).join('')}</div>
@@ -3980,7 +4041,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
         ${interestBox(T.it)}
         <div class="notice ${T.club.ok ? 'good' : 'bad'} small" style="margin:4px 0 0"><b>Clube:</b> ${esc(T.club.txt)}${!loan ? ` Pedido: ${fmt(T.ask)} (valor de mercado ${fmt(T.value)}).` : ''}</div>
         ${rows}
-        <p class="small muted" style="margin:0">Seu caixa: ${fmt(club(me()).cash)}${(S.infra || {})[me()] && G.verbaInfo(S).open && !G.verbaInfo(S).used ? ' · dá para pedir verba à diretoria' : ''}. Espaço na folha: ${fmt(G.wageRoom(S))} por semana.</p>
+        <p class="small muted" style="margin:0">Seu caixa: ${fmt(club(me()).cash)}${(S.infra || {})[me()] && G.verbaInfo(S).open && !G.verbaInfo(S).used ? ' · dá para pedir verba à diretoria' : ''}. Espaço na folha: ${fmt(G.wageRoom(S))} por mês.</p>
       </div>
       ${r ? `<div class="notice ${r.ok ? 'good' : 'bad'}" style="margin-top:12px">${esc(r.msg)}</div>` : ''}
       ${T.blocked ? `<div class="notice bad small" style="margin-top:12px">${esc(T.blocked)}</div>` : !T.club.ok ? '' : !T.it.ok ? `<div class="notice warn small" style="margin-top:12px">${esc(p.n)} ainda não topa (precisa de ${G.INTEREST_OK}). ${loan ? 'Tente um salário maior.' : 'Luvas e salário maior aumentam o interesse.'}</div>` : ''}
@@ -3990,7 +4051,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
   function auctionCard(a) {
     const p = S.players[a.pid]; const t = U.auction ? U.auction.left : 30;
     return `<section class="card auction stack"><div class="head" style="margin:0"><h2>Leilão relâmpago${hint('Jogador sem clube. São 30 segundos: cada lance sobe 10% e os rivais podem cobrir. Quem estiver na frente no fim leva.')}</h2><span class="timer num" id="auc-timer">${t}s</span></div>
-      <div class="row nowrap">${ovr(p.ovr)}<div><b>${esc(p.n)}</b><div class="small muted">${E.POS_NAME[p.pos]} · ${p.age} anos · sem clube · ${fmt(E.wageFor(p.ovr))} por semana</div></div></div>
+      <div class="row nowrap">${ovr(p.ovr)}<div><b>${esc(p.n)}</b><div class="small muted">${E.POS_NAME[p.pos]} · ${p.age} anos · sem clube · ${fmt(E.wageFor(p.ovr))} por mês</div></div></div>
       <div class="fin"><span>Lance atual</span><b class="num" id="auc-bid">${fmt(a.bid)}</b><span>Na frente</span><b id="auc-lead">${a.leader === 'me' ? 'Você' : a.leader ? esc(club(a.leader).name) : 'Ninguém'}</b></div>
       <div id="auc-msg"></div>
       ${U.auction ? `<button class="btn gold big block" data-act="bid">Dar lance de ${fmt(Math.round(a.bid * 1.1 / 10000) * 10000)}</button>` : `<button class="btn primary big block" data-act="startAuction">Entrar no leilão (30 segundos)</button>`}
@@ -4001,8 +4062,8 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
   // ---------- estrutura do clube: CT, base, estádio e loja ----------
   const dec = (v, n = 1) => v.toLocaleString('pt-BR', { minimumFractionDigits: n, maximumFractionDigits: n });
   const INFRA_TIP = {
-    ct: 'Centro de Treinamento. Cada nível acima do 1 recupera mais condição por semana, aumenta a chance de evolução dos jovens e encurta lesões. Tem manutenção semanal.',
-    base: `Categorias de base. Em cada peneira (início da temporada e semana ${G.PENEIRA_WEEK + 1}) chegam garotos de 16 e 17 anos. Nível maior traz mais garotos, nota inicial maior e potencial mais preciso.`,
+    ct: 'Centro de Treinamento. Cada nível acima do 1 recupera mais condição por semana, aumenta a chance de evolução dos jovens e encurta lesões. Tem manutenção mensal.',
+    base: `Categorias de base. Em cada peneira (uma no início da temporada e outra no meio do ano) chegam garotos de 16 e 17 anos. Nível maior traz mais garotos, nota inicial maior e potencial mais preciso.`,
     estadio: 'Estádio. O preço do ingresso muda o público e a renda. Casa cheia empurra o time. Ampliação soma lugares e só rende se o estádio costuma lotar.',
     loja: 'Loja oficial. Vende camisas toda semana sozinha: o tamanho da torcida, a fase do time, os grandes momentos e o ídolo do elenco decidem quanto. O lucro cai no caixa toda semana.',
   };
@@ -4014,7 +4075,8 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
   };
   const pips = (l, max) => `<span class="pips" aria-hidden="true">${Array.from({ length: max }, (_, i) => `<i class="${i < l ? 'on' : ''}"></i>`).join('')}</span>`;
   const cmp = (now, nxt) => nxt == null || nxt === now ? `<b class="num">${now}</b>` : `<b class="num">${now} <span class="nx">→ ${nxt}</span></b>`;
-  function maintOf(k, l) { const inf = G.infra(S); const D = G.INFRA[k]; return Math.round(inf.ref * D.maint * Math.max(0, l - D.min) / 1000) * 1000; }
+  // manutenção mensal de um nível de estrutura (a regra guarda o valor por rodada; aqui vira conta de mês)
+  function maintOf(k, l) { const inf = G.infra(S); const D = G.INFRA[k]; return Math.round(inf.ref * D.maint * Math.max(0, l - D.min) * 58 / 12 / 1000) * 1000; }
   function buildBar(k) {
     const b = G.infra(S).build; if (!b || (k && b.k !== k)) return '';
     const pct = Math.round((b.total - b.left) / b.total * 100);
@@ -4026,10 +4088,10 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
     if (to > D.max) return `<span class="tag good">${k === 'estadio' ? 'Todas as ampliações feitas' : 'Nível máximo'}</span>`;
     const cost = G.infraCost(S, k);
     if (!cost) return `<p class="small muted" style="margin:0">O estádio já está no limite de ${G.CAP_MAX.toLocaleString('pt-BR')} lugares.</p>`;
-    const busy = inf.build; const poor = c.cash < cost; const after = c.cash - cost; const thin = !busy && !poor && after < G.wageBill(S, me()) * 2;
+    const busy = inf.build; const poor = c.cash < cost; const after = c.cash - cost; const thin = !busy && !poor && after < G.wageBill(S, me()) * 1.5;
     const why = busy ? `Uma obra por vez: espere ${G.INFRA[busy.k].short === 'Base' ? 'a da base' : busy.k === 'loja' ? 'a da loja' : busy.k === 'estadio' ? 'a do estádio' : 'a do CT'} terminar.` : poor ? `Falta ${fmt(cost - c.cash)} no caixa.` : '';
     const lbl = k === 'estadio' ? `Ampliar para ${G.capAt(inf.cap0, to).toLocaleString('pt-BR')} lugares` : `Construir nível ${to}`;
-    return `<button class="btn ${busy || poor ? '' : 'primary'} block" data-act="infraUp" data-k="${k}" ${busy || poor ? 'aria-disabled="true"' : ''} ${tipA(`Paga a obra agora e espera ${D.weeks[to]} semanas. A manutenção semanal sobe junto.`)}>${lbl} · ${fmt(cost)} · ${D.weeks[to]} sem.</button>${why ? `<p class="tiny muted" style="margin:6px 0 0">${why}</p>` : thin ? `<p class="tiny" style="margin:6px 0 0;color:var(--alerta)">Depois da obra o caixa fica em ${fmt(after)}, menos de 2 semanas de folha.</p>` : ''}`;
+    return `<button class="btn ${busy || poor ? '' : 'primary'} block" data-act="infraUp" data-k="${k}" ${busy || poor ? 'aria-disabled="true"' : ''} ${tipA(`Paga a obra agora e espera ${D.weeks[to]} semanas. A manutenção mensal sobe junto.`)}>${lbl} · ${fmt(cost)} · ${D.weeks[to]} sem.</button>${why ? `<p class="tiny muted" style="margin:6px 0 0">${why}</p>` : thin ? `<p class="tiny" style="margin:6px 0 0;color:var(--alerta)">Depois da obra o caixa fica em ${fmt(after)}, menos de uma folha e meia.</p>` : ''}`;
   }
   function infraCard(k, rows, extra = '') {
     const inf = G.infra(S); const D = G.INFRA[k]; const l = inf[k];
@@ -4047,13 +4109,13 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
       `<span>Recuperação extra${hint('Condição a mais que cada jogador seu recupera por semana, além da recuperação normal.')}</span>${cmp('+' + dec(a.rec) + ' por semana', b && '+' + dec(b.rec))}`
       + `<span>Chance de evolução${hint('Multiplica a chance de jogadores de até 23 anos subirem a nota depois de boas atuações.')}</span>${cmp('×' + dec(a.evo, 2), b && '×' + dec(b.evo, 2))}`
       + `<span>Lesões${hint('Quanto encolhe o tempo de recuperação de uma lesão.')}</span>${cmp(a.inj ? a.inj + '% mais curtas' : 'duração normal', b && b.inj + '% mais curtas')}`
-      + `<span>Manutenção</span>${cmp(fmt(maintOf('ct', l)) + '/sem.', to && fmt(maintOf('ct', to)) + '/sem.')}`);
+      + `<span>Manutenção</span>${cmp(fmt(maintOf('ct', l)) + '/mês', to && fmt(maintOf('ct', to)) + '/mês')}`);
   }
   function baseCard() {
     const inf = G.infra(S); const l = inf.base; const to = l < 5 ? l + 1 : null;
     const ovrs = myPlayers().map(p => p.ovr).sort((x, y) => x - y); const med = ovrs.length ? ovrs[Math.floor(ovrs.length / 2)] : 60;
     const nota = lv => Math.max(45, Math.round(med - 15 + 1.5 * lv));
-    const next = S.round <= G.PENEIRA_WEEK ? `semana ${G.PENEIRA_WEEK + 1}` : `início de ${S.year + 1}`;
+    const next = S.round <= G.PENEIRA_WEEK ? T.dateLabel(S.year, G.PENEIRA_WEEK, true) : `início de ${S.year + 1}`;
     const full = inf.prospects.length >= G.BASE_MAX;
     const list = inf.prospects.map(p => `<div class="prow pros" style="cursor:default">${ovr(p.ovr)}<span class="who"><b>${esc(p.n)}</b><span>${posLbl(p.pos)} · ${p.age} anos · potencial <b>${p.potLo}${p.potHi > p.potLo ? '–' + p.potHi : ''}</b> ${attrMini(p)}</span></span><span class="row nowrap" style="gap:4px">${U.relConfirm === p.id ? `<button class="btn danger" data-act="release" data-pid="${p.id}">Confirmar</button><button class="btn ghost" data-act="relCancel">Voltar</button>` : `<button class="btn primary" data-act="promote" data-pid="${p.id}" ${tipA('Leva o garoto para o elenco profissional com salário de formação (60% do normal). Ele passa a jogar e pode evoluir em campo.')}>Subir</button><button class="btn ghost" data-act="relAsk" data-pid="${p.id}" ${tipA('Libera a vaga na base. Não tem volta.')}>Dispensar</button>`}</span></div>`).join('');
     return infraCard('base',
@@ -4061,7 +4123,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
       + `<span>Nota inicial${hint('Nota aproximada com que os garotos chegam, a partir do nível do seu elenco.')}</span>${cmp('cerca de ' + nota(l), to && String(nota(to)))}`
       + `<span>Precisão do potencial${hint('Largura da faixa de potencial mostrada. No nível 5 o potencial aparece quase exato.')}</span>${cmp(`faixa de ${6 - l} ${plural(6 - l, 'ponto', 'pontos')}`, to && `${6 - to}`)}`
       + `<span>Próxima peneira</span><b>${next}</b>`
-      + `<span>Manutenção</span>${cmp(fmt(maintOf('base', l)) + '/sem.', to && fmt(maintOf('base', to)) + '/sem.')}`,
+      + `<span>Manutenção</span>${cmp(fmt(maintOf('base', l)) + '/mês', to && fmt(maintOf('base', to)) + '/mês')}`,
       `<div class="eyebrow" style="margin-top:14px">Na base · ${inf.prospects.length} de ${G.BASE_MAX}${hint('Garotos ficam na base até os 20 anos. Quem não subir até lá vai embora. Com a base cheia, a peneira não traz ninguém.')}</div>
        ${list ? `<div class="plist">${list}</div>` : `<p class="small muted" style="margin:6px 0 0">Ninguém na base agora. A próxima peneira é na ${next}.</p>`}${full ? '<p class="tiny" style="margin:6px 0 0;color:var(--alerta)">Base cheia: a próxima peneira só traz garotos se abrir vaga.</p>' : ''}`);
   }
@@ -4074,7 +4136,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
       `<span>Estádio</span><b>${esc(c.stadium || '–')}</b>`
       + `<span>Capacidade</span>${cmp(c.cap.toLocaleString('pt-BR'), to && G.capAt(inf.cap0, to) > c.cap ? G.capAt(inf.cap0, to).toLocaleString('pt-BR') : null)}`
       + `<span>Público médio${hint('Média dos últimos jogos em casa do seu time nesta carreira.')}</span><b class="num">${avg != null ? avg.toLocaleString('pt-BR') + ' (' + Math.round(avg / c.cap * 100) + '%)' : 'sem jogos ainda'}</b>`
-      + `<span>Manutenção</span>${cmp(fmt(maintOf('estadio', l)) + '/sem.', to && fmt(maintOf('estadio', to)) + '/sem.')}`,
+      + `<span>Manutenção</span>${cmp(fmt(maintOf('estadio', l)) + '/mês', to && fmt(maintOf('estadio', to)) + '/mês')}`,
       `<div class="eyebrow" style="margin-top:14px">Ingresso · ${G.TICKET_NAME[inf.ticket]}${hint('Preço mais baixo enche o estádio e aumenta a pressão da torcida; mais alto rende mais quando o estádio lota.')}</div>
        <div class="seg wide tix" role="radiogroup" aria-label="Preço do ingresso" style="margin-top:6px">${seg}</div>
        <div class="notice info small" style="margin-top:10px">Num jogo da liga em casa agora: <b>${cw.att.toLocaleString('pt-BR')}</b> pessoas (${Math.round(cw.fill * 100)}%), renda de <b>${fmt(cw.gate)}</b>. Pressão da torcida: <b>${push >= 0 ? '+' : '−'}${dec(Math.abs(push))}%</b> de chances.${cw.demand > 1.05 ? ' Procura maior que a capacidade: dá para subir o preço ou ampliar.' : ''}</div>`);
@@ -4088,7 +4150,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
       `<span>Camisa${hint('Preço da camisa oficial na sua série e quanto fica para o clube em cada uma.')}</span><b class="num">R$ ${li.price} <span class="muted">· lucro R$ ${li.profit}</span></b>`
       + `<span>Por semana${hint('Camisas que a torcida compra por semana agora e o lucro que isso deixa no caixa.')}</span><b class="num">${li.demand.toLocaleString('pt-BR')} · <span class="pos-c">+${fmt(li.weekProfit)}</span></b>`
       + `<span>Pontos de venda${hint('Cada nível vende 35% a mais que o nível 1.')}</span>${cmp('×' + dec(li.lv, 2), to && '×' + dec(1 + 0.35 * (to - 1), 2))}`
-      + `<span>Manutenção</span>${cmp(fmt(maintOf('loja', l)) + '/sem.', to && fmt(maintOf('loja', to)) + '/sem.')}`,
+      + `<span>Manutenção</span>${cmp(fmt(maintOf('loja', l)) + '/mês', to && fmt(maintOf('loja', to)) + '/mês')}`,
       `<div class="eyebrow" style="margin-top:14px">O que move a venda</div>
        <ul class="why">
          <li><span>Torcida${hint('Tamanho da torcida e série do clube. É a base da venda.')}</span><span class="num">${li.base.toLocaleString('pt-BR')} camisas</span></li>
@@ -4102,7 +4164,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
     const inf = G.infra(S);
     return `<section class="card"><div class="head"><h2>Estrutura do clube${hint('Obras melhoram o clube de vez, mas custam caixa agora e manutenção toda semana. Só uma obra por vez.')}</h2><span class="small muted">Caixa <b class="num ${club(me()).cash < 0 ? 'neg-c' : ''}">${fmt(club(me()).cash)}</b></span></div>
         ${inf.build ? buildBar(null) : '<p class="small" style="margin:0">Nenhuma obra em andamento. Escolha a próxima abaixo: uma por vez.</p>'}
-        <p class="tiny muted" style="margin:8px 0 0">Manutenção total: ${fmt(G.infraMaint(inf))} por semana. Os níveis iniciais são uma estimativa do jogo pelo tamanho do clube, não a estrutura real.</p></section>
+        <p class="tiny muted" style="margin:8px 0 0">Manutenção total: ${fmt(G.infraMaint(inf) * 58 / 12)} por mês. Os níveis iniciais são uma estimativa do jogo pelo tamanho do clube, não a estrutura real.</p></section>
       <div class="grid g2">${ctCard()}${baseCard()}${estadioCard()}${lojaCard()}</div>`;
   }
   function centralClubCard() {
@@ -4137,9 +4199,9 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
       const cw = G.crowd(S, me(), null);
       body = `<div class="grid g2">
         <section class="card"><div class="head"><h2>Finanças${hint('Entradas: cota de TV e patrocínio toda semana, bilheteria nos jogos em casa, loja, cotas da Copa e bônus dos objetivos. Saídas: folha salarial, manutenção da estrutura e obras.')}</h2></div>
-          <div class="fin"><span>Caixa</span><b class="num ${c.cash < 0 ? 'neg-c' : ''}">${fmt(c.cash)}</b><span>Cota de TV</span><b class="num pos-c">+${fmt(c.tv)} por semana</b>${sponsorRows()}<span>Folha salarial</span><b class="num neg-c">${fmt(-wb)} por semana</b><span>Manutenção da estrutura</span><b class="num ${G.infraMaint(inf) ? 'neg-c' : ''}">${G.infraMaint(inf) ? fmt(-G.infraMaint(inf)) : 'R$ 0'} por semana</b><span>Lucro da loja (última semana)</span><b class="num pos-c">+${fmt(inf.salesWk)}</b><span>Teto da folha${hint(FOLHA_TIP)}</span><b class="num">${fmt(c.wageCap)}</b><span>Ingresso${hint('Preço atual do ingresso. Muda em Clube > Estrutura > Estádio.')}</span><b class="num">R$ ${cw.price} · ${G.TICKET_NAME[inf.ticket].toLowerCase()}</b>${S.cupEarned ? `<span>Cotas da Copa do Brasil${hint('Valores reais da CBF para 2026, pagos a cada fase que o clube disputa.')}</span><b class="num pos-c">+${fmt(S.cupEarned)} na temporada</b>` : ''}</div>
+          <div class="fin"><span>Caixa</span><b class="num ${c.cash < 0 ? 'neg-c' : ''}">${fmt(c.cash)}</b><span>Cota de TV</span><b class="num pos-c">+${fmt(c.tv)} por mês</b>${sponsorRows()}<span>Folha salarial</span><b class="num neg-c">${fmt(-wb)} por mês</b><span>Décimo terceiro (dezembro)${hint('Em dezembro o clube paga duas folhas: a do mês e o décimo terceiro. Guarde caixa para isso.')}</span><b class="num neg-c">${fmt(-wb)}</b><span>Manutenção da estrutura</span><b class="num ${G.infraMaint(inf) ? 'neg-c' : ''}">${G.infraMaint(inf) ? fmt(-G.infraMaint(inf) * 58 / 12) : 'R$ 0'} por mês</b><span>Lucro da loja (última rodada)</span><b class="num pos-c">+${fmt(inf.salesWk)}</b><span>Teto da folha${hint(FOLHA_TIP)}</span><b class="num">${fmt(c.wageCap)}</b><span>Ingresso${hint('Preço atual do ingresso. Muda em Clube > Estrutura > Estádio.')}</span><b class="num">R$ ${cw.price} · ${G.TICKET_NAME[inf.ticket].toLowerCase()}</b>${S.cupEarned ? `<span>Cotas da Copa do Brasil${hint('Valores reais da CBF para 2026, pagos a cada fase que o clube disputa.')}</span><b class="num pos-c">+${fmt(S.cupEarned)} na temporada</b>` : ''}</div>
           <div class="eyebrow" style="margin-top:16px">Últimos lançamentos${hint('Cada entrada e saída de dinheiro, da mais recente para a mais antiga.')}</div>
-          <div class="fin small" style="margin-top:6px">${S.finance.slice(0, 12).map(f => `<span>S${T.weekNo(Math.min(f.r, G.WEEKS) - 1)} · ${esc(f.txt)}</span><b class="num ${f.amount < 0 ? 'neg-c' : 'pos-c'}">${f.amount < 0 ? '' : '+'}${fmt(f.amount)}</b>`).join('') || '<span class="muted">Nada ainda. A primeira semana mexe no caixa.</span><span></span>'}</div></section>
+          <div class="fin small" style="margin-top:6px">${S.finance.slice(0, 12).map(f => `<span>${T.dateLabel(f.y || S.year, Math.min(f.r, G.WEEKS) - 1, true)} · ${esc(f.txt)}</span><b class="num ${f.amount < 0 ? 'neg-c' : 'pos-c'}">${f.amount < 0 ? '' : '+'}${fmt(f.amount)}</b>`).join('') || '<span class="muted">Nada ainda. A primeira rodada mexe no caixa.</span><span></span>'}</div></section>
         <section class="card"><div class="head"><h2>Diretoria${hint(CONF_TIP)}</h2><span class="tag ${S.board.conf < 30 ? 'bad' : 'good'}">${S.board.conf < 30 ? 'Cargo em risco' : 'Cargo estável'}</span></div>
           <div class="meter ${S.board.conf < 30 ? 'warn' : ''}"><div class="lbl">Confiança</div><div class="v num">${Math.round(S.board.conf)}</div><div class="bar"><i style="width:${S.board.conf}%"></i></div></div>
           <ul class="small" style="margin:12px 0 0;padding-left:18px"><li>Meta: ${S.board.target.label}. Hoje: ${G.position(S)}º ${c.div === 'D' ? 'no grupo' : 'na ' + DIVN[c.div]}.</li><li>Cada resultado é comparado com o esperado pela força dos elencos e pelo mando: vencer fora um time bem mais forte rende até +5; perder em casa para um bem mais fraco tira até −5.</li><li>Nos jogos da liga, a partir do 8º, longe da meta tira 1 ou 2; dentro dela soma 1.</li><li>Caixa negativo tira 2 por jogo.</li><li>A partir do 10º jogo da liga, abaixo de 15 por 3 jogos da liga seguidos e mais de 2 posições abaixo da meta: demissão.</li><li>Fim de temporada: meta cumprida soma 15; acesso soma mais 10, rebaixamento tira 10.</li>${inf.pressure ? `<li><b>Verba extra aprovada:</b> se não cumprir a meta, a confiança cai mais ${inf.pressure} no fim da temporada.</li>` : ''}</ul>
@@ -4428,7 +4490,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
       ${r.evolutions.length ? `<section class="card"><div class="head"><h2>Evolução${hint('Jogadores de até 23 anos podem subir a nota quando jogam bem. Acima de 31, atuações ruins podem baixar.')}</h2></div>${r.evolutions.map(e => `<div class="evo">${ovr(e.to)}<b style="flex:1">${esc(e.n)}</b><span class="${e.to > e.from ? 'up' : 'dn'}">${e.from} → ${e.to}</span></div>`).join('')}</section>` : ''}
       <section class="card"><div class="head"><h2>Notas do time${hint('Nota de cada jogador na partida, de 4 a 10. Verde: 7 ou mais. Vermelho: abaixo de 6.')}</h2></div><div class="row" style="gap:6px">${r.myRatings.slice(0, 14).map(p => `<span class="chip" style="cursor:default">${esc(shortN(p.n))} <b class="${p.r >= 7 ? 'pos-c' : p.r < 6 ? 'neg-c' : ''}">${p.r.toFixed(1)}</b></span>`).join('')}</div></section>
       <div class="grid g2">
-        <section class="card"><div class="head"><h2>Caixa${hint('O que entrou e saiu do caixa nesta semana.')}</h2></div><div class="fin">${r.mid ? '<span class="muted" style="grid-column:1/-1">Jogo de meio de semana: salário, cota de TV e patrocínio caem na semana do Brasileirão.</span>' : `<span>Cota de TV</span><b class="num pos-c">+${fmt(fin.tv || 0)}</b>`}${fin.sponsor ? `<span>Patrocínio · ${esc(r.sponsorName || '')}</span><b class="num pos-c">+${fmt(fin.sponsor)}</b>` : ''}${fin.winBonus ? `<span>Bônus por vitória</span><b class="num pos-c">+${fmt(fin.winBonus)}</b>` : ''}${r.mid ? '' : `<span>Folha</span><b class="num neg-c">${fmt(fin.wage || 0)}</b>`}${fin.gate ? `<span>Bilheteria · ${(r.attendance || 0).toLocaleString('pt-BR')} pessoas${r.fill != null ? ` (${Math.round(r.fill * 100)}%)` : ''}</span><b class="num pos-c">+${fmt(fin.gate)}</b>` : ''}${fin.bonus ? `<span>Bônus dos objetivos</span><b class="num pos-c">+${fmt(fin.bonus)}</b>` : ''}${fin.loja ? `<span>Loja · lucro das camisas</span><b class="num pos-c">+${fmt(fin.loja)}</b>` : ''}${fin.maint ? `<span>Manutenção da estrutura</span><b class="num neg-c">${fmt(fin.maint)}</b>` : ''}${r.cupQuota ? `<span>Cota da Copa do Brasil</span><b class="num pos-c">+${fmt(r.cupQuota)}</b>` : ''}${r.contPrize ? `<span>Prêmio da CONMEBOL${hint('Valores da CONMEBOL 2026 em dólar, convertidos a R$ 5,30 (câmbio fixo do jogo): cota por jogo em casa e por vitória na fase de grupos, prêmio por fase alcançada e pela final.')}</span><b class="num pos-c">+${fmt(r.contPrize)}</b>` : ''}<span class="tot">Saldo da semana</span><b class="tot num ${total < 0 ? 'neg-c' : 'pos-c'}">${total < 0 ? '' : '+'}${fmt(total)}</b></div></section>
+        <section class="card"><div class="head"><h2>Caixa${hint('O que entrou e saiu do caixa nesta data. Folha, cota de TV e patrocínio só caem na virada do mês.')}</h2>${r.payday ? `<span class="tag gold">Fechamento de ${esc(r.payday)}</span>` : ''}</div><div class="fin">${r.payday ? `<span>Cota de TV</span><b class="num pos-c">+${fmt(fin.tv || 0)}</b>` : '<span class="muted" style="grid-column:1/-1">Fora da virada do mês só entra a bilheteria e o que a loja vende. A folha e a cota de TV caem no último jogo do mês.</span>'}${fin.sponsor ? `<span>Patrocínio · ${esc(r.sponsorName || '')}</span><b class="num pos-c">+${fmt(fin.sponsor)}</b>` : ''}${fin.winBonus ? `<span>Bônus por vitória</span><b class="num pos-c">+${fmt(fin.winBonus)}</b>` : ''}${r.payday ? `<span>Folha salarial</span><b class="num neg-c">${fmt(fin.wage || 0)}</b>` : ''}${fin.gate ? `<span>Bilheteria · ${(r.attendance || 0).toLocaleString('pt-BR')} pessoas${r.fill != null ? ` (${Math.round(r.fill * 100)}%)` : ''}</span><b class="num pos-c">+${fmt(fin.gate)}</b>` : ''}${fin.bonus ? `<span>Bônus dos objetivos</span><b class="num pos-c">+${fmt(fin.bonus)}</b>` : ''}${fin.loja ? `<span>Loja · lucro das camisas</span><b class="num pos-c">+${fmt(fin.loja)}</b>` : ''}${fin.maint ? `<span>Manutenção da estrutura</span><b class="num neg-c">${fmt(fin.maint)}</b>` : ''}${r.cupQuota ? `<span>Cota da Copa do Brasil</span><b class="num pos-c">+${fmt(r.cupQuota)}</b>` : ''}${r.contPrize ? `<span>Prêmio da CONMEBOL${hint('Valores da CONMEBOL 2026 em dólar, convertidos a R$ 5,30 (câmbio fixo do jogo): cota por jogo em casa e por vitória na fase de grupos, prêmio por fase alcançada e pela final.')}</span><b class="num pos-c">+${fmt(r.contPrize)}</b>` : ''}<span class="tot">Saldo da data</span><b class="tot num ${total < 0 ? 'neg-c' : 'pos-c'}">${total < 0 ? '' : '+'}${fmt(total)}</b></div></section>
         <section class="card"><div class="head"><h2>Diretoria${hint('Variação da confiança neste jogo: o resultado comparado com o esperado pela força dos times e pelo mando, mais o ajuste por estar dentro ou longe da meta.')}</h2></div><div class="row between"><span>Confiança</span><b class="disp" style="font-size:28px">${Math.round(S.board.conf)} <span class="${r.conf >= 0 ? 'pos-c' : 'neg-c'}" style="font-size:20px">${r.conf >= 0 ? '+' : ''}${r.conf}</span></b></div>${r.compKey && G.position(S, me(), r.compKey) ? `<div class="row between"><span>Posição · ${esc(keyName(r.compKey))}</span><b class="disp" style="font-size:28px">${G.position(S, me(), r.compKey)}º</b></div>` : ""}<p class="small muted" style="margin:6px 0 0">Meta: ${S.board.target.label}.</p>${r.offers ? `<div class="notice info small" style="margin-top:8px">${r.offers} ${plural(r.offers, 'nova proposta', 'novas propostas')} por jogadores seus.</div>` : ''}</section>
       </div>
       ${(r.promises || []).map(p => `<div class="notice ${p.ok ? 'good' : 'bad'}"><b>${p.ok ? 'Promessa cumprida' : 'Promessa quebrada'}:</b> ${esc(p.txt)}.${p.eff ? ` ${esc(p.eff.charAt(0).toUpperCase() + p.eff.slice(1))}.` : ''}</div>`).join('')}
@@ -4437,7 +4499,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
       ${r.peneira ? `<div class="notice info row between"><span><b>Peneira:</b> ${r.peneira} ${plural(r.peneira, 'garoto novo', 'garotos novos')} na base.</span><button class="btn" data-act="goInfra" data-v="inf-base">Ver base</button></div>` : ''}
       ${r.sponsorEnded && !S.fired ? `<div class="notice info"><b>Acabou o contrato com ${esc(r.sponsorEnded)}.</b> Há novas propostas de patrocínio na Central.</div>` : ''}
       ${S.fired ? `<div class="notice bad"><b>A diretoria perdeu a paciência.</b> Veja as propostas na Central.</div>` : ''}
-      <p class="stop">Jogo salvo. Um bom momento para uma pausa, ou siga para a próxima semana.</p>
+      <p class="stop">Jogo salvo. Um bom momento para uma pausa, ou siga para a próxima data.</p>
       <button class="btn primary big block" data-act="postDone">${r.season ? 'Ver fim de temporada' : 'Continuar'}</button></div>`;
   }
 

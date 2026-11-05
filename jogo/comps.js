@@ -15,19 +15,51 @@
   const CONT = { L: { name: 'Libertadores', comp: 'LIB' }, S: { name: 'Sul-Americana', comp: 'SUL' } };
   const CONT_PH = { G: 'Fase de grupos', PO: 'Playoff das oitavas', R16: 'Oitavas de final', QF: 'Quartas de final', SF: 'Semifinal', F: 'Final' };
   const CONT_AFTER = { 3: ['G', 0], 5: ['G', 1], 7: ['G', 2], 9: ['G', 3], 11: ['G', 4], 13: ['G', 5], 16: ['PO', 1], 17: ['PO', 2], 19: ['R16', 1], 20: ['R16', 2], 23: ['QF', 1], 24: ['QF', 2], 28: ['SF', 1], 29: ['SF', 2], 33: ['F', 1] };
+  // Toda rodada de estadual e de liga cai num domingo. Copa do Brasil e Conmebol caem no meio de semana,
+  // como na vida real: quarta-feira depois da rodada anterior, quinta quando as duas copas jogam na mesma semana.
   const CAL = (() => {
     const cal = [];
-    ['E0', 'E1', 'Q0', 'E2', 'E3', 'Q1', 'E4', 'E5', 'Q2', 'E6', 'E7'].forEach(x => cal.push(x[0] === 'E' ? { t: 'est', r: +x.slice(1) } : { t: 'cup', ph: +x.slice(1), leg: 1 }));
+    ['E0', 'E1', 'Q0', 'E2', 'E3', 'Q1', 'E4', 'E5', 'Q2', 'E6', 'E7'].forEach(x => cal.push(x[0] === 'E' ? { t: 'est', r: +x.slice(1) } : { t: 'cup', ph: +x.slice(1), leg: 1, mid: true }));
     const after = { 2: [3, 1], 4: [3, 2], 8: [4, 1], 10: [4, 2], 15: [5, 1], 17: [5, 2], 23: [6, 1], 25: [6, 2], 30: [7, 1] };
     for (let r = 0; r < 38; r++) {
-      cal.push({ t: 'liga', r }); if (after[r]) cal.push({ t: 'cup', ph: after[r][0], leg: after[r][1] });
+      cal.push({ t: 'liga', r }); if (after[r]) cal.push({ t: 'cup', ph: after[r][0], leg: after[r][1], mid: true });
       if (CONT_AFTER[r]) cal.push({ t: 'cont', ph: CONT_AFTER[r][0], md: CONT_AFTER[r][1], mid: true });
     }
     return cal;
   })();
   const WEEKS = CAL.length; // 73 datas
-  const SEASON_WEEKS = CAL.filter(d => !d.mid).length; // 58 semanas
-  // número da semana (1 a 58) de uma data do calendário; datas de meio de semana ficam na semana da rodada anterior
+  const SEASON_WEEKS = CAL.filter(d => !d.mid).length; // 46 fins de semana
+
+  // ---------- datas reais ----------
+  const MES = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+  const MES_CURTO = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+  const DIA = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];
+  const DIA_CURTO = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
+  const DAY = 864e5;
+  // primeiro domingo em ou depois de 15 de janeiro: a temporada abre com o estadual e fecha no fim de novembro
+  function firstSunday(year) { let t = Date.UTC(year, 0, 15); while (new Date(t).getUTCDay() !== 0) t += DAY; return t; }
+  const dateMemo = {};
+  // vetor de timestamps, um por data do calendário
+  function seasonDates(year) {
+    if (dateMemo[year]) return dateMemo[year];
+    const base = firstSunday(year); const out = []; let wk = 0, lastSun = base, usados = {};
+    CAL.forEach((d, i) => {
+      if (d.mid) { const n = (usados[lastSun] = (usados[lastSun] || 0) + 1); out[i] = lastSun + (n === 1 ? 3 : 4) * DAY; }
+      else { lastSun = base + wk * 7 * DAY; wk++; out[i] = lastSun; }
+    });
+    return (dateMemo[year] = out);
+  }
+  function dateOf(year, w) { const a = seasonDates(year); return new Date(a[Math.max(0, Math.min(a.length - 1, w))]); }
+  function monthOf(year, w) { return dateOf(year, w).getUTCMonth(); }
+  // última data do calendário dentro do mês: é nela que entram os pagamentos mensais
+  function isMonthEnd(year, w) { const a = seasonDates(year); if (w >= a.length - 1) return true; return new Date(a[w]).getUTCMonth() !== new Date(a[w + 1]).getUTCMonth(); }
+  function monthsLeft(year, w) { let n = 0; for (let i = w; i < CAL.length; i++) if (isMonthEnd(year, i)) n++; return n; }
+  function dateLabel(year, w, curto) {
+    const d = dateOf(year, w), dia = d.getUTCDate(), m = d.getUTCMonth();
+    return curto ? `${DIA_CURTO[d.getUTCDay()]}, ${dia} ${MES_CURTO[m]}` : `${DIA[d.getUTCDay()]}, ${dia} de ${MES[m]}`;
+  }
+  function monthLabel(year, w) { return MES[monthOf(year, w)]; }
+  // quantas datas do calendário faltam até a data w (para "faltam 3 jogos")
   function weekNo(w) { let n = 0; for (let i = 0; i <= w && i < CAL.length; i++) if (!CAL[i].mid) n++; return Math.max(1, n); }
   function ligaWeek(r) { return CAL.findIndex(d => d.t === 'liga' && d.r === r); }
 
@@ -312,6 +344,6 @@
   // artigo + preposição certo para o nome da fase: 'na 1ª fase', 'nas oitavas', 'nos 16 avos'
   function inPhase(name, prep = 'n') { const n = name.toLowerCase(); return `${prep}${/avos/.test(n) ? 'os' : /^(oitavas|quartas)/.test(n) ? 'as' : 'a'} ${n}`; }
 
-  const api = { inPhase, CAL, WEEKS, SEASON_WEEKS, weekNo, ligaWeek, CONT, CONT_PH, CONT_ORDER, contReach, CUP, D_KO, C_Q, C_F, EST_NAME, DIV_NAME, buildSeason, fixturesOf, applyResult, afterWeek, sortRows, seasonOutcome, cupReach, leagueKey, divOf, estOf, penalties, tieRef };
+  const api = { inPhase, CAL, WEEKS, SEASON_WEEKS, weekNo, ligaWeek, MES, MES_CURTO, DIA, DIA_CURTO, seasonDates, dateOf, monthOf, isMonthEnd, monthsLeft, dateLabel, monthLabel, CONT, CONT_PH, CONT_ORDER, contReach, CUP, D_KO, C_Q, C_F, EST_NAME, DIV_NAME, buildSeason, fixturesOf, applyResult, afterWeek, sortRows, seasonOutcome, cupReach, leagueKey, divOf, estOf, penalties, tieRef };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.Comps = api;
 })(typeof window !== 'undefined' ? window : globalThis);
