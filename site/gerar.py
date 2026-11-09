@@ -3,7 +3,7 @@ sys.path.insert(0, str(pathlib.Path(__file__).parent))
 from _base import pagina
 
 HOJE = "9 de novembro de 2026"
-CONTATO = "contato@prancheta.com.br"
+CONTATO = "pedromelocostaa@gmail.com"
 OUT = pathlib.Path(__file__).parent.parent / 'app'
 
 priv = f"""
