@@ -26,12 +26,11 @@ O build sai da nuvem do Codemagic, que roda em Mac mini deles. A configuração 
 | | O quê | Onde |
 |---|---|---|
 | 1 | Registro do app com o bundle ID `br.com.prancheta.fc` | App Store Connect |
-| 2 | Chave de API do App Store Connect (papel App Manager), o arquivo `.p8` | App Store Connect > Users and Access > Integrations > App Store Connect API |
-| 3 | A mesma chave enviada ao Codemagic com o nome `PranchetaFC` | Codemagic > Teams > Integrations > Developer Portal > Manage keys |
+| 2 | Chave de API do App Store Connect | **já existe**: `gize_asc` (Key ID PY3SJHBY46), conectada na conta |
+| 3 | Integração do GitHub | **já existe**: pedromelocostaa-oss conectado |
 | 4 | Repositório `brasfut` conectado | Codemagic > Add application |
 
-Se o nome da chave no Codemagic for outro, trocar em `codemagic.yaml`, na linha
-`app_store_connect:` do workflow `ios`.
+A chave `gize_asc` é a mesma usada no Dito. Ela vale para qualquer app da conta, não é por app.
 
 Para Android, enviar a keystore no Codemagic com o nome `prancheta_keystore`.
 

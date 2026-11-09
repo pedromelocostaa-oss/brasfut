@@ -8,7 +8,7 @@ workflows:
     max_build_duration: 60
     instance_type: mac_mini_m2
     integrations:
-      app_store_connect: PranchetaFC          # nome da chave de API criada no Codemagic
+      app_store_connect: gize_asc          # chave da Apple já conectada na conta (a mesma do Dito)
     environment:
       node: 22
       xcode: 26.6
