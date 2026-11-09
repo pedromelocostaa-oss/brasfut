@@ -25,6 +25,9 @@
   // Escudo do clube. Ordem: o arquivo que o jogador carregou, depois o escudo que vem com o jogo,
   // e por último o círculo com as cores e a sigla. O círculo fica sempre atrás: se a imagem não
   // carregar, ela se remove e o círculo aparece no lugar, sem buraco na tela.
+  // Liga com amigos desligada até o servidor existir: tela que anuncia o que não faz é
+  // motivo de recusa na App Store (diretriz 2.1) e frustra quem toca nela.
+  const LIGA_ONLINE = false;
   function badge(id, cls = '') {
     const c = club(id) || E.CLUBS.find(x => x.id === id);
     const cor = `style="--c1:${c.c1};--c2:${c.c2};color:${txtOn(c.c1)}"`;
@@ -117,7 +120,7 @@
   const NAV_TIP = { central: 'Próximo jogo, objetivos, patrocínio e resumo do clube.', elenco: 'Escalação, formação, banco, postura e lista de jogadores.', tabela: 'Classificação do Brasileirão e jogos da rodada.', mercado: 'Comprar, vender e leilões. Negócios só fecham com a janela aberta.', clube: 'Técnico, diretoria, finanças, conquistas, escudos e opções.', liga: 'Prévia do modo liga com amigos.' };
   function shell(content) {
     const c = club(me());
-    const navBtns = NAV.map(([k, l]) => `<button data-act="go" data-v="${k}" ${tipA(NAV_TIP[k])} ${U.view === k ? 'aria-current="page"' : ''}>${IC[k]}<span>${l}</span></button>`).join('') + `<button class="only-wide" data-act="go" data-v="liga" ${tipA(NAV_TIP.liga)} ${U.view === 'liga' ? 'aria-current="page"' : ''}>${IC.liga}<span>Liga</span></button>`;
+    const navBtns = NAV.map(([k, l]) => `<button data-act="go" data-v="${k}" ${tipA(NAV_TIP[k])} ${U.view === k ? 'aria-current="page"' : ''}>${IC[k]}<span>${l}</span></button>`).join('') + (LIGA_ONLINE ? `<button class="only-wide" data-act="go" data-v="liga" ${tipA(NAV_TIP.liga)} ${U.view === 'liga' ? 'aria-current="page"' : ''}>${IC.liga}<span>Liga</span></button>` : '');
     const roundLbl = S.seasonOver ? `Temporada ${S.year} encerrada` : `${DIVN[c.div]} · ${T.dateLabel(S.year, S.round, true)} de ${S.year}${T.isMonthEnd(S.year, S.round) ? ' · dia de pagamento' : ''}`;
     return `<div class="shell ${U.view === 'match' ? 'focus' : ''}">
       <nav class="nav" aria-label="Menu principal"><div class="nav-brand">Pran<i>cheta</i></div>${navBtns}</nav>
@@ -229,7 +232,7 @@
       const tmp = window.__preview || (window.__preview = G.newCareer(20261003, 'FLA', 'x', 'motivador'));
       const d = o.div || 'A'; const n = G.divClubs(tmp, d).length;
       return `<div class="onb stack">
-        <div class="row between"><span class="brand">Pran<i>cheta</i> FC</span><span class="tag">Protótipo · temporada 2026</span></div>
+        <div class="row between"><span class="brand">Pran<i>cheta</i> FC</span><span class="tag">Temporada 2026</span></div>
         ${U.oldSave ? '<div class="notice warn small">Sua carreira anterior era de uma versão antiga do jogo, sem as Séries B, C e D, e não pôde ser carregada. Comece uma nova.</div>' : ''}
         <h1>Escolha<br>o seu <i>clube</i>${hint('O número é a força: média das 11 maiores notas do elenco. Favorito tem meta alta e diretoria impaciente; azarão tem meta menor e mais paciência.')}</h1>
         <p class="muted" style="max-width:62ch">Você é o técnico: escala o time, decide a postura no intervalo, contrata, vende e responde à diretoria. Comece escolhendo um dos 156 clubes das Séries A, B, C e D de 2026. O número é a força dos titulares e o rótulo diz o papel do clube na série. Começar por baixo e subir de série é o caminho mais longo; na Série A a cobrança é maior.</p>
@@ -237,7 +240,7 @@
         <label class="sr" for="club-q">Buscar clube</label><input id="club-q" class="txt" placeholder="Buscar clube, cidade ou estado" value="${esc(o.q || '')}" autocomplete="off">
         <div class="club-grid">${clubCards()}</div>
         <div class="row" style="gap:10px">${crestMultiBtn('btn')}<span class="small muted">${Object.keys(CRESTS).length ? `${Object.keys(CRESTS).length} de ${E.CLUBS.length} escudos carregados.` : 'Tem os arquivos oficiais dos escudos? Carregue aqui ou depois em Clube.'}</span></div>
-        <p class="tiny muted">Elencos reais e completos das Séries A, B, C e D de 2026 (Transfermarkt, 3 de outubro de 2026); clubes, estádios e capacidades da Wikipédia. Notas e atributos são estimativas do protótipo a partir do valor de mercado, da idade, dos minutos jogados e dos gols e assistências de 2026. Elencos com menos de 23 jogadores são completados com garotos da base de nomes gerados, e os que surgem nas temporadas seguintes também são fictícios.</p>
+        <p class="tiny muted">Elencos reais e completos das Séries A, B, C e D de 2026 (Transfermarkt, 3 de outubro de 2026); clubes, estádios e capacidades da Wikipédia. Notas e atributos são estimativas calculadas a partir do valor de mercado, da idade, dos minutos jogados e dos gols e assistências de 2026. Elencos com menos de 23 jogadores são completados com garotos da base de nomes gerados, e os que surgem nas temporadas seguintes também são fictícios.</p>
       </div>`;
     }
     const tmp = window.__preview; const c = tmp.clubs[o.club]; const t = roleOf(tmp, o.club);
@@ -1047,7 +1050,7 @@
           ${levelCard().replace('<section class="card">', '<div>').replace('</section>', '</div>')}
           <div class="unlocks">${unl}</div></section>
         ${formacaoCard()}
-        <section class="card"><div class="head"><h2>Liga com amigos${hint('Ainda é prévia: o modo online chega numa próxima fase.')}</h2><span class="tag">Prévia</span></div><p class="small" style="margin:0 0 12px">Cada amigo comanda um clube do mesmo campeonato; a rodada roda quando todos confirmam.</p><button class="btn primary" data-act="go" data-v="liga">Abrir liga com amigos</button></section></div>
+        ${LIGA_ONLINE ? `<section class="card"><div class="head"><h2>Liga com amigos</h2></div><p class="small" style="margin:0 0 12px">Cada amigo comanda um clube do mesmo campeonato; a rodada roda quando todos confirmam.</p><button class="btn primary" data-act="go" data-v="liga">Abrir liga com amigos</button></section>` : ''}</div>
         <section class="card"><div class="head"><h2>Conquistas${hint('Marcos da carreira. Cada conquista vale 50 XP.')}</h2><span class="small muted">${Object.keys(S.achievements).length} de ${Object.keys(G.ACH).length}</span></div><div class="achs">${achs}</div></section>
       </div>`;
     } else {
@@ -1107,7 +1110,9 @@
     else if (t.matches('input[data-crest]')) addCrests([t.files[0]], t.dataset.crest);
   });
 
-  // ---------- liga com amigos (previa) ----------
+  // ---------- liga com amigos ----------
+  // Desligada até o servidor existir. Tela que anuncia o que não faz é motivo de recusa
+  // na App Store (diretriz 2.1) e frustra quem toca nela.
   function vLiga() {
     const L = U.liga;
     return `<div class="stack" style="max-width:760px;margin:0 auto">
@@ -1158,7 +1163,7 @@
           <div class="mini-pitch" id="mp"><div class="l"></div><div class="gl"></div><div class="gr"></div><div class="ball" id="ball" style="left:50%;top:50%"></div></div>
           <div class="stats3" id="stats"></div>
         </div>
-        <section class="card"><div class="head"><h2>Narração${hint('Lances do jogo, do mais recente para o mais antigo. Os gols do seu time aparecem em destaque.')}</h2><span class="tiny muted">${m.side[m.userSide].human ? 'Você é o ' + esc(club(me()).name) : ''}</span></div><div class="feed" id="feed"></div></section>
+        <section class="card feed-wrap"><div class="head"><h2>Narração${hint('Lances do jogo, do mais recente para o mais antigo. Os gols do seu time aparecem em destaque.')}</h2><span class="tiny muted">${m.side[m.userSide].human ? 'Você é o ' + esc(club(me()).name) : ''}</span></div><div class="feed" id="feed"></div></section>
       </div>
       <div class="controls" id="ctl"></div>
     </div>`;
