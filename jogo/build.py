@@ -94,7 +94,9 @@ self.addEventListener('fetch', e => {
   if (u.origin !== location.origin) return;
   // rede primeiro para o documento (pega versão nova), cache como rede de segurança
   if (e.request.mode === 'navigate') {
-    e.respondWith(fetch(e.request).then(r => { const c = r.clone(); caches.open(V).then(x => x.put('./index.html', c)); return r; }).catch(() => caches.match('./index.html')));
+    // só o jogo tem reserva offline; privacidade, termos e suporte vão para a rede
+    const ehJogo = u.pathname === '/' || u.pathname.endsWith('/index.html');
+    e.respondWith(fetch(e.request).then(r => { if (ehJogo) { const c = r.clone(); caches.open(V).then(x => x.put('./index.html', c)); } return r; }).catch(() => ehJogo ? caches.match('./index.html') : Response.error()));
     return;
   }
   e.respondWith(caches.match(e.request).then(r => r || fetch(e.request).then(res => { const c = res.clone(); caches.open(V).then(x => x.put(e.request, c)); return res; })));
