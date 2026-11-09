@@ -14,3 +14,4 @@ nativo/android/app/build/
 nativo/android/local.properties
 nativo/ios/App/App/capacitor.config.json
 nativo/android/app/src/main/assets/capacitor.config.json
+site/__pycache__/

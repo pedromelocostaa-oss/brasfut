@@ -22,7 +22,17 @@
   const club = id => (S || window.__preview || { clubs: {} }).clubs[id];
   function lum(hex) { const h = hex.replace('#', ''); const r = parseInt(h.slice(0, 2), 16) / 255, g = parseInt(h.slice(2, 4), 16) / 255, b = parseInt(h.slice(4, 6), 16) / 255; return 0.2126 * r + 0.7152 * g + 0.0722 * b; }
   const txtOn = hex => lum(hex) > 0.55 ? '#111111' : '#FFFFFF';
-  function badge(id, cls = '') { if (CRESTS[id]) return `<span class="badge crest ${cls}" aria-hidden="true"><img src="${CRESTS[id]}" alt=""></span>`; const c = club(id) || E.CLUBS.find(x => x.id === id); return `<span class="badge ${cls}" style="--c1:${c.c1};--c2:${c.c2};color:${txtOn(c.c1)}" aria-hidden="true">${c.div === 'X' ? c.id.slice(1) : c.id}</span>`; }
+  // Escudo do clube. Ordem: o arquivo que o jogador carregou, depois o escudo que vem com o jogo,
+  // e por último o círculo com as cores e a sigla. O círculo fica sempre atrás: se a imagem não
+  // carregar, ela se remove e o círculo aparece no lugar, sem buraco na tela.
+  function badge(id, cls = '') {
+    const c = club(id) || E.CLUBS.find(x => x.id === id);
+    const cor = `style="--c1:${c.c1};--c2:${c.c2};color:${txtOn(c.c1)}"`;
+    const sigla = c.div === 'X' ? c.id.slice(1) : c.id;
+    const src = CRESTS[id] || (c.div !== 'X' ? `escudos/${c.id}.png` : '');
+    if (!src) return `<span class="badge ${cls}" ${cor} aria-hidden="true">${sigla}</span>`;
+    return `<span class="badge temEscudo ${cls}" ${cor} aria-hidden="true">${sigla}<img src="${src}" alt="" loading="lazy" onerror="this.closest('.badge').classList.remove('temEscudo');this.remove()"></span>`;
+  }
   const money = v => { const t = fmt(v); return t.replace(/^(−?)R\$ /, '$1<small>R$</small>'); };
   const tier = o => o >= 82 ? 't1' : o >= 76 ? 't2' : o >= 60 ? 't3' : 't4';
   const ovr = o => `<span class="ovr ${tier(o)}" data-tip="Nota do jogador. Dourado: 82 ou mais. Verde: 76 a 81. Cinza: 60 a 75. Vermelho: abaixo de 60.">${o}</span>`;

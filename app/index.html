@@ -402,11 +402,13 @@ input.txt { width: 100%; min-height: 48px; padding: 10px 14px; border-radius: 12
 .toggle input { width: 22px; height: 22px; margin: 2px 0 0; accent-color: var(--ima); }
 .toggle > span { display: grid; gap: 2px; }
 
-/* escudos carregados pelo usuario */
+/* escudo de verdade por cima do círculo de cor; se a imagem falhar, o círculo fica */
+.badge.temEscudo { background: transparent; box-shadow: none; border-radius: 0; overflow: visible; color: transparent; position: relative; }
+.badge.temEscudo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block; }
 .badge.crest { background: transparent; box-shadow: none; border-radius: 0; overflow: visible; }
 .badge.crest img { width: 100%; height: 100%; object-fit: contain; display: block; }
-:root[data-theme="dark"] .badge.crest img { filter: drop-shadow(0 0 1px rgba(255,255,255,.45)); }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .badge.crest img { filter: drop-shadow(0 0 1px rgba(255,255,255,.45)); } }
+:root[data-theme="dark"] .badge.crest img, :root[data-theme="dark"] .badge.temEscudo img { filter: drop-shadow(0 0 1px rgba(255,255,255,.45)); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .badge.crest img, :root:not([data-theme="light"]) .badge.temEscudo img { filter: drop-shadow(0 0 1px rgba(255,255,255,.45)); } }
 .crest-list { display: grid; gap: 0; }
 .crest-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-top: 1px solid var(--linha); min-width: 0; }
 .crest-row:first-child { border-top: 0; }
@@ -3368,7 +3370,17 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
   const club = id => (S || window.__preview || { clubs: {} }).clubs[id];
   function lum(hex) { const h = hex.replace('#', ''); const r = parseInt(h.slice(0, 2), 16) / 255, g = parseInt(h.slice(2, 4), 16) / 255, b = parseInt(h.slice(4, 6), 16) / 255; return 0.2126 * r + 0.7152 * g + 0.0722 * b; }
   const txtOn = hex => lum(hex) > 0.55 ? '#111111' : '#FFFFFF';
-  function badge(id, cls = '') { if (CRESTS[id]) return `<span class="badge crest ${cls}" aria-hidden="true"><img src="${CRESTS[id]}" alt=""></span>`; const c = club(id) || E.CLUBS.find(x => x.id === id); return `<span class="badge ${cls}" style="--c1:${c.c1};--c2:${c.c2};color:${txtOn(c.c1)}" aria-hidden="true">${c.div === 'X' ? c.id.slice(1) : c.id}</span>`; }
+  // Escudo do clube. Ordem: o arquivo que o jogador carregou, depois o escudo que vem com o jogo,
+  // e por último o círculo com as cores e a sigla. O círculo fica sempre atrás: se a imagem não
+  // carregar, ela se remove e o círculo aparece no lugar, sem buraco na tela.
+  function badge(id, cls = '') {
+    const c = club(id) || E.CLUBS.find(x => x.id === id);
+    const cor = `style="--c1:${c.c1};--c2:${c.c2};color:${txtOn(c.c1)}"`;
+    const sigla = c.div === 'X' ? c.id.slice(1) : c.id;
+    const src = CRESTS[id] || (c.div !== 'X' ? `escudos/${c.id}.png` : '');
+    if (!src) return `<span class="badge ${cls}" ${cor} aria-hidden="true">${sigla}</span>`;
+    return `<span class="badge temEscudo ${cls}" ${cor} aria-hidden="true">${sigla}<img src="${src}" alt="" loading="lazy" onerror="this.closest('.badge').classList.remove('temEscudo');this.remove()"></span>`;
+  }
   const money = v => { const t = fmt(v); return t.replace(/^(−?)R\$ /, '$1<small>R$</small>'); };
   const tier = o => o >= 82 ? 't1' : o >= 76 ? 't2' : o >= 60 ? 't3' : 't4';
   const ovr = o => `<span class="ovr ${tier(o)}" data-tip="Nota do jogador. Dourado: 82 ou mais. Verde: 76 a 81. Cinza: 60 a 75. Vermelho: abaixo de 60.">${o}</span>`;

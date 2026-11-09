@@ -378,11 +378,13 @@ input.txt { width: 100%; min-height: 48px; padding: 10px 14px; border-radius: 12
 .toggle input { width: 22px; height: 22px; margin: 2px 0 0; accent-color: var(--ima); }
 .toggle > span { display: grid; gap: 2px; }
 
-/* escudos carregados pelo usuario */
+/* escudo de verdade por cima do círculo de cor; se a imagem falhar, o círculo fica */
+.badge.temEscudo { background: transparent; box-shadow: none; border-radius: 0; overflow: visible; color: transparent; position: relative; }
+.badge.temEscudo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block; }
 .badge.crest { background: transparent; box-shadow: none; border-radius: 0; overflow: visible; }
 .badge.crest img { width: 100%; height: 100%; object-fit: contain; display: block; }
-:root[data-theme="dark"] .badge.crest img { filter: drop-shadow(0 0 1px rgba(255,255,255,.45)); }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .badge.crest img { filter: drop-shadow(0 0 1px rgba(255,255,255,.45)); } }
+:root[data-theme="dark"] .badge.crest img, :root[data-theme="dark"] .badge.temEscudo img { filter: drop-shadow(0 0 1px rgba(255,255,255,.45)); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .badge.crest img, :root:not([data-theme="light"]) .badge.temEscudo img { filter: drop-shadow(0 0 1px rgba(255,255,255,.45)); } }
 .crest-list { display: grid; gap: 0; }
 .crest-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-top: 1px solid var(--linha); min-width: 0; }
 .crest-row:first-child { border-top: 0; }
