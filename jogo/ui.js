@@ -99,7 +99,8 @@
     s.connect(f).connect(g).connect(a.destination); s.start();
     [523, 659, 784].forEach((fr, i) => beep(fr, 0.05 + i * 0.09, 0.25, 'triangle', 0.05));
   }
-  function buzz(p) { try { navigator.vibrate && navigator.vibrate(p); } catch (e) { /* sem vibracao */ } }
+  const NAT = (typeof window !== 'undefined' && window.__nat) || { nativo: false, vibrar() {}, gol() {}, levouGol() {}, toque() {}, pronto() {}, aoVoltar() {}, aoSair() {} };
+  function buzz(p) { if (NAT.nativo) return NAT.vibrar(Array.isArray(p) && p.length > 1 ? 'pesado' : 'leve'); try { navigator.vibrate && navigator.vibrate(p); } catch (e) { /* sem vibracao */ } }
 
   // ---------- casca ----------
   const NAV = [['central', 'Central'], ['elenco', 'Elenco'], ['tabela', 'Tabela'], ['mercado', 'Mercado'], ['clube', 'Clube']];
@@ -1212,7 +1213,7 @@
     updateMatchUI(shown);
     let goalSide = null;
     evs.forEach(e => { if (e.t === 'goal') goalSide = e.side; else if (e.t === 'chance' && e.xg > 0.13) animateBall(e.side, false); });
-    if (goalSide != null) { animateBall(goalSide, true); const sc = document.getElementById('sc'); sc.classList.remove('flash'); void sc.offsetWidth; sc.classList.add('flash'); if (goalSide === us) { cheer(); buzz([60, 40, 90]); } else beep(180, 0, 0.35, 'sawtooth', 0.04); }
+    if (goalSide != null) { animateBall(goalSide, true); const sc = document.getElementById('sc'); sc.classList.remove('flash'); void sc.offsetWidth; sc.classList.add('flash'); if (goalSide === us) { cheer(); NAT.nativo ? NAT.gol() : buzz([60, 40, 90]); } else { beep(180, 0, 0.35, 'sawtooth', 0.04); NAT.levouGol(); } }
     else if (m.minute % 3 === 0) idleBall();
     if (m.done) { whistle(3); ms.running = false; updateMatchUI([]); return; }
     // momentos-chave
@@ -1556,7 +1557,20 @@
   // ---------- inicio (com suporte a atualizacao ao vivo do visualizador) ----------
   const hot = window.claude && window.claude.hot;
   if (hot && hot.snapshot) { try { hot.snapshot(() => ({ S, settings: U.settings })); } catch (e) { /* ignora */ } }
-  function start(data) { loadCrests(); if (data && data.S) { S = G.migrate(data.S); if (data.settings) U.settings = data.settings; } else load(); render(); }
+  function start(data) {
+    loadCrests();
+    if (data && data.S) { S = G.migrate(data.S); if (data.settings) U.settings = data.settings; } else load();
+    render();
+    NAT.pronto();
+    // botão voltar do Android: fecha o painel, sai da partida, volta para a Central, e só aí deixa sair do app
+    NAT.aoVoltar(() => {
+      if (U.sheet) { closeSheet(); return true; }
+      if (U.view === 'match') return true;              // não deixa abandonar o jogo em andamento sem querer
+      if (U.view !== 'central') { U.view = 'central'; render(); return true; }
+      return false;
+    });
+    NAT.aoSair(() => { try { if (S) save(); } catch (e) { /* sem armazenamento */ } });
+  }
   if (hot && hot.ready) hot.ready(start); else start((hot && hot.data) || {});
 })();
 

@@ -1,0 +1,30 @@
+{
+  "appId": "br.com.prancheta.fc",
+  "appName": "Prancheta FC",
+  "webDir": "../app",
+  "backgroundColor": "#10201AFF",
+  "ios": {
+    "contentInset": "never",
+    "backgroundColor": "#10201AFF",
+    "limitsNavigationsToAppBoundDomains": true
+  },
+  "android": {
+    "backgroundColor": "#10201AFF",
+    "allowMixedContent": false
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1200,
+      "launchAutoHide": true,
+      "backgroundColor": "#10201A",
+      "androidScaleType": "CENTER_CROP",
+      "showSpinner": false,
+      "splashImmersive": false
+    },
+    "StatusBar": {
+      "style": "DARK",
+      "backgroundColor": "#10201A",
+      "overlaysWebView": false
+    }
+  }
+}

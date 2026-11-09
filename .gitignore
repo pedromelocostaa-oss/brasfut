@@ -2,3 +2,15 @@ __pycache__/
 *.pyc
 .DS_Store
 node_modules/
+
+# Capacitor
+nativo/node_modules/
+nativo/ios/App/Pods/
+nativo/ios/App/App/public/
+nativo/android/app/src/main/assets/public/
+nativo/android/.gradle/
+nativo/android/build/
+nativo/android/app/build/
+nativo/android/local.properties
+nativo/ios/App/App/capacitor.config.json
+nativo/android/app/src/main/assets/capacitor.config.json

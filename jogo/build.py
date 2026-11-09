@@ -5,7 +5,7 @@ import pathlib, hashlib, re
 d = pathlib.Path(__file__).parent
 app = d.parent / 'app'
 css = (d / 'styles.css').read_text()
-files = ('rosters.js', 'clubs.js', 'foreign.js', 'engine.js', 'comps.js', 'game.js', 'ui.js')
+files = ('nativo.js', 'rosters.js', 'clubs.js', 'foreign.js', 'engine.js', 'comps.js', 'game.js', 'ui.js')
 scripts = '\n'.join(f'<script>\n{(d / f).read_text()}\n</script>' for f in files)
 DESC = 'Manager de futebol brasileiro: Séries A a D, Copa do Brasil, estaduais, Libertadores e Sul-Americana.'
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'
@@ -54,7 +54,8 @@ img {{ max-width: 100%; }}
 <body>
 {BODY}
 <script>
-if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {{}}));
+// o service worker é do site; dentro do app nativo o Capacitor já serve tudo localmente
+if ('serviceWorker' in navigator && !(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform())) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {{}}));
 </script>
 </body>
 </html>
