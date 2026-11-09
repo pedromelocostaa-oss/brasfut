@@ -1,0 +1,72 @@
+# Build do Prancheta FC no Codemagic. Não precisa de Mac: a máquina é deles.
+# Capacitor 8 usa Swift Package Manager, então não existe Podfile nem .xcworkspace aqui:
+# o build é em cima de nativo/ios/App/App.xcodeproj, scheme "App".
+workflows:
+
+  ios:
+    name: iOS para TestFlight
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    integrations:
+      app_store_connect: PranchetaFC          # nome da chave de API criada no Codemagic
+    environment:
+      node: 22
+      xcode: 26.6
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: br.com.prancheta.fc
+      vars:
+        XCODE_PROJECT: "nativo/ios/App/App.xcodeproj"
+        XCODE_SCHEME: "App"
+        BUNDLE_ID: "br.com.prancheta.fc"
+    scripts:
+      - name: Gerar o jogo
+        script: python3 jogo/build.py
+      - name: Instalar dependências do Capacitor
+        script: cd nativo && npm ci
+      - name: Copiar o jogo para o projeto iOS
+        script: cd nativo && npx cap sync ios
+      - name: Aplicar os perfis de assinatura
+        script: xcode-project use-profiles
+      - name: Numerar a compilação
+        script: |
+          cd nativo/ios/App
+          N=$(app-store-connect get-latest-testflight-build-number "$BUNDLE_ID" 2>/dev/null || echo 0)
+          agvtool new-version -all $(($N + 1))
+      - name: Compilar o IPA
+        script: |
+          xcode-project build-ipa \
+            --project "$XCODE_PROJECT" \
+            --scheme "$XCODE_SCHEME"
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
+        submit_to_app_store: false
+
+  android:
+    name: Android para a Play Store
+    max_build_duration: 60
+    instance_type: linux_x2
+    environment:
+      node: 22
+      java: 21
+      android_signing:
+        - prancheta_keystore                  # keystore enviada nas configurações do Codemagic
+      vars:
+        PACKAGE_NAME: "br.com.prancheta.fc"
+    scripts:
+      - name: Gerar o jogo
+        script: python3 jogo/build.py
+      - name: Instalar dependências do Capacitor
+        script: cd nativo && npm ci
+      - name: Copiar o jogo para o projeto Android
+        script: cd nativo && npx cap sync android
+      - name: Compilar o AAB
+        script: cd nativo/android && ./gradlew bundleRelease
+    artifacts:
+      - nativo/android/app/build/outputs/**/*.aab
+      - nativo/android/app/build/outputs/**/mapping.txt

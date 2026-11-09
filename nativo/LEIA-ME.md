@@ -16,9 +16,44 @@ Isso também é o que separa o app de um "site reempacotado", que é o motivo ma
 
 O código está em `jogo/nativo.js`. No navegador tudo vira função vazia, então o mesmo arquivo roda nos dois lugares.
 
-## Como rodar
+## Como compilar: Codemagic, sem Mac
 
-Precisa de macOS com Xcode para iOS, e Android Studio para Android.
+O build sai da nuvem do Codemagic, que roda em Mac mini deles. A configuração está em
+`codemagic.yaml`, na raiz do repositório, com dois workflows: `ios` e `android`.
+
+### O que precisa existir antes do primeiro build
+
+| | O quê | Onde |
+|---|---|---|
+| 1 | Registro do app com o bundle ID `br.com.prancheta.fc` | App Store Connect |
+| 2 | Chave de API do App Store Connect (papel App Manager), o arquivo `.p8` | App Store Connect > Users and Access > Integrations > App Store Connect API |
+| 3 | A mesma chave enviada ao Codemagic com o nome `PranchetaFC` | Codemagic > Teams > Integrations > Developer Portal > Manage keys |
+| 4 | Repositório `brasfut` conectado | Codemagic > Add application |
+
+Se o nome da chave no Codemagic for outro, trocar em `codemagic.yaml`, na linha
+`app_store_connect:` do workflow `ios`.
+
+Para Android, enviar a keystore no Codemagic com o nome `prancheta_keystore`.
+
+### Rodar
+
+No Codemagic, escolher o workflow `ios` e **Start new build**. O resultado vai direto
+para o TestFlight.
+
+O workflow faz, nesta ordem: gera o `app/index.html` com o `jogo/build.py`, instala as
+dependências do Capacitor, copia o jogo para dentro do projeto iOS, aplica os perfis de
+assinatura, numera a compilação a partir da última que está no TestFlight, e compila o IPA.
+
+### Detalhes do projeto que importam para o CI
+
+- Capacitor 8 usa **Swift Package Manager**, não CocoaPods. Não existe `Podfile` nem
+  `.xcworkspace`: o build é em cima de `nativo/ios/App/App.xcodeproj`.
+- O scheme `App` está versionado em `xcshareddata`, senão o CI não acha.
+- `webDir` aponta para `../app`, então o `cap sync` copia o mesmo arquivo que o site usa.
+
+## Rodar na sua máquina (opcional)
+
+Só se um dia você tiver um Mac com Xcode, ou para o Android com Android Studio.
 
 ```bash
 cd nativo
@@ -27,7 +62,7 @@ npm run ios        # build do jogo + cap sync + abre o Xcode
 npm run android    # build do jogo + cap sync + abre o Android Studio
 ```
 
-`npm run sync` sozinho regenera o jogo e copia para as duas plataformas, sem abrir nada.
+`npm run sync` sozinho regenera o jogo e copia para as duas plataformas.
 
 ## Dados do app
 
@@ -38,15 +73,5 @@ npm run android    # build do jogo + cap sync + abre o Android Studio
 | Orientação no iPhone | retrato apenas (o iPad fica livre) |
 | Team ID da Apple | TPQTP5HK39 (pessoa física) |
 
-`ITSAppUsesNonExemptEncryption` já está como `false` no Info.plist, então o Xcode não pergunta sobre criptografia a cada envio.
-
-## Primeiro envio para o TestFlight
-
-1. `npm run ios`
-2. No Xcode: selecionar o alvo **App**, aba **Signing & Capabilities**, marcar *Automatically manage signing* e escolher o time
-3. Menu **Product > Destination > Any iOS Device (arm64)**
-4. **Product > Archive**
-5. Na janela do Organizer: **Distribute App > TestFlight & App Store**
-6. No App Store Connect, criar o app com o mesmo bundle ID e liberar a compilação para os testadores
-
-Teste interno (até 100 pessoas do seu time) não passa por revisão. Teste externo passa por uma revisão curta.
+`ITSAppUsesNonExemptEncryption` já está como `false` no Info.plist, então não aparece a
+pergunta sobre criptografia a cada envio.
