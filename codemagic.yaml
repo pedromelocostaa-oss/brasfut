@@ -12,9 +12,6 @@ workflows:
     environment:
       node: 22
       xcode: 26.6
-      ios_signing:
-        distribution_type: app_store
-        bundle_identifier: br.com.prancheta.fc
       vars:
         XCODE_PROJECT: "nativo/ios/App/App.xcodeproj"
         XCODE_SCHEME: "App"
@@ -26,8 +23,15 @@ workflows:
         script: cd nativo && npm ci
       - name: Copiar o jogo para o projeto iOS
         script: cd nativo && npx cap sync ios
-      - name: Aplicar os perfis de assinatura
-        script: xcode-project use-profiles
+      - name: Criar e buscar os arquivos de assinatura
+        # --create faz a Apple emitir o certificado e o perfil se ainda nao existirem.
+        script: |
+          keychain initialize
+          app-store-connect fetch-signing-files "$BUNDLE_ID" \
+            --type IOS_APP_STORE \
+            --create
+          keychain add-certificates
+          xcode-project use-profiles
       - name: Numerar a compilação
         script: |
           cd nativo/ios/App
