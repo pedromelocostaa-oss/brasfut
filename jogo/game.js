@@ -167,6 +167,8 @@
     return { pos: 5, label: 'Não terminar em último no grupo', role: 'Azarão', meta: 'fugir da lanterna', press: 'baixa' };
   }
 
+  // primeira data em que o clube do jogador entra em campo
+  function primeiraData(st, id) { for (let w = 0; w < WEEKS; w++) { if (C.fixturesOf(st.comp, w).some(m => m.h === id || m.a === id)) return w; } return 0; }
   function newCareer(seed, clubId, coachName, persona) {
     const st = { v: 3, seed, year: 2026, round: 0, coach: { name: coachName || 'Técnico', persona, xp: 0, level: 1, club: clubId }, clubs: {}, players: {}, rosters: {}, comp: null, results: [], news: [], achievements: {}, finance: [], market: { neg: {}, offers: [], auction: null, auctionsDone: [] }, stats: { winStreak: 0, unbeaten: 0, clean: 0 }, history: [], morale: 55, board: { conf: 60 }, lineup: null, lastMatch: null, objectives: [], fired: false, seasonOver: false };
     const rng = rngFor(st, 'gen');
@@ -207,10 +209,16 @@
     infra(st);
     startSeason(st);
     st.lineup = { ...E.autoLineup(squadOf(st, clubId), '4-3-3'), ment: 'equilibrada' };
-    st.sponsor = null; st.sponsorOffers = sponsorOffers(st);
+    // As propostas de patrocínio só entram depois do primeiro jogo. Quem abre o jogo pela primeira vez
+    // quer jogar futebol, não escolher contrato de três temporadas com valor em milhões.
+    st.sponsor = null; st.sponsorOffers = [];
     life(st); st.coach.lic = st.clubs[clubId].div === 'A' ? 'PRO' : 'B'; checkLicense(st);
     pushNews(st, 'club', `${coachName} é o novo técnico do ${st.clubs[clubId].name}. Meta da diretoria: ${st.board.target.label.charAt(0).toLowerCase() + st.board.target.label.slice(1)}.`);
     st.life.presser = genPresser(st);
+    // Começa na data do primeiro jogo do clube. Nos estaduais de número ímpar de times alguém folga
+    // na estreia, e sem isso 1 em cada 11 jogadores abre o jogo e lê "seu time não joga nesta data".
+    const d0 = primeiraData(st, clubId);
+    for (let w = 0; w < d0; w++) simWeek(st);
     return st;
   }
   // jogos em casa por temporada em cada série, somando liga, estadual e copas. Serve para estimar
@@ -336,6 +344,8 @@
     return st;
   }
   function sponsorPending(st) { return !st.sponsor && (st.sponsorOffers || []).length > 0; }
+  // chamada depois de cada partida: na estreia, abre as propostas de patrocínio
+  function abreSponsor(st) { if (!st.sponsor && !(st.sponsorOffers || []).length && !st.sponsorAberto) { st.sponsorAberto = true; st.sponsorOffers = sponsorOffers(st); pushNews(st, 'club', 'Três marcas procuraram o clube para estampar a camisa. Escolha uma proposta na Central.'); } }
 
   function money(st, type, amount, txt) { st.clubs[st.coach.club].cash += amount; st.finance.unshift({ y: st.year, r: st.round + 1, type, amount, txt }); if (st.finance.length > 120) st.finance.length = 120; }
 
@@ -623,6 +633,7 @@
       }
     });
     infraWeek(st, report, res, fx, mid, payday, mesNome);
+    abreSponsor(st);
     // prêmios da CONMEBOL nos jogos de grupo: mando de campo e vitória
     if (userMatch && fx && (fx.mt.comp === 'LIB' || fx.mt.comp === 'SUL') && fx.mt.key) {
       const K = fx.mt.comp === 'LIB' ? 'L' : 'S';
@@ -1752,6 +1763,6 @@
     return `${s}R$ ${a.toLocaleString('pt-BR')}`;
   }
 
-  const api = { WEEKS, SEASON_WEEKS, isMid, PRECOS, PASSE_DATA, temPasse, passeNaHora, passeTrava, passeInfo, ativarPasse, CONT_PRIZE, USD, contGroups, WINDOWS, LEVELS, LEVEL_TITLES, UNLOCKS, ACH, TICKET, CUP_QUOTA, cupQuota, CAP_MAX, capAt, rngFor, hashSeed, levelFromXp, formationsFor, squadOf, wageBill, strength, windowOpen, windowInfo, strengthRanks, divClubs, targetFor, newCareer, startSeason, weekFixtures, userFixture, nextUserWeek, leagueKey, sortedTable, position, prepareUserMatch, suggestMent, sponsorOffers, signSponsor, sponsorPending, sponsorPerf, migrate, BRANDS, withB, finishRound, simWeek, askPrice, sellerAsk, disposition, interest, marketWage, buyTerms, signPlayer, loanTerms, loanIn, INTEREST_OK, mValue, prestige, loanFee, respondOffer, endLoans, aiMarketTick, marketList, wageRoom, makeOffer, acceptOffer, quickSell, auctionBid, auctionRivalTick, auctionClose, nextSeason, restartAfterFire, fireOffers, fmt, userSide, LIC, LIC_ORDER, COURSES, life, hasLic, licNeed, xpMult, studyOptions, startStudy, answerPresser, answerEvent, checkLicense, PRESETS, PRESET_COMP, compKind, savePreset, loadPreset, applyPresetFor, INFRA, PROSPECTS, TICKET_MULT, TICKET_NAME, BASE_MAX, PENEIRA_WEEK, SQUAD_MAX, infra, infraCost, infraStart, infraMaint, infraLabel, ctBonus, crowd, lojaInfo, idolOf, kitPrice, promoteProspect, releaseProspect, verbaInfo, askVerba };
+  const api = { WEEKS, SEASON_WEEKS, isMid, abreSponsor, PRECOS, PASSE_DATA, temPasse, passeNaHora, passeTrava, passeInfo, ativarPasse, CONT_PRIZE, USD, contGroups, WINDOWS, LEVELS, LEVEL_TITLES, UNLOCKS, ACH, TICKET, CUP_QUOTA, cupQuota, CAP_MAX, capAt, rngFor, hashSeed, levelFromXp, formationsFor, squadOf, wageBill, strength, windowOpen, windowInfo, strengthRanks, divClubs, targetFor, newCareer, startSeason, weekFixtures, userFixture, nextUserWeek, leagueKey, sortedTable, position, prepareUserMatch, suggestMent, sponsorOffers, signSponsor, sponsorPending, sponsorPerf, migrate, BRANDS, withB, finishRound, simWeek, askPrice, sellerAsk, disposition, interest, marketWage, buyTerms, signPlayer, loanTerms, loanIn, INTEREST_OK, mValue, prestige, loanFee, respondOffer, endLoans, aiMarketTick, marketList, wageRoom, makeOffer, acceptOffer, quickSell, auctionBid, auctionRivalTick, auctionClose, nextSeason, restartAfterFire, fireOffers, fmt, userSide, LIC, LIC_ORDER, COURSES, life, hasLic, licNeed, xpMult, studyOptions, startStudy, answerPresser, answerEvent, checkLicense, PRESETS, PRESET_COMP, compKind, savePreset, loadPreset, applyPresetFor, INFRA, PROSPECTS, TICKET_MULT, TICKET_NAME, BASE_MAX, PENEIRA_WEEK, SQUAD_MAX, infra, infraCost, infraStart, infraMaint, infraLabel, ctBonus, crowd, lojaInfo, idolOf, kitPrice, promoteProspect, releaseProspect, verbaInfo, askVerba };
   if (NODE) module.exports = api; else root.Game = api;
 })(typeof window !== 'undefined' ? window : globalThis);

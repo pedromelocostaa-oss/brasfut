@@ -1,5 +1,5 @@
 // Service worker do Prancheta FC. Guarda o jogo inteiro para abrir sem internet.
-const V = 'prancheta-2d8a230ad2';
+const V = 'prancheta-956b452b55';
 const ARQ = ['./', './index.html', './manifest.webmanifest', './icone-192.png', './icone-512.png', './icone-maskable-512.png', './apple-touch-icon.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(V).then(c => c.addAll(ARQ)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== V).map(k => caches.delete(k)))).then(() => self.clients.claim())); });

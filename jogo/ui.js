@@ -222,7 +222,7 @@
         <div class="row between"><span class="brand">Pran<i>cheta</i> FC</span><span class="tag">Protótipo · temporada 2026</span></div>
         ${U.oldSave ? '<div class="notice warn small">Sua carreira anterior era de uma versão antiga do jogo, sem as Séries B, C e D, e não pôde ser carregada. Comece uma nova.</div>' : ''}
         <h1>Escolha<br>o seu <i>clube</i>${hint('O número é a força: média das 11 maiores notas do elenco. Favorito tem meta alta e diretoria impaciente; azarão tem meta menor e mais paciência.')}</h1>
-        <p class="muted" style="max-width:62ch">Os 156 clubes das Séries A, B, C e D de 2026. O número é a força dos titulares e o rótulo diz o papel do clube na série. Começar por baixo e subir de série é o caminho mais longo; na Série A a cobrança é maior.</p>
+        <p class="muted" style="max-width:62ch">Você é o técnico: escala o time, decide a postura no intervalo, contrata, vende e responde à diretoria. Comece escolhendo um dos 156 clubes das Séries A, B, C e D de 2026. O número é a força dos titulares e o rótulo diz o papel do clube na série. Começar por baixo e subir de série é o caminho mais longo; na Série A a cobrança é maior.</p>
         <div class="seg wide" role="tablist">${['A', 'B', 'C', 'D'].map(x => `<button role="tab" data-act="onbDiv" data-v="${x}" aria-pressed="${d === x}">${DIVN[x]}</button>`).join('')}</div>
         <label class="sr" for="club-q">Buscar clube</label><input id="club-q" class="txt" placeholder="Buscar clube, cidade ou estado" value="${esc(o.q || '')}" autocomplete="off">
         <div class="club-grid">${clubCards()}</div>
@@ -235,7 +235,7 @@
     return `<div class="onb stack" style="max-width:820px">
       <button class="btn ghost" data-act="onbBack" style="justify-self:start">← Trocar de clube</button>
       <div class="row">${badge(o.club, 'lg')}<div><div class="eyebrow">Seu clube · ${DIVN[c.div]}</div><h1 style="font-size:clamp(34px,6vw,54px)">${esc(c.name)}</h1></div></div>
-      <div class="notice info"><b>${t.role}.</b> Meta da diretoria: ${t.label.charAt(0).toLowerCase() + t.label.slice(1)}, com cobrança ${t.press}.${c.div === 'D' ? ' Na Série D a meta vale para o grupo de 6 da primeira fase.' : ''} A partir do 10º jogo da liga, ficar abaixo de 15 de confiança por 3 jogos da liga seguidos, estando mais de 2 posições abaixo da meta, causa demissão.</div>
+      <div class="notice info"><b>${t.role}.</b> Meta da diretoria: ${t.label.charAt(0).toLowerCase() + t.label.slice(1)}, com cobrança ${t.press}.${c.div === 'D' ? ' Na Série D a meta vale para o grupo de 6 da primeira fase.' : ''} Se a campanha ficar muito abaixo disso por vários jogos seguidos, a diretoria demite.</div>
       <section class="card stack" style="gap:12px"><h2>Quem é o técnico?${hint('Nome e visual aparecem no jogo. O visual dá para mudar depois em Clube.')}</h2>
         <label class="stack" style="gap:6px"><span class="eyebrow">Nome do técnico</span><input id="coach-name" class="txt" maxlength="28" placeholder="Seu nome" value="${esc(o.name)}" autocomplete="name"></label>
         <div class="av-wrap"><div class="av-prev">${avatarSVG(o.avatar, o.club, 150)}</div>${avatarEditor(o.avatar)}</div></section>
@@ -386,7 +386,6 @@
     const pend = G.sponsorPending(S);
     if (S.seasonOver) c1 += seasonCard();
     else {
-      if (pend) c1 += sponsorCard();
       const fx = G.userFixture(S);
       if (fx) {
         const ms = G.strength(S, me()), os = G.strength(S, fx.opp);
@@ -412,24 +411,26 @@
           ${tiredLine()}
           ${S.lineupFrom ? `<div class="scout"><b>Time:</b> ${G.PRESETS[S.lineupFrom]}${(S.presetFor || {})[G.compKind(fx.mt.comp)] === S.lineupFrom ? ` (automático no ${G.PRESET_COMP[G.compKind(fx.mt.comp)] || 'torneio'})` : ''}.</div>` : ''}
           ${issues ? `<div class="scout"><b>${issues} ${plural(issues, 'titular fora', 'titulares fora')}</b> (lesão, suspensão ou venda): o auxiliar escala substituto se você não mexer.</div>` : ''}
-          ${pend ? `<button class="btn gold big block" data-act="play" aria-disabled="true" style="opacity:.6" ${tipA('Assine uma das propostas de patrocínio acima para liberar o jogo.')}>Assine um patrocínio para jogar</button>` : `<div class="${first ? 'coachmark' : ''}">${first ? '<div class="tip">Seu time já está escalado. No intervalo, o jogo para e você escolhe a postura.</div>' : ''}<button class="btn gold big block" data-act="play" ${tipA('Começa a partida. O jogo para no intervalo, em gol sofrido, na reta final e em lesão para você decidir.')}>Jogar</button></div>`}
+          ${`<div class="${first ? 'coachmark' : ''}">${first ? '<div class="tip">Seu time já está escalado. No intervalo, o jogo para e você escolhe a postura.</div>' : ''}<button class="btn gold big block" data-act="play" ${tipA('Começa a partida. O jogo para no intervalo, em gol sofrido, na reta final e em lesão para você decidir.')}>Jogar</button></div>`}
           <button class="btn block" style="background:rgba(0,0,0,.25);border-color:transparent;color:#fff" data-act="go" data-v="elenco" ${tipA('Abre o Elenco para mexer em formação, titulares, banco e postura.')}>Ajustar escalação</button>
         </div></section>`;
         c1 += pressCard() + eventCard();
         c1 += `<section class="card"><div class="head"><h2>Objetivos do jogo${hint(OBJ_TIP)}</h2><span class="xp">+${S.objectives.length * 20} XP</span></div>
           ${S.objectives.map(o => `<div class="obj"><span class="box"></span><span class="t">${esc(o.txt)}</span><span class="xp">+${o.xp}</span></div>`).join('')}
           <p class="tiny muted" style="margin:8px 0 0">Cada objetivo cumprido também paga um bônus em dinheiro.</p></section>`;
+        if (pend) c1 += sponsorCard();
       } else {
         const nx = G.nextUserWeek(S, S.round + 1);
         c1 += `<section class="hero" aria-label="Semana sem jogo"><div class="inner">
           <div class="row between"><span class="eyebrow">${T.dateLabel(S.year, S.round)} de ${S.year}</span><span class="tag" style="background:rgba(0,0,0,.3);color:#fff">Sem jogo</span></div>
           <p style="margin:6px 0 0;font-size:17px">${esc(club(me()).name)} não joga nesta data.</p>
           ${nx ? `<div class="scout"><b>Próximo jogo:</b> ${esc(nx.fx.label)}, ${nx.fx.neutral ? 'em campo neutro' : nx.fx.isHome ? 'em casa' : 'fora'}, contra o ${esc(club(nx.fx.opp).name)}, ${T.dateLabel(S.year, nx.w)}.</div>` : `<div class="scout">Seu time não tem mais jogos nesta temporada. Os outros campeonatos seguem até ${T.dateLabel(S.year, G.WEEKS - 1)}.</div>`}
-          <button class="btn gold big block" data-act="skipWeek" ${pend ? 'aria-disabled="true" style="opacity:.6"' : ''} ${tipA('Joga a data dos outros clubes. Na virada do mês entram a cota de TV, a folha e o patrocínio.')}>Avançar uma data</button>
+          <button class="btn gold big block" data-act="skipWeek" ${tipA('Joga a data dos outros clubes. Na virada do mês entram a cota de TV, a folha e o patrocínio.')}>Avançar uma data</button>
           ${nx && nx.w > S.round + 1 ? `<button class="btn block" style="background:rgba(0,0,0,.25);border-color:transparent;color:#fff" data-act="skipTo" ${tipA('Simula todas as semanas até o próximo jogo do seu time.')}>Avançar até o próximo jogo (${nx.w - S.round} ${plural(nx.w - S.round, 'data', 'datas')})</button>` : ''}
           ${!nx ? `<button class="btn block" style="background:rgba(0,0,0,.25);border-color:transparent;color:#fff" data-act="skipTo" ${tipA('Simula as semanas restantes e mostra o fim da temporada.')}>Simular até o fim da temporada</button>` : ''}
         </div></section>`;
         c1 += eventCard();
+        if (pend) c1 += sponsorCard();
       }
     }
     cols.push(`<div class="stack">${c1}</div>`);
@@ -448,7 +449,7 @@
     const w = G.windowInfo(S.round);
     const offers = S.market.offers.length;
     const a = S.market.auction && S.market.auction.status === 'open' ? S.market.auction : null;
-    c2 += `<section class="card"><div class="head"><h2>Mercado${hint(JANELA_TIP)}</h2><span class="tag ${w.open ? 'good' : ''}">${w.open ? `Janela aberta · fecha em ${w.closesIn} ${plural(w.closesIn, 'semana', 'semanas')}` : w.opensIn ? `Abre em ${w.opensIn} ${plural(w.opensIn, 'semana', 'semanas')}` : 'Fechada até ' + (S.year + 1)}</span></div>
+    c2 += `<section class="card"><div class="head"><h2>Mercado${hint(JANELA_TIP)}</h2><span class="tag ${w.open ? 'good' : ''}">${w.open ? `Janela aberta · fecha ${T.dateLabel(S.year, Math.min(G.WEEKS - 1, S.round + w.closesIn), true)}` : w.opensIn ? `Abre ${T.dateLabel(S.year, Math.min(G.WEEKS - 1, S.round + w.opensIn), true)}` : 'Fechada até ' + (S.year + 1)}</span></div>
       ${a ? `<div class="notice warn row between"><span><b>Leilão relâmpago:</b> ${esc(S.players[a.pid].n)} (${posLbl(S.players[a.pid].pos)}, ${S.players[a.pid].ovr})</span><button class="btn gold" data-act="goAuction">Ver leilão</button></div>` : ''}
       ${offers ? `<div class="notice info row between" style="margin-top:8px"><span><b>${offers} ${plural(offers, 'proposta', 'propostas')}</b> por jogadores seus</span><button class="btn" data-act="goSell">Responder</button></div>` : ''}
       ${!a && !offers ? `<p class="small muted" style="margin:0">${w.open ? 'Procure reforços ou coloque jogadores à venda para receber propostas.' : 'Fora da janela você pode olhar o mercado, mas nada fecha.'}</p>` : ''}</section>`;
@@ -515,7 +516,7 @@
         ${brandMark(o.brand)}
         <span class="tag ${o.kind === 'alto' ? 'gold' : o.kind === 'longo' ? 'blue' : o.kind === 'titulo' ? 'gold' : 'good'}">${o.label}</span>
         <div class="fin small">
-          <span>Por semana</span><b class="num">${fmt(o.per)}</b>
+          <span>Por mês</span><b class="num">${fmt(o.per)}</b>
           <span>Duração</span><b>${seasonsLbl(o.rounds)}</b>
           ${o.signing ? `<span>Luvas na assinatura${hint('Dinheiro pago de uma vez, assim que você assina.')}</span><b class="num pos-c">+${fmt(o.signing)}</b>` : ''}
           ${o.winBonus ? `<span>Por vitória</span><b class="num pos-c">+${fmt(o.winBonus)}</b>` : ''}
