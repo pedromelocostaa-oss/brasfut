@@ -131,7 +131,10 @@ fica no armazenamento do próprio aparelho.
 
 ## Capturas de tela
 
-Seis capturas em 1320 x 2868 (iPhone de 6,9"), em `loja/capturas/`:
+Sete capturas em **1206 x 2622**, em `loja/capturas/`. Esse é o tamanho do slot
+"iPhone com Dynamic Island (tela média)", o único obrigatório hoje. O slot também aceita
+1179 x 2556. **Não use 1320 x 2868**: era a medida do slot de 6,9 polegadas, a Apple
+reorganizou os slots e o envio volta com "as dimensões do arquivo são inválidas".
 
 1. Escolha do clube
 2. Central com o próximo jogo
