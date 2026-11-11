@@ -131,19 +131,23 @@ fica no armazenamento do próprio aparelho.
 
 ## Capturas de tela
 
-Sete capturas em **1206 x 2622**, em `loja/capturas/`. Esse é o tamanho do slot
-"iPhone com Dynamic Island (tela média)", o único obrigatório hoje. O slot também aceita
-1179 x 2556. **Não use 1320 x 2868**: era a medida do slot de 6,9 polegadas, a Apple
-reorganizou os slots e o envio volta com "as dimensões do arquivo são inválidas".
+Dois conjuntos, porque a Apple pede um por família de aparelho.
 
-1. Escolha do clube
-2. Central com o próximo jogo
-3. Elenco no campo
-4. Tabela da Série A
-5. Estrutura do clube
-6. Partida em andamento
+| Pasta | Tamanho | Slot na ficha |
+|---|---|---|
+| `loja/capturas/` | **1206 x 2622** | iPhone com Dynamic Island (tela média) |
+| `loja/capturas-ipad/` | **2048 x 2732** | iPad, tela de 13 pol. |
 
-A Apple aceita o mesmo conjunto para os tamanhos menores de iPhone. Se pedir iPad, dá para gerar.
+Seis telas em cada: escolha do clube, central, elenco, tabela da Série A, estrutura
+do clube e partida em andamento (essa no escuro).
+
+O slot do iPhone também aceita 1179 x 2556, e o do iPad também aceita 2064 x 2752.
+**Não use 1320 x 2868**: era a medida do slot de 6,9 polegadas, a Apple reorganizou
+os slots e o envio volta com "as dimensões do arquivo são inválidas".
+
+Para regerar, os scripts estão no diretório de trabalho da sessão (`ipad.js` e
+`iphone.js`): sobem o jogo em `http://127.0.0.1:8784`, carregam um save pronto no
+localStorage e tiram as telas com o Playwright.
 
 ## Informações para a revisão
 
