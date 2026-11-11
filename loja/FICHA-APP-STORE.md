@@ -133,10 +133,14 @@ fica no armazenamento do próprio aparelho.
 
 Dois conjuntos, porque a Apple pede um por família de aparelho.
 
-| Pasta | Tamanho | Slot na ficha |
-|---|---|---|
-| `loja/capturas/` | **1206 x 2622** | iPhone com Dynamic Island (tela média) |
-| `loja/capturas-ipad/` | **2048 x 2732** | iPad, tela de 13 pol. |
+| Pasta | Arquivos | Tamanho | Slot na ficha |
+|---|---|---|---|
+| `loja/capturas/` | `iphone-*.png` | **1206 x 2622** | iPhone com Dynamic Island (tela média) |
+| `loja/capturas-ipad/` | `ipad-*.png` | **2048 x 2732** | iPad, tela de 13 pol. |
+
+O prefixo no nome do arquivo não é enfeite: os dois conjuntos tinham o mesmo nome,
+o navegador salvou como "1-escolha (1).png" no Downloads e o arquivo errado acabou
+sendo arrastado para o slot errado, voltando com "as dimensões do arquivo são inválidas".
 
 Seis telas em cada: escolha do clube, central, elenco, tabela da Série A, estrutura
 do clube e partida em andamento (essa no escuro).
