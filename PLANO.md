@@ -37,7 +37,7 @@ Levantamos 37 telas do concorrente. Três padrões se repetem em todas e viram r
 Código em `jogo/`, 4.645 linhas. Versão 12 publicada.
 
 | Arquivo | Linhas | Toca a tela? |
-|---|---|---|
+|---|---|---|---|
 | `engine.js` | 532 | não |
 | `comps.js` | 317 | não |
 | `game.js` | 1.694 | não |
@@ -115,116 +115,116 @@ Dez frentes. Dentro de cada uma, as funções em ordem de impacto.
 
 ### Frente A: Fundação
 
-| # | Função | Observação |
-|---|---|---|
-| A1 | Repositório no GitHub | Feito |
-| A2 | Calendário por data real e dinheiro mensal | Ver seção 3 |
-| A3 | Três humores separados: diretoria, torcida, elenco | Hoje temos moral do elenco e confiança da diretoria. Falta a torcida como número próprio. Quase toda função nova encosta nele. |
-| A4 | Torcida que cresce com títulos, até +80% de público | Hoje `fan` é constante para sempre. Vira variável de carreira. |
-| A5 | Base de preços por clube | Uma constante por clube escala toda a economia. O concorrente usa uma, e conferimos 25 preços que são múltiplos limpos dela. |
-| A6 | Caixa do clube fixo no topo de toda tela | Você nunca precisa lembrar quanto tem. |
+| # | Função | Observação | Status (14 nov 2026) |
+|---|---|---|---|
+| A1 | Repositório no GitHub | Feito | **Feito** |
+| A2 | Calendário por data real e dinheiro mensal | Ver seção 3 | **Feito**: calendário por data e fechamento mensal em `comps.js` e `game.js` |
+| A3 | Três humores separados: diretoria, torcida, elenco | Hoje temos moral do elenco e confiança da diretoria. Falta a torcida como número próprio. Quase toda função nova encosta nele. | **Não feito**: a torcida não tem número próprio; "fase do time" é derivada dos resultados |
+| A4 | Torcida que cresce com títulos, até +80% de público | Hoje `fan` é constante para sempre. Vira variável de carreira. | **Não feito**: `c.fan` é constante na carreira |
+| A5 | Base de preços por clube | Uma constante por clube escala toda a economia. O concorrente usa uma, e conferimos 25 preços que são múltiplos limpos dela. | **Feito**: `c.base` por clube, `game.js` linha 212, escala ingresso, caixa e cota |
+| A6 | Caixa do clube fixo no topo de toda tela | Você nunca precisa lembrar quanto tem. | **Feito**: caixa na barra do topo em todas as telas |
 
 ### Frente B: Diretoria e dinheiro
 
-| # | Função | O que muda no jogo |
-|---|---|---|
-| B1 | **Meta negociada** com três saídas: aceitar, prometer mais, pedir menos | Aceitar trava a cobrança até o fim do ano. Prometer mais dá +5 de confiança e +5% no teto da folha, mas pesa se falhar. Pedir menos exige confiança alta. Não responder deixa a meta subindo junto com o elenco. |
-| B2 | Reunião de meio de temporada | Reavaliação por turno |
-| B3 | **Pedidos com trava visível:** mais teto para a folha, aumento do técnico, verba para reforços | Cada um mostra a regra e o seu número atual. Você sabe exatamente o que falta. |
-| B4 | **Preço do ingresso em cinco faixas** com efeito assimétrico | Popular dá +1 de torcida por jogo em casa, até +3 no mês. Caro tira 1 **só quando você perde em casa**. Cobrar caro é de graça enquanto você vence. |
-| B5 | **Campanhas de marketing**, uma por vez, 30 dias | Sócio-torcedor faz o quadro crescer. Camisa nova faz a loja vender 30% a mais. Clube na escola dá torcida na hora e não devolve dinheiro nenhum. |
-| B6 | Sócios como linha de receita | Terceira perna da cota mensal, junto com TV e patrocínio |
-| B7 | Conselho de torcedores | A torcida pede reunião quando tem problema de verdade |
-| B8 | Caixa inicial como escolha de risco | Enxuto com diretoria paciente, padrão, ou ambicioso que cobra mais a cada derrota |
+| # | Função | O que muda no jogo | Status (14 nov 2026) |
+|---|---|---|---|
+| B1 | **Meta negociada** com três saídas: aceitar, prometer mais, pedir menos | Aceitar trava a cobrança até o fim do ano. Prometer mais dá +5 de confiança e +5% no teto da folha, mas pesa se falhar. Pedir menos exige confiança alta. Não responder deixa a meta subindo junto com o elenco. | **Não feito**: a meta é fixada em `targetFor` sem escolha do técnico |
+| B2 | Reunião de meio de temporada | Reavaliação por turno | **Não feito** |
+| B3 | **Pedidos com trava visível:** mais teto para a folha, aumento do técnico, verba para reforços | Cada um mostra a regra e o seu número atual. Você sabe exatamente o que falta. | **Parcial**: verba existe com regra visível; teto da folha existe (`wageCap`) sem pedido; aumento do técnico só como evento |
+| B4 | **Preço do ingresso em cinco faixas** com efeito assimétrico | Popular dá +1 de torcida por jogo em casa, até +3 no mês. Caro tira 1 **só quando você perde em casa**. Cobrar caro é de graça enquanto você vence. | **Parcial**: 5 faixas com multiplicador no público e na bilheteria; sem efeito na torcida |
+| B5 | **Campanhas de marketing**, uma por vez, 30 dias | Sócio-torcedor faz o quadro crescer. Camisa nova faz a loja vender 30% a mais. Clube na escola dá torcida na hora e não devolve dinheiro nenhum. | **Não feito** |
+| B6 | Sócios como linha de receita | Terceira perna da cota mensal, junto com TV e patrocínio | **Não feito** |
+| B7 | Conselho de torcedores | A torcida pede reunião quando tem problema de verdade | **Não feito** |
+| B8 | Caixa inicial como escolha de risco | Enxuto com diretoria paciente, padrão, ou ambicioso que cobra mais a cada derrota | **Não feito** |
 
 ### Frente C: Estádio
 
-| # | Função | O que muda no jogo |
-|---|---|---|
-| C1 | **Melhorias com pontos de estrutura** | Cadeiras, mosaico, anel de LED, fogos, telão, refletores. Cada uma aparece na arquibancada. Fogos valem só pela temporada, então é gasto que volta. |
-| C2 | **Caldeirão** | Gols esperados a mais em casa, e **só liga com as três coisas juntas**: estádio cheio, torcida feliz e estrutura. Dinheiro sozinho não compra. |
-| C3 | **Ampliação por anéis e lados** | Doze obras em três anéis de quatro lados. Cada obra fecha parte da arquibancada e você perde bilheteria enquanto dura. |
-| C4 | Parcelamento com a parcela mostrada como % da receita do mês | É o jeito de ensinar finanças sem planilha |
-| C5 | **Arena nova** | Estádio próprio, o dobro por lugar, anos de obra, muda na inauguração com festa |
-| C6 | **Naming rights** | Marca paga por mês mais luvas. Estádio tradicional custa 2 pontos de humor na assinatura, uma vez só. Os jogos antigos ficam com o nome da época. |
-| C7 | Estacionamento, cinco níveis | Receita derivada do público. Só vira dinheiro depois que você encheu o estádio. |
+| # | Função | O que muda no jogo | Status (14 nov 2026) |
+|---|---|---|---|
+| C1 | **Melhorias com pontos de estrutura** | Cadeiras, mosaico, anel de LED, fogos, telão, refletores. Cada uma aparece na arquibancada. Fogos valem só pela temporada, então é gasto que volta. | **Não feito** |
+| C2 | **Caldeirão** | Gols esperados a mais em casa, e **só liga com as três coisas juntas**: estádio cheio, torcida feliz e estrutura. Dinheiro sozinho não compra. | **Não feito** |
+| C3 | **Ampliação por anéis e lados** | Doze obras em três anéis de quatro lados. Cada obra fecha parte da arquibancada e você perde bilheteria enquanto dura. | **Parcial**: ampliação em até 3 etapas de 20% da capacidade; sem anéis e lados nem perda de bilheteria na obra |
+| C4 | Parcelamento com a parcela mostrada como % da receita do mês | É o jeito de ensinar finanças sem planilha | **Não feito** |
+| C5 | **Arena nova** | Estádio próprio, o dobro por lugar, anos de obra, muda na inauguração com festa | **Não feito** |
+| C6 | **Naming rights** | Marca paga por mês mais luvas. Estádio tradicional custa 2 pontos de humor na assinatura, uma vez só. Os jogos antigos ficam com o nome da época. | **Não feito** |
+| C7 | Estacionamento, cinco níveis | Receita derivada do público. Só vira dinheiro depois que você encheu o estádio. | **Não feito** |
 
 ### Frente D: CT, base e saúde
 
-| # | Função | O que muda no jogo |
-|---|---|---|
-| D1 | **Foco de treino**, cinco opções | Equilibrado, técnico, finalização, tático, físico. Vale pelos dias em que ficou ativo e quem não é o alvo cresce menos. |
-| D2 | **Comissão técnica paga** | Analista por mês libera relatório do técnico de qualquer clube. Hoje isso é desbloqueio de nível no nosso jogo. |
-| D3 | **Sub-20 estadual** | Catorze jogos contra as bases do estado, com tabela. Quem joga evolui mais. Tira a base de ser loteria. |
-| D4 | **Treino de posição** | Quatro vagas, 40 dias, taxa por jogador. Tira o desconto de improvisado, que o nosso motor já calcula. Até 23 anos é mais rápido, dos 30 em diante mais lento, goleiro não treina. |
-| D5 | **Potencial que fica mais preciso a cada mês na base** | Hoje a faixa depende do nível da base. Passa a depender do tempo. Premia paciência. |
-| D6 | Relatório da base | Custo no ano, crias no elenco, valor dos crias, vendas. Responde se a base se paga. |
-| D7 | **Departamento médico com macas** | Capacidade limitada. Com tudo ocupado, a próxima lesão volta 15% mais tarde. Ampliar dá mais maca e lesão mais curta. |
+| # | Função | O que muda no jogo | Status (14 nov 2026) |
+|---|---|---|---|
+| D1 | **Foco de treino**, cinco opções | Equilibrado, técnico, finalização, tático, físico. Vale pelos dias em que ficou ativo e quem não é o alvo cresce menos. | **Não feito** |
+| D2 | **Comissão técnica paga** | Analista por mês libera relatório do técnico de qualquer clube. Hoje isso é desbloqueio de nível no nosso jogo. | **Parcial**: auxiliar existe de graça; análise do rival libera por nível, não por contratação |
+| D3 | **Sub-20 estadual** | Catorze jogos contra as bases do estado, com tabela. Quem joga evolui mais. Tira a base de ser loteria. | **Não feito** |
+| D4 | **Treino de posição** | Quatro vagas, 40 dias, taxa por jogador. Tira o desconto de improvisado, que o nosso motor já calcula. Até 23 anos é mais rápido, dos 30 em diante mais lento, goleiro não treina. | **Não feito** |
+| D5 | **Potencial que fica mais preciso a cada mês na base** | Hoje a faixa depende do nível da base. Passa a depender do tempo. Premia paciência. | **Parcial**: potencial existe como faixa; a precisão não depende do tempo na base |
+| D6 | Relatório da base | Custo no ano, crias no elenco, valor dos crias, vendas. Responde se a base se paga. | **Não feito** |
+| D7 | **Departamento médico com macas** | Capacidade limitada. Com tudo ocupado, a próxima lesão volta 15% mais tarde. Ampliar dá mais maca e lesão mais curta. | **Não feito**: não há departamento médico |
 
 ### Frente E: Loja
 
-| # | Função | O que muda no jogo |
-|---|---|---|
-| E1 | **Preço em três faixas** | Popular, normal, premium, cada um com efeito na torcida |
-| E2 | **Terceira camisa** | Editor com treze padrões e duas cores. Uma por temporada, com custo de produção. As vendas sobem no lançamento e **o time estreia a camisa no jogo seguinte**. Criar, gastar, ver vender e ver em campo. |
-| E3 | Mais vendidos da semana e camisas por jogador | Liga o elenco à loja. Vender o craque passa a doer de um jeito visível. |
-| E4 | Craques do elenco como multiplicador | Melhor que o nosso ídolo único: conta quantos, então vender um não derruba tudo |
-| E5 | Quiosque que vira loja | Obra, vende mais, manutenção sobe |
+| # | Função | O que muda no jogo | Status (14 nov 2026) |
+|---|---|---|---|
+| E1 | **Preço em três faixas** | Popular, normal, premium, cada um com efeito na torcida | **Não feito**: preço da camisa fixo por série (`KIT_PRICE`) |
+| E2 | **Terceira camisa** | Editor com treze padrões e duas cores. Uma por temporada, com custo de produção. As vendas sobem no lançamento e **o time estreia a camisa no jogo seguinte**. Criar, gastar, ver vender e ver em campo. | **Não feito** |
+| E3 | Mais vendidos da semana e camisas por jogador | Liga o elenco à loja. Vender o craque passa a doer de um jeito visível. | **Não feito** |
+| E4 | Craques do elenco como multiplicador | Melhor que o nosso ídolo único: conta quantos, então vender um não derruba tudo | **Não feito**: ídolo único em `lojaInfo` |
+| E5 | Quiosque que vira loja | Obra, vende mais, manutenção sobe | **Parcial**: loja em 5 níveis como obra; sem quiosque |
 
 ### Frente F: Elenco e partida
 
-| # | Função | O que muda no jogo |
-|---|---|---|
-| F1 | **Três cobradores em ordem** por pênalti, falta e escanteio | Bate o primeiro que estiver em campo. Se sair, vai o segundo. Hoje temos um só. |
-| F2 | **Nota de cobrança que muda com o aproveitamento** | Quem erra vai caindo, quem converte sobe. Hoje a nossa é fixa. |
-| F3 | Mapa de onde ele bateu na carreira | Puro sabor, e criança adora |
-| F4 | Banco e reservas separados, com a ordem valendo como fila de substituição | Resolve o problema de quem não quer microgerenciar |
-| F5 | Auxiliar que faz até três trocas entre 58' e 85' | Dá para ser preguiçoso e o time não desanda |
-| F6 | **Números de camisa**, em lista e em cabide | Zero mecânica, puro pertencimento |
-| F7 | Estatísticas da temporada em seis painéis | Jogos, artilheiros, assistências, notas, evolução, disciplina. Com corte de 15 minutos para contar jogo e ganhar nota. |
-| F8 | Trocas sugeridas e deixar a IA escalar | Porta de entrada para quem abriu o jogo pela primeira vez |
+| # | Função | O que muda no jogo | Status (14 nov 2026) |
+|---|---|---|---|
+| F1 | **Três cobradores em ordem** por pênalti, falta e escanteio | Bate o primeiro que estiver em campo. Se sair, vai o segundo. Hoje temos um só. | **Parcial**: um cobrador por tipo mais capitão, com automático; sem ordem de três |
+| F2 | **Nota de cobrança que muda com o aproveitamento** | Quem erra vai caindo, quem converte sobe. Hoje a nossa é fixa. | **Não feito** |
+| F3 | Mapa de onde ele bateu na carreira | Puro sabor, e criança adora | **Não feito** |
+| F4 | Banco e reservas separados, com a ordem valendo como fila de substituição | Resolve o problema de quem não quer microgerenciar | **Feito**: banco de 9 com ordem de entrada |
+| F5 | Auxiliar que faz até três trocas entre 58' e 85' | Dá para ser preguiçoso e o time não desanda | **Parcial**: auxiliar troca cansados e lesionados antes do jogo e nas paradas; não faz trocas sozinho entre 58' e 85' |
+| F6 | **Números de camisa**, em lista e em cabide | Zero mecânica, puro pertencimento | **Não feito** |
+| F7 | Estatísticas da temporada em seis painéis | Jogos, artilheiros, assistências, notas, evolução, disciplina. Com corte de 15 minutos para contar jogo e ganhar nota. | **Parcial**: artilheiros e histórico na tabela; sem os seis painéis |
+| F8 | Trocas sugeridas e deixar a IA escalar | Porta de entrada para quem abriu o jogo pela primeira vez | **Feito**: Escalar os melhores, times salvos e Usar automaticamente |
 
 ### Frente G: Mercado
 
-| # | Função | O que muda no jogo |
-|---|---|---|
-| G1 | **Olheiro** | Busca paga que entrega em 150 dias e traz os cinco de maior teto de evolução. Dois trabalhos ao mesmo tempo. Você contrata hoje pensando na janela que vem. |
-| G2 | **Etiquetas de disposição** | Intocável, só sai por proposta alta, negociável, e rival pede 20% a mais. Mostra antes de você perder tempo. |
-| G3 | Etiqueta de homônimo | Detalhe de quem usou o próprio produto |
-| G4 | Favoritos, até 30 | Lista de alvos que atravessa as janelas |
-| G5 | **Diagnóstico "caro para o nível"** | Marca quem ganha fora da curva. Diz onde cortar, em vez de só listar. |
-| G6 | Contratos por ano com renovação e vencimento à vista | "Nenhum vence em 2026, doze vencem em 2027" |
+| # | Função | O que muda no jogo | Status (14 nov 2026) |
+|---|---|---|---|
+| G1 | **Olheiro** | Busca paga que entrega em 150 dias e traz os cinco de maior teto de evolução. Dois trabalhos ao mesmo tempo. Você contrata hoje pensando na janela que vem. | **Não feito** |
+| G2 | **Etiquetas de disposição** | Intocável, só sai por proposta alta, negociável, e rival pede 20% a mais. Mostra antes de você perder tempo. | **Não feito** |
+| G3 | Etiqueta de homônimo | Detalhe de quem usou o próprio produto | **Não feito** |
+| G4 | Favoritos, até 30 | Lista de alvos que atravessa as janelas | **Não feito** |
+| G5 | **Diagnóstico "caro para o nível"** | Marca quem ganha fora da curva. Diz onde cortar, em vez de só listar. | **Não feito** |
+| G6 | Contratos por ano com renovação e vencimento à vista | "Nenhum vence em 2026, doze vencem em 2027" | **Parcial**: contrato em anos existe e renova na virada; sem lista de vencimentos à vista |
 
 ### Frente H: Vida do técnico
 
-| # | Função | O que muda no jogo |
-|---|---|---|
-| H1 | **Patrimônio separado do caixa do clube** | O salário cai na sua conta todo dia 1º. Você nunca gasta dinheiro do clube com você. |
-| H2 | **Cotas do clube** | Você investe no clube onde trabalha. Cada cota vale 1% da receita anual e o dinheiro entra no caixa. Quatro efeitos: diretoria mais tolerante, dividendos se fechar no azul, valor que sobe com acesso e cai com rebaixamento, e venda limitada na saída. É a melhor ideia da pesquisa inteira. |
-| H3 | **Negócios pessoais** | Escolinha, loja de artigos esportivos, restaurante. Resultado no dia 1º, e a gestão cai 3 pontos por mês sem cuidado. Gancho de volta. |
-| H4 | Ranking de técnicos | Mistura você e a IA, com pontos, aproveitamento e títulos |
-| H5 | Técnicos livres | Quando um clube da IA demite, contrata dessa lista |
-| H6 | Casa do técnico | Sair do aluguel como progressão pessoal |
-| H7 | Clube social **sem jogo de azar** | Velha, damas, Lig 4 e ranking contra outros técnicos. Sem cassino e sem galgos. |
+| # | Função | O que muda no jogo | Status (14 nov 2026) |
+|---|---|---|---|
+| H1 | **Patrimônio separado do caixa do clube** | O salário cai na sua conta todo dia 1º. Você nunca gasta dinheiro do clube com você. | **Não feito** |
+| H2 | **Cotas do clube** | Você investe no clube onde trabalha. Cada cota vale 1% da receita anual e o dinheiro entra no caixa. Quatro efeitos: diretoria mais tolerante, dividendos se fechar no azul, valor que sobe com acesso e cai com rebaixamento, e venda limitada na saída. É a melhor ideia da pesquisa inteira. | **Não feito** |
+| H3 | **Negócios pessoais** | Escolinha, loja de artigos esportivos, restaurante. Resultado no dia 1º, e a gestão cai 3 pontos por mês sem cuidado. Gancho de volta. | **Não feito** |
+| H4 | Ranking de técnicos | Mistura você e a IA, com pontos, aproveitamento e títulos | **Não feito** |
+| H5 | Técnicos livres | Quando um clube da IA demite, contrata dessa lista | **Não feito** |
+| H6 | Casa do técnico | Sair do aluguel como progressão pessoal | **Não feito** |
+| H7 | Clube social **sem jogo de azar** | Velha, damas, Lig 4 e ranking contra outros técnicos. Sem cassino e sem galgos. | **Não feito** |
 
 ### Frente I: Apresentação
 
-| # | Função | O que muda no jogo |
-|---|---|---|
-| I1 | **Escudos dos clubes** | Depende da documentação de direitos. Ver seção 7. |
-| I2 | **Mapa do clube** | Navegação por lugar em vez de aba. Estádio, loja, CT, sede, museu, departamento médico, sala de imprensa, sua casa, estacionamento. Com hora, clima e as pendências marcadas nos prédios. Para criança isso pesa muito. |
-| I3 | **"Para resolver"** | Todas as pendências com prazo num lugar só, na central |
-| I4 | Estrelas e ATA/MEI/DEF na escolha do clube | Seletor de dificuldade sem chamar de dificuldade |
-| I5 | Ver o elenco antes de assumir | Provar o clube antes de se comprometer |
-| I6 | Prova social na entrada | "6.099 carreiras começaram por aqui" |
+| # | Função | O que muda no jogo | Status (14 nov 2026) |
+|---|---|---|---|
+| I1 | **Escudos dos clubes** | Depende da documentação de direitos. Ver seção 7. | **Parcial**: escudos carregam de `app/escudos`; direitos não documentados |
+| I2 | **Mapa do clube** | Navegação por lugar em vez de aba. Estádio, loja, CT, sede, museu, departamento médico, sala de imprensa, sua casa, estacionamento. Com hora, clima e as pendências marcadas nos prédios. Para criança isso pesa muito. | **Não feito** |
+| I3 | **"Para resolver"** | Todas as pendências com prazo num lugar só, na central | **Feito**: cartão "Para resolver" na central, 14 de novembro |
+| I4 | Estrelas e ATA/MEI/DEF na escolha do clube | Seletor de dificuldade sem chamar de dificuldade | **Feito**: Favorito, Briga por vaga, Meio de tabela, Azarão e força do time |
+| I5 | Ver o elenco antes de assumir | Provar o clube antes de se comprometer | **Feito**: prévia do clube ao tocar no cartão |
+| I6 | Prova social na entrada | "6.099 carreiras começaram por aqui" | **Não feito** |
 
 ### Frente J: Social
 
-| # | Função | Observação |
-|---|---|---|
-| J1 | Liga com amigos | Cada amigo comanda um clube do mesmo campeonato. Já temos a tela de prévia. Depende de servidor. |
-| J2 | X1 | Partida avulsa contra outro técnico |
-| J3 | Comunidade | Canal fora do jogo |
+| # | Função | Observação | Status (14 nov 2026) |
+|---|---|---|---|
+| J1 | Liga com amigos | Cada amigo comanda um clube do mesmo campeonato. Já temos a tela de prévia. Depende de servidor. | **Parcial**: tela existe, desligada por `LIGA_ONLINE` até existir servidor |
+| J2 | X1 | Partida avulsa contra outro técnico | **Não feito** |
+| J3 | Comunidade | Canal fora do jogo | **Não feito** |
 
 ---
 
@@ -233,7 +233,7 @@ Dez frentes. Dentro de cada uma, as funções em ordem de impacto.
 Princípio: terminar o que está começado, depois fundação, depois conteúdo por impacto, e a casca do app por último.
 
 | Fase | Conteúdo | Por que nesta ordem |
-|---|---|---|
+|---|---|---|---|
 | **0** | Fechar Libertadores e Sul-Americana e publicar | Já está pronto e testado. Falta só a coleta dos elencos. |
 | **1** | Frente A completa | Fundação. Tudo depois depende disso. |
 | **2** | Frente B (diretoria e dinheiro) | Bloco mais rico. Muda a carreira inteira e usa toda a fundação. |
@@ -304,7 +304,7 @@ Pedro delegou a precificação. O que ficou:
 **Preços:**
 
 | | Preço | O que destrava |
-|---|---|---|
+|---|---|---|---|
 | Grátis | R$ 0 | Estadual e primeiro turno, para sempre, em qualquer carreira |
 | Passe de Técnico | R$ 49,90, uma vez | Temporadas sem limite, Libertadores e Sul-Americana, trocar de clube, várias carreiras, save na nuvem |
 | Mensal | R$ 12,90/mês | O mesmo, enquanto estiver ativo |
@@ -381,8 +381,8 @@ Medido com 56 temporadas no piloto automático antes e depois. Antes, o caixa nu
 
 ### Já decididas (27 de outubro de 2026)
 
-| # | Decisão | Resposta do Pedro |
-|---|---|---|
+| # | Decisão | Resposta do Pedro | Status (14 nov 2026) |
+|---|---|---|---|
 | 1 | Calendário | Converter para data real e dinheiro mensal. Decisão delegada a mim; eu escolhi converter. **Feito em 5 de novembro de 2026.** |
 | 2 | Monetização | **Modelo A**: estadual grátis, depois assinatura. Eu recomendei B ou D e ele escolheu testar o A. A decisão é reversível antes da fase 10. |
 | 4 | Direitos de imagem | Tudo real: marca, escudo, nome de jogador. Ver a ressalva abaixo. |
@@ -394,7 +394,7 @@ Medido com 56 temporadas no piloto automático antes e depois. Antes, o caixa nu
 Temporada 2026 de 18 de janeiro a 29 de novembro. 46 domingos de jogo (8 rodadas de estadual e 38 do Brasileirão) e 27 datas de meio de semana (Copa do Brasil e Conmebol).
 
 | O que | Quando entra | Quanto |
-|---|---|---|
+|---|---|---|---|
 | Bilheteria e loja | toda data com jogo em casa | varia |
 | Cota de TV | última data de cada mês, 11 vezes na temporada, mais dezembro | 12 parcelas no ano |
 | Folha salarial | mesma data | 13 parcelas no ano (12 meses e o décimo terceiro) |
@@ -408,8 +408,8 @@ Dezembro não tem jogo e tem duas folhas para pagar. É a conta que o técnico p
 
 ### Ainda em aberto
 
-| # | Decisão | Trava o quê |
-|---|---|---|
+| # | Decisão | Trava o quê | Status (14 nov 2026) |
+|---|---|---|---|
 | 3 | App declarado para crianças ou público geral | Cadastro, publicidade, assinatura |
 | 5 | Ordem das fases: segue a da seção 5 ou puxa alguma coisa para frente | O que eu começo depois da fase 0 |
 
