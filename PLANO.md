@@ -37,7 +37,7 @@ Levantamos 37 telas do concorrente. Três padrões se repetem em todas e viram r
 Código em `jogo/`, 4.645 linhas. Versão 12 publicada.
 
 | Arquivo | Linhas | Toca a tela? |
-|---|---|---|---|
+|---|---|---|
 | `engine.js` | 532 | não |
 | `comps.js` | 317 | não |
 | `game.js` | 1.694 | não |
@@ -233,7 +233,7 @@ Dez frentes. Dentro de cada uma, as funções em ordem de impacto.
 Princípio: terminar o que está começado, depois fundação, depois conteúdo por impacto, e a casca do app por último.
 
 | Fase | Conteúdo | Por que nesta ordem |
-|---|---|---|---|
+|---|---|---|
 | **0** | Fechar Libertadores e Sul-Americana e publicar | Já está pronto e testado. Falta só a coleta dos elencos. |
 | **1** | Frente A completa | Fundação. Tudo depois depende disso. |
 | **2** | Frente B (diretoria e dinheiro) | Bloco mais rico. Muda a carreira inteira e usa toda a fundação. |
