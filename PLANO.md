@@ -364,6 +364,19 @@ Se a resposta for parcial, dá para desenhar o app usando só o que está cobert
 
 ---
 
+
+### Feito em 14 de novembro de 2026: auditoria de jogabilidade
+
+Medido com 56 temporadas no piloto automático antes e depois. Antes, o caixa nunca caía abaixo do inicial e a Chapecoense passava 5 temporadas em 20º sem demissão.
+
+- **Bicho.** O elenco recebe 6% da folha mensal por vitória e 2,5% por empate, para todos os clubes. É o atrito que cresce com o sucesso. Aparece no caixa do pós-jogo.
+- **Premiação por posição ao quadrado.** Campeão leva perto de 3 cotas mensais cheias, 10º perto de 1, lanterna quase nada. Antes era linear e o meio da tabela ficava rico. Título estadual paga 40% de uma cota, não 3.
+- **Bônus dos objetivos** caiu de 2% para 1% da folha por objetivo.
+- **Diretoria em três degraus** (`boardAlert` em `game.js`): aviso com confiança abaixo de 35 e fora da meta; ultimato com confiança abaixo de 28 e 3 ou mais posições abaixo da meta, com 3 jogos de liga para voltar a até 2 posições da meta; demissão com ultimato vencido ou confiança abaixo de 12. Os degraus aparecem na central e no pós-jogo. Resultado: Chapecoense no piloto automático cai em 3 de 5 temporadas; Cruzeiro em 0.
+- **Meta dos dois favoritos** da Série A virou pódio, não G-6.
+- **Partida:** Pular avança até a próxima parada (intervalo, gol sofrido, lesão, reta final) em vez de ir ao fim; "Até o fim" é a segunda opção. Gol mostra o nome do artilheiro e treme o campo. A bola anda todo minuto, puxada pela posse.
+- **Telas:** o (i) de ajuda aparece no toque, não só com mouse. Onboarding com clubes na primeira tela e botão Começar no topo do passo 2. Central com "Para resolver" logo abaixo do herói. Elenco com bola parada e times salvos recolhidos em "Mais ajustes" no celular, e dica de como trocar até a primeira troca. Mercado diz quanto dá para gastar guardando 3 folhas. Pós-jogo com alerta da diretoria abaixo do placar, confete de nível só sem derrota, e uma frase do que espera o técnico na volta. Fonte mínima 12 px. Carregar escudos só com `#dev` na URL.
+
 ## 8. Decisões em aberto
 
 ### Já decididas (27 de outubro de 2026)

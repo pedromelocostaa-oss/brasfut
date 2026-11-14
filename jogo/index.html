@@ -124,7 +124,7 @@ main { padding: 16px; padding-block: 16px 24px; max-width: 1240px; width: 100%; 
 /* ---------- escudo (cores do clube, sem marca) ---------- */
 .badge { --c1: #ccc; --c2: #333; display: inline-grid; place-items: center; flex: none; width: 36px; height: 36px; border-radius: 50%; background: var(--c1); box-shadow: inset 0 0 0 3px var(--c2), 0 0 0 1px var(--linha); font-family: var(--f-display); font-weight: 900; font-size: 13px; letter-spacing: .02em; }
 .badge.lg { width: 64px; height: 64px; font-size: 22px; box-shadow: inset 0 0 0 5px var(--c2), 0 0 0 1px var(--linha); }
-.badge.sm { width: 26px; height: 26px; font-size: 10px; box-shadow: inset 0 0 0 2px var(--c2), 0 0 0 1px var(--linha); }
+.badge.sm { width: 26px; height: 26px; font-size: 12px; box-shadow: inset 0 0 0 2px var(--c2), 0 0 0 1px var(--linha); }
 
 /* ---------- nota (o unico numero do jogador) ---------- */
 .ovr { display: inline-grid; place-items: center; min-width: 40px; height: 32px; padding: 0 6px; border-radius: 8px; font-family: var(--f-display); font-weight: 900; font-size: 22px; line-height: 1; background: var(--sup2); }
@@ -205,11 +205,11 @@ table.tbl .pts { font-family: var(--f-display); font-weight: 900; font-size: 19p
 .mag .disc { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; font-family: var(--f-display); font-weight: 900; font-size: 22px; line-height: 1; background: var(--c1, var(--ima)); color: var(--cx, #fff); box-shadow: inset 0 0 0 3px var(--c2, #fff), 0 3px 0 rgba(0,0,0,.35), 0 6px 12px rgba(0,0,0,.25); transition: transform .15s; }
 .mag .nm { max-width: 90px; font-size: 12px; font-weight: 700; line-height: 1.1; padding: 1px 6px; border-radius: 6px; background: rgba(0,0,0,.45); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .mag .fadiga { width: 36px; height: 4px; background: rgba(0,0,0,.35); }
-.mag .slot { font-size: 10px; font-weight: 700; opacity: .9; }
+.mag .slot { font-size: 12px; font-weight: 700; opacity: .9; }
 .mag.sel .disc { transform: scale(1.12); box-shadow: inset 0 0 0 3px var(--ouro), 0 0 0 4px var(--ouro), 0 6px 14px rgba(0,0,0,.35); }
 .mag.empty .disc { background: rgba(0,0,0,.3); box-shadow: inset 0 0 0 2px var(--giz); }
 .mag.off .disc::after { content: "!"; position: absolute; transform: translate(18px, -18px); width: 18px; height: 18px; border-radius: 50%; background: var(--cartao); color: #fff; font-size: 13px; display: grid; place-items: center; }
-@media (max-width: 400px) { .mag { width: 62px; } .mag .disc { width: 42px; height: 42px; font-size: 20px; } .mag .nm { max-width: 80px; font-size: 11px; padding: 1px 4px; } }
+@media (max-width: 400px) { .mag { width: 62px; } .mag .disc { width: 42px; height: 42px; font-size: 20px; } .mag .nm { max-width: 80px; font-size: 12px; padding: 1px 4px; } }
 
 .lineup-layout { display: grid; gap: 16px; }
 @media (min-width: 900px) { .lineup-layout { grid-template-columns: minmax(340px, 520px) 1fr; align-items: start; } .lineup-layout .side { position: sticky; top: 76px; } }
@@ -236,7 +236,7 @@ table.tbl .pts { font-family: var(--f-display); font-weight: 900; font-size: 19p
 @media (max-width: 560px) { .ruler .rl { display: none; } .ruler button { min-height: 44px; align-content: center; } }
 .ment-now { font-family: var(--f-display); font-weight: 900; text-transform: uppercase; font-size: 18px; letter-spacing: .02em; }
 .ruler button[aria-pressed="true"] { background: var(--sup); color: var(--tinta); box-shadow: var(--sombra); }
-.ruler-ends { display: flex; justify-content: space-between; font-size: 11px; color: var(--tinta2); text-transform: uppercase; letter-spacing: .06em; margin-top: 4px; }
+.ruler-ends { display: flex; justify-content: space-between; font-size: 12px; color: var(--tinta2); text-transform: uppercase; letter-spacing: .06em; margin-top: 4px; }
 
 /* ---------- painel inferior / lateral ---------- */
 .sheet-back { position: fixed; inset: 0; z-index: 60; background: rgba(5, 12, 9, .5); display: flex; align-items: flex-end; justify-content: center; animation: fade .15s ease; }
@@ -289,11 +289,14 @@ table.tbl .pts { font-family: var(--f-display); font-weight: 900; font-size: 19p
 .mini-pitch .gl, .mini-pitch .gr { position: absolute; top: 30%; bottom: 30%; width: 14%; border: 2px solid var(--giz); }
 .mini-pitch .gl { left: 8px; border-left: 0; } .mini-pitch .gr { right: 8px; border-right: 0; }
 .ball { position: absolute; width: 14px; height: 14px; border-radius: 50%; background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,.4); transform: translate(-50%, -50%); transition: left .6s cubic-bezier(.3,.7,.3,1), top .6s cubic-bezier(.3,.7,.3,1); }
-.mini-pitch .goal-flash { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--f-display); font-weight: 900; font-size: 56px; color: var(--ouro); text-shadow: 0 3px 0 rgba(0,0,0,.4); animation: pop 1.4s ease forwards; pointer-events: none; }
+.mini-pitch.shake { animation: shake .5s ease; }
+@keyframes shake { 0%,100% { transform: none; } 20% { transform: translate(-4px, 2px); } 40% { transform: translate(4px, -2px); } 60% { transform: translate(-3px, 1px); } 80% { transform: translate(3px, -1px); } }
+.mini-pitch .goal-flash small { display: block; font-size: 18px; font-family: var(--f-body); font-weight: 800; color: #fff; letter-spacing: 0; }
+.mini-pitch .goal-flash { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--f-display); font-weight: 900; font-size: 56px; color: var(--ouro); text-shadow: 0 3px 0 rgba(0,0,0,.4); animation: pop 1.7s ease forwards; pointer-events: none; text-align: center; }
 @keyframes pop { 0% { transform: scale(.4); opacity: 0; } 20% { transform: scale(1.15); opacity: 1; } 70% { transform: scale(1); opacity: 1; } 100% { opacity: 0; } }
 .stats3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .stat { background: var(--sup); border: 1px solid var(--linha); border-radius: 12px; padding: 8px 10px; }
-.stat .lbl { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--tinta2); font-weight: 700; text-align: center; }
+.stat .lbl { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--tinta2); font-weight: 700; text-align: center; }
 .stat .vv { display: flex; justify-content: space-between; font-family: var(--f-display); font-weight: 900; font-size: 22px; }
 .stat .split { display: flex; height: 5px; border-radius: 3px; overflow: hidden; background: var(--sup2); margin-top: 4px; }
 .stat .split i { background: var(--ima); } .stat .split em { background: var(--tinta2); }
@@ -306,7 +309,7 @@ table.tbl .pts { font-family: var(--f-display); font-weight: 900; font-size: 19p
 :root[data-theme="dark"] .ev.goal .m { color: var(--ouro); }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .ev.goal .m { color: var(--ouro); } }
 .ev.mine .who { color: var(--ima); }
-.ev .k { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; font-weight: 700; color: var(--tinta2); margin-right: 6px; }
+.ev .k { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; font-weight: 700; color: var(--tinta2); margin-right: 6px; }
 .match-layout { display: grid; gap: 12px; }
 @media (min-width: 1024px) { .match-layout { grid-template-columns: 1.1fr 1fr; align-items: start; } .mini-pitch { height: auto; aspect-ratio: 2 / 1; } .match-layout .feed { max-height: 56vh; overflow: auto; } }
 @media (min-width: 640px) and (max-width: 1023px) { .mini-pitch { height: 170px; } }
@@ -370,7 +373,7 @@ table.tbl .pts { font-family: var(--f-display); font-weight: 900; font-size: 19p
 
 /* ---------- onboarding ---------- */
 .onb { max-width: 1100px; margin: 0 auto; padding: 24px 16px 48px; }
-.onb h1 { font-family: var(--f-display); font-weight: 900; font-size: clamp(40px, 8vw, 72px); line-height: .95; text-transform: uppercase; }
+.onb h1 { font-family: var(--f-display); font-weight: 900; font-size: clamp(32px, 7vw, 72px); line-height: .95; text-transform: uppercase; }
 .onb h1 i { font-style: normal; color: var(--ima); }
 .club-grid { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); }
 .club-card { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: center; text-align: left; padding: 12px; border-radius: 14px; border: 1.5px solid var(--linha); background: var(--sup); min-height: 72px; }
@@ -448,21 +451,19 @@ input.txt { width: 100%; min-height: 48px; padding: 10px 14px; border-radius: 12
 .brandmark.sm { display: inline-grid; padding: 3px 8px; border-radius: 6px; }
 .brandmark.sm b { font-size: 15px; }
 
-/* ---------- ajuda ao passar o mouse (so computador) ---------- */
-.hint { display: none; }
-@media (hover: hover) and (pointer: fine) {
-  .hint { display: inline-grid; place-items: center; width: 20px; height: 20px; margin-left: 6px; vertical-align: middle; position: relative; top: -2px; border-radius: 50%; color: currentColor; opacity: .5; cursor: help; text-transform: none; letter-spacing: 0; }
-  .hint:hover, .hint:focus-visible { opacity: 1; }
-  .eyebrow .hint { width: 16px; height: 16px; margin-left: 4px; top: -1px; }
-  .eyebrow .hint svg { width: 13px; height: 13px; }
-}
+/* ---------- ajuda: (i) ao passar o mouse no computador, no toque no celular ---------- */
+.hint { display: inline-grid; place-items: center; width: 24px; height: 24px; margin-left: 4px; vertical-align: middle; position: relative; top: -2px; border-radius: 50%; color: currentColor; opacity: .55; cursor: help; text-transform: none; letter-spacing: 0; }
+.hint:hover, .hint:focus-visible { opacity: 1; }
+.eyebrow .hint { width: 20px; height: 20px; margin-left: 2px; top: -1px; }
+.eyebrow .hint svg { width: 13px; height: 13px; }
+@media (hover: hover) and (pointer: fine) { .hint { width: 20px; height: 20px; margin-left: 6px; } .eyebrow .hint { width: 16px; height: 16px; } }
 .tipbox { position: fixed; z-index: 95; left: 0; top: 0; max-width: 300px; padding: 8px 11px; border-radius: 10px; background: var(--placar); color: var(--placar-tx); border: 1px solid var(--linha); font: 400 13px/1.45 var(--f-texto); text-transform: none; letter-spacing: 0; box-shadow: var(--sombra); pointer-events: none; opacity: 0; visibility: hidden; transform: translateY(3px); transition: opacity .12s ease, transform .12s ease, visibility 0s linear .12s; }
 .tipbox.on { opacity: 1; visibility: visible; transform: none; transition: opacity .12s ease, transform .12s ease, visibility 0s; }
 @media (prefers-reduced-motion: reduce) { .tipbox, .tipbox.on { transition: none; transform: none; } }
 
 /* ---------- séries, competições e atributos ---------- */
 .attrs { display: inline-flex; gap: 2px; align-items: baseline; margin-left: 4px; font-variant-numeric: tabular-nums; font-size: 12px; color: var(--tinta2); white-space: nowrap; }
-.attrs i { font-style: normal; font-weight: 700; font-size: 10px; letter-spacing: .04em; margin-left: 4px; opacity: .8; }
+.attrs i { font-style: normal; font-weight: 700; font-size: 12px; letter-spacing: .04em; margin-left: 4px; opacity: .8; }
 .attr-bars { display: grid; gap: 8px; margin-top: 14px; }
 .attr-bars .ab { display: grid; grid-template-columns: minmax(84px, auto) 1fr 36px; gap: 10px; align-items: center; font-size: 14px; }
 .attr-bars .bar { height: 8px; border-radius: 4px; background: var(--sup2); overflow: hidden; }
@@ -478,7 +479,7 @@ input.txt { width: 100%; min-height: 48px; padding: 10px 14px; border-radius: 12
 .tie .side.win { font-weight: 800; }
 .tie .side.lose { color: var(--tinta2); }
 .tie .sc { font-family: var(--f-display); font-weight: 800; font-size: 17px; text-align: center; min-width: 74px; display: grid; }
-.tie .sc small { font-family: var(--f-texto); font-weight: 400; font-size: 11px; color: var(--tinta2); }
+.tie .sc small { font-family: var(--f-texto); font-weight: 400; font-size: 12px; color: var(--tinta2); }
 .tie.mine { background: var(--ima-suave); border-radius: 10px; padding-inline: 8px; border-top-color: transparent; }
 details.more { margin-top: 6px; }
 details.more summary { cursor: pointer; color: var(--ima); font-weight: 700; font-size: 14px; padding: 6px 0; }
@@ -582,6 +583,17 @@ select.txt { min-height: 40px; padding: 6px 10px; border-radius: 10px; border: 1
 .pc-bot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; margin-top: 10px; }
 .grp { font-family: var(--f-display); text-transform: uppercase; color: var(--ima); font-size: 18px; margin: 16px 0 0; }
 @media (max-width: 560px) { .pc-top { grid-template-columns: auto minmax(0, 1fr); } .pc-act { grid-column: 1 / -1; justify-content: flex-end; } .contratar .ct-t { font-size: 34px; } }
+
+/* pendências na central */
+.pend { display: flex; justify-content: space-between; align-items: center; gap: 10px; width: 100%; text-align: left; padding: 10px 12px; margin-top: 8px; border-radius: 10px; border: 1px solid var(--linha); background: var(--sup2); color: var(--tinta); font: inherit; font-weight: 700; cursor: pointer; }
+.pend:hover { border-color: var(--ima); }
+.card-more { padding: 0; }
+.card-more > summary { padding: 14px 16px; font-weight: 800; cursor: pointer; list-style: none; }
+.card-more > summary::-webkit-details-marker { display: none; }
+.card-more > summary::before { content: '▸ '; color: var(--ima); }
+.card-more[open] > summary::before { content: '▾ '; }
+.card-more[open] > summary { border-bottom: 1px solid var(--linha); }
+.card-more > section { border: 0; box-shadow: none; border-radius: 0; }
 
 </style>
 <div id="app"></div>
@@ -1590,6 +1602,10 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
   // SEM_ANO é a quantidade de rodadas do calendário antigo, usada só para manter o caixa dos clubes
   // no mesmo patamar de antes da virada para data real. Não é um número de jogo, é de calibragem.
   const MESES_FOLHA = 13, MESES_TV = 12, SEM_ANO = 58;
+  // Bicho: prêmio que o elenco recebe por resultado, como no futebol brasileiro de verdade.
+  // É o atrito que cresce junto com o sucesso: quem ganha muito paga muito. Fração da folha mensal.
+  const BICHO = { V: 0.06, E: 0.025 };
+  function bicho(wb, res) { return Math.round(wb * (BICHO[res] || 0) / 1000) * 1000; }
 
   // ---------- Passe de Técnico ----------
   // A primeira meia temporada é de graça: estadual inteiro e os 19 jogos do primeiro turno.
@@ -1724,7 +1740,8 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
   // metas por série (rank = posição de força na série; na Série D, dentro do grupo de 6)
   function targetFor(rank, div = 'A') {
     if (div === 'A') {
-      if (rank <= 3) return { pos: 6, label: 'Brigar pelo título e terminar no G-6', role: 'Favorito', meta: 'G-6', press: 'alta' };
+      if (rank <= 2) return { pos: 3, label: 'Brigar pelo título e terminar no pódio', role: 'Favorito', meta: 'pódio', press: 'alta' };
+      if (rank <= 4) return { pos: 6, label: 'Brigar pelo título e terminar no G-6', role: 'Favorito', meta: 'G-6', press: 'alta' };
       if (rank <= 8) return { pos: 10, label: 'Terminar entre os 10 primeiros', role: 'Briga por vaga', meta: 'top 10', press: 'média' };
       if (rank <= 14) return { pos: 14, label: 'Terminar entre os 14 primeiros', role: 'Meio de tabela', meta: 'top 14', press: 'média' };
       return { pos: 16, label: 'Fugir do Z-4', role: 'Azarão', meta: 'fugir do Z-4', press: 'baixa' };
@@ -1843,7 +1860,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
     const me = st.coach.club, d = st.clubs[me].div; let rank;
     if (d === 'D') { const key = C.leagueKey(st.comp, me); rank = Object.keys(st.comp.tables[key]).sort((a, b) => strength(st, b) - strength(st, a)).indexOf(me) + 1; }
     else rank = strengthRanks(st, d).indexOf(me) + 1;
-    st.board.target = { ...targetFor(rank, d), div: d }; st.board.rankStrength = rank; st.board.low = 0;
+    st.board.target = { ...targetFor(rank, d), div: d }; st.board.rankStrength = rank; st.board.low = 0; st.board.alerta = null; st.board.ultimato = null;
   }
 
   function pushNews(st, type, txt) { st.news.unshift({ y: st.year, r: st.round + 1, type, txt }); if (st.news.length > 80) st.news.length = 80; }
@@ -1958,7 +1975,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
   }
 
   function checkObjectives(st, ctx) {
-    const bonus = Math.round(wageBill(st, st.coach.club) * 0.02 / 1000) * 1000;
+    const bonus = Math.round(wageBill(st, st.coach.club) * 0.01 / 1000) * 1000;
     const done = [];
     st.objectives.forEach(o => {
       let ok = false;
@@ -2115,6 +2132,38 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
   }
 
   // ---------- fechar a semana (com ou sem jogo do usuário) ----------
+  // ---------- paciência da diretoria em três degraus ----------
+  // 1. Aviso: confiança abaixo de 35 e fora da meta, depois de 9 jogos de liga. Só avisa.
+  // 2. Ultimato: confiança abaixo de 25 e 3 ou mais posições abaixo da meta. Três jogos de liga para
+  //    voltar a até 2 posições da meta ou recuperar a confiança; senão, rua.
+  // 3. Demissão direta: confiança abaixo de 10.
+  // Devolve o que mudou nesta rodada, para a tela avisar. st.board.alerta guarda o degrau atual.
+  const ALERTA = { aviso: 35, ultimato: 28, rua: 12 };
+  function boardAlert(st, lj, pos) {
+    const b = st.board; const gap = pos - b.target.pos; const conf = b.conf; let ev = null;
+    const foraDaMeta = gap > 0;
+    if (conf < ALERTA.rua && lj >= 5) { b.alerta = 'rua'; return { k: 'rua' }; }
+    if (b.ultimato) {
+      const ok = gap <= 2;
+      if (ok) { b.ultimato = null; b.alerta = conf < ALERTA.aviso && foraDaMeta ? 'aviso' : null; ev = { k: 'salvo' }; }
+      else { b.ultimato.left--; if (b.ultimato.left <= 0) { b.alerta = 'rua'; return { k: 'rua' }; } ev = { k: 'ultimato', left: b.ultimato.left }; }
+      return ev;
+    }
+    if (lj < 9) return null;
+    if (conf < ALERTA.ultimato && gap > 2) { b.ultimato = { left: 3, since: st.round }; b.alerta = 'ultimato'; return { k: 'ultimato', left: 3, novo: true }; }
+    if (conf < ALERTA.aviso && foraDaMeta) { if (b.alerta !== 'aviso') ev = { k: 'aviso', novo: true }; b.alerta = 'aviso'; return ev; }
+    if (b.alerta) { b.alerta = null; return { k: 'calmo' }; }
+    return null;
+  }
+  // texto curto de cada degrau, para a central e o pós-jogo
+  function alertaTexto(st) {
+    const b = st.board; if (!b.alerta) return null;
+    const meta = b.target.label.charAt(0).toLowerCase() + b.target.label.slice(1);
+    if (b.alerta === 'aviso') return { k: 'aviso', titulo: 'A diretoria quer reação', txt: `Meta: ${meta}. Hoje: ${position(st)}º. A paciência está acabando; dois bons resultados acalmam.` };
+    if (b.alerta === 'ultimato') return { k: 'ultimato', titulo: `Ultimato: ${b.ultimato ? b.ultimato.left : 0} ${b.ultimato && b.ultimato.left === 1 ? 'jogo' : 'jogos'} de liga`, txt: `Volte a até 2 posições da meta (${meta}) ou a diretoria demite.` };
+    return { k: 'rua', titulo: 'Demitido', txt: 'A diretoria encerrou o contrato.' };
+  }
+
   function finishRound(st, userMatch) {
     const me = st.coach.club;
     const report = { xp: 0, xpBefore: st.coach.xp, levelBefore: st.coach.level, evolutions: [], achievements: [], finance: [], conf: 0, objectives: [], news: [], week: st.round + 1, played: !!userMatch };
@@ -2152,7 +2201,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
       if (st.clubs[me].cash < 0) dc -= 2;
       if (res === 'D' && dc < 0 && life(st).flags.underdog === st.round) dc = Math.round(dc / 2);
       st.board.conf = Math.max(0, Math.min(100, st.board.conf + dc)); report.conf = dc;
-      if (isLeague) { if (st.board.conf < 15 && lj >= 9 && pos - st.board.target.pos > 2) st.board.low++; else st.board.low = 0; }
+      if (isLeague) report.alerta = boardAlert(st, lj, pos);
       // conquistas
       const ach = k => { if (!st.achievements[k]) { st.achievements[k] = `${st.year}·S${st.round + 1}`; report.achievements.push(k); xp += 50; } };
       if (res === 'V') ach('first_win');
@@ -2184,18 +2233,21 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
     const payday = C.isMonthEnd(st.year, st.round);
     const mesNome = C.monthLabel(st.year, st.round);
     const homeGame = {}; fixtures.forEach(mt => { if (!mt.neutral) homeGame[mt.h] = mt; });
+    const resOf = {}; results.forEach(r => { if (r.gh === r.ga) { resOf[r.h] = 'E'; resOf[r.a] = 'E'; } else { resOf[r.gh > r.ga ? r.h : r.a] = 'V'; } });
     Object.values(st.clubs).forEach(c => {
       if (c.div === 'X') return;
-      const isUser = c.id === me; const wb = payday ? wageBill(st, c.id) : 0;
+      const isUser = c.id === me; const wbNow = (payday || resOf[c.id]) ? wageBill(st, c.id) : 0; const wb = payday ? wbNow : 0;
+      const prem = resOf[c.id] ? bicho(wbNow, resOf[c.id]) : 0;
       let gate = 0;
       if (homeGame[c.id]) {
         const cw = crowd(st, c.id, homeGame[c.id]); gate = cw.gate;
         if (isUser) { report.attendance = cw.att; report.fill = cw.fill; report.ticket = cw.price; const inf = infra(st); inf.att.unshift(cw.att); if (inf.att.length > 6) inf.att.length = 6; }
       }
-      if (!isUser) { c.cash += gate + (payday ? c.tv - wb : 0); return; }
-      report.finance = { tv: 0, wage: 0, gate, bonus: obj.done.length * obj.bonus, sponsor: 0, winBonus: 0 };
+      if (!isUser) { c.cash += gate - prem + (payday ? c.tv - wb : 0); return; }
+      report.finance = { tv: 0, wage: 0, gate, bonus: obj.done.length * obj.bonus, sponsor: 0, winBonus: 0, bicho: -prem };
       report.mid = mid;
       if (gate) money(st, 'gate', gate, `Bilheteria (${(report.attendance || 0).toLocaleString('pt-BR')} torcedores)`);
+      if (prem) money(st, 'bicho', -prem, res === 'V' ? 'Bicho da vitória para o elenco' : 'Bicho do empate para o elenco');
       const sp = st.sponsor;
       // o bônus por vitória é do jogo, então cai no mesmo dia da partida
       if (sp && sp.winBonus && res === 'V') { money(st, 'sponsor', sp.winBonus, `Bônus por vitória (${sp.brand.name})`); sp.earned += sp.winBonus; report.finance.winBonus = sp.winBonus; }
@@ -2254,7 +2306,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
     }
     st.round++;
     lifeWeek(st, report, mid);
-    if (st.board.low >= 3) { st.fired = true; pushNews(st, 'club', `${st.coach.name} é demitido do ${st.clubs[me].name}.`); }
+    if (st.board.alerta === 'rua') { st.fired = true; st.board.alerta = null; st.board.ultimato = null; pushNews(st, 'club', `${st.coach.name} é demitido do ${st.clubs[me].name}.`); }
     if (st.round >= WEEKS) report.season = endSeason(st);
     else { genObjectives(st); auctionTick(st); report.preset = applyPresetFor(st); }
     return report;
@@ -3233,12 +3285,16 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
       } else c.cash += c.tv - 2 * wb;
     });
     const tvRef = myc.tvFull || myc.tv;
-    const prize = Math.round(tvRef * Math.max(0, tab.length + 1 - myPos) * 0.22 * (d === 'D' ? 3 : 1) / 10000) * 10000;
+    // premiação por posição: cresce ao quadrado com a colocação. O campeão leva cerca de 3 cotas mensais cheias,
+    // o 10º leva perto de 1 e o lanterna quase nada. Antes era linear e o meio da tabela ficava rico demais.
+    const frac = Math.max(0, tab.length + 1 - myPos) / tab.length;
+    const prize = Math.round(tvRef * 3 * frac * frac * (d === 'D' ? 3 : 1) / 10000) * 10000;
     money(st, 'prize', prize, `Premiação: ${myPos}º lugar (${d === 'D' ? 'grupo da Série D' : C.DIV_NAME[d]})`);
     const reach = C.cupReach(st.comp, me);
     const cupPrize = st.cupEarned || 0;
     const estKey = C.estOf(st.comp, me); const estWon = estKey && out.est[estKey] === me;
-    if (estWon) money(st, 'prize', Math.round(tvRef * 3 / 10000) * 10000, `Título: ${st.comp.est[estKey].name}`);
+    // título estadual paga pouco, como na vida real: perto de 40% de uma cota mensal cheia
+    if (estWon) money(st, 'prize', Math.round(tvRef * 0.4 / 10000) * 10000, `Título: ${st.comp.est[estKey].name}`);
     const promo = (out.up[d] || []).includes(me) ? 'up' : (out.down[d] || []).includes(me) ? 'down' : null;
     const divChamp = out.champ[d] === me, cupChamp = out.champ.CDB === me;
     const contR = C.contReach(st.comp, me); const libChamp = out.champ.LIB === me, sulChamp = out.champ.SUL === me;
@@ -3318,7 +3374,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
   }
 
   function restartAfterFire(st, newClub) {
-    st.coach.club = newClub; st.fired = false; st.board.conf = 55; st.board.low = 0; st.morale = 55;
+    st.coach.club = newClub; st.fired = false; st.board.conf = 55; st.board.low = 0; st.board.alerta = null; st.board.ultimato = null; st.morale = 55;
     splitSponsor(st, newClub); infra(st); st.sponsor = null; st.sponsorOffers = sponsorOffers(st);
     setTarget(st);
     st.lineup = { ...E.autoLineup(squadOf(st, newClub), '4-3-3'), ment: 'equilibrada' };
@@ -3342,7 +3398,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
     return `${s}R$ ${a.toLocaleString('pt-BR')}`;
   }
 
-  const api = { WEEKS, SEASON_WEEKS, isMid, abreSponsor, PRECOS, PASSE_DATA, temPasse, passeNaHora, passeTrava, passeInfo, ativarPasse, CONT_PRIZE, USD, contGroups, WINDOWS, LEVELS, LEVEL_TITLES, UNLOCKS, ACH, TICKET, CUP_QUOTA, cupQuota, CAP_MAX, capAt, rngFor, hashSeed, levelFromXp, formationsFor, squadOf, wageBill, strength, windowOpen, windowInfo, strengthRanks, divClubs, targetFor, newCareer, startSeason, weekFixtures, userFixture, nextUserWeek, leagueKey, sortedTable, position, prepareUserMatch, suggestMent, sponsorOffers, signSponsor, sponsorPending, sponsorPerf, migrate, BRANDS, withB, finishRound, simWeek, askPrice, sellerAsk, disposition, interest, marketWage, buyTerms, signPlayer, loanTerms, loanIn, INTEREST_OK, mValue, prestige, loanFee, respondOffer, endLoans, aiMarketTick, marketList, wageRoom, makeOffer, acceptOffer, quickSell, auctionBid, auctionRivalTick, auctionClose, nextSeason, restartAfterFire, fireOffers, fmt, userSide, LIC, LIC_ORDER, COURSES, life, hasLic, licNeed, xpMult, studyOptions, startStudy, answerPresser, answerEvent, checkLicense, PRESETS, PRESET_COMP, compKind, savePreset, loadPreset, applyPresetFor, INFRA, PROSPECTS, TICKET_MULT, TICKET_NAME, BASE_MAX, PENEIRA_WEEK, SQUAD_MAX, infra, infraCost, infraStart, infraMaint, infraLabel, ctBonus, crowd, lojaInfo, idolOf, kitPrice, promoteProspect, releaseProspect, verbaInfo, askVerba };
+  const api = { BICHO, bicho, ALERTA, alertaTexto, WEEKS, SEASON_WEEKS, isMid, abreSponsor, PRECOS, PASSE_DATA, temPasse, passeNaHora, passeTrava, passeInfo, ativarPasse, CONT_PRIZE, USD, contGroups, WINDOWS, LEVELS, LEVEL_TITLES, UNLOCKS, ACH, TICKET, CUP_QUOTA, cupQuota, CAP_MAX, capAt, rngFor, hashSeed, levelFromXp, formationsFor, squadOf, wageBill, strength, windowOpen, windowInfo, strengthRanks, divClubs, targetFor, newCareer, startSeason, weekFixtures, userFixture, nextUserWeek, leagueKey, sortedTable, position, prepareUserMatch, suggestMent, sponsorOffers, signSponsor, sponsorPending, sponsorPerf, migrate, BRANDS, withB, finishRound, simWeek, askPrice, sellerAsk, disposition, interest, marketWage, buyTerms, signPlayer, loanTerms, loanIn, INTEREST_OK, mValue, prestige, loanFee, respondOffer, endLoans, aiMarketTick, marketList, wageRoom, makeOffer, acceptOffer, quickSell, auctionBid, auctionRivalTick, auctionClose, nextSeason, restartAfterFire, fireOffers, fmt, userSide, LIC, LIC_ORDER, COURSES, life, hasLic, licNeed, xpMult, studyOptions, startStudy, answerPresser, answerEvent, checkLicense, PRESETS, PRESET_COMP, compKind, savePreset, loadPreset, applyPresetFor, INFRA, PROSPECTS, TICKET_MULT, TICKET_NAME, BASE_MAX, PENEIRA_WEEK, SQUAD_MAX, infra, infraCost, infraStart, infraMaint, infraLabel, ctBonus, crowd, lojaInfo, idolOf, kitPrice, promoteProspect, releaseProspect, verbaInfo, askVerba };
   if (NODE) module.exports = api; else root.Game = api;
 })(typeof window !== 'undefined' ? window : globalThis);
 
@@ -3358,6 +3414,8 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
   function loadCrests() { try { const raw = localStorage.getItem(CKEY); CRESTS = raw ? JSON.parse(raw) || {} : {}; } catch (e) { CRESTS = {}; } }
   function saveCrests() { try { localStorage.setItem(CKEY, JSON.stringify(CRESTS)); return true; } catch (e) { return false; } }
   let S = null;
+  // ferramentas de desenvolvedor (carregar escudos) só aparecem com #dev na URL ou a chave prancheta.dev
+  const DEV = (() => { try { return location.hash === '#dev' || localStorage.getItem('prancheta.dev') === '1'; } catch (e) { return location.hash === '#dev'; } })();
   const U = { view: 'central', sheet: null, settings: { sound: true }, onb: { step: 1, club: null, persona: 'motivador', name: '' }, mkt: { tab: 'buy', pos: '', young: false, fit: true, offer: 0, resp: null }, match: null, ms: null, post: null, confirmNew: false, auctionTimer: null, liga: null };
   const app = document.getElementById('app');
 
@@ -3409,7 +3467,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
     mute: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 9l5 6M22 9l-5 6"/></svg>',
   };
 
-  // ---------- ajuda: icone (i) que explica a funcao ao passar o mouse. So aparece no computador (mouse); celular e tablet ficam sem. ----------
+  // ---------- ajuda: icone (i) que explica a funcao. No computador abre ao passar o mouse; no celular e no tablet abre no toque. ----------
   const HELP_MQ = '(hover: hover) and (pointer: fine)';
   const canHover = () => !!(window.matchMedia && matchMedia(HELP_MQ).matches);
   const IC_HINT = '<svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 7.2v4.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="8" cy="4.7" r="1.05" fill="currentColor"/></svg>';
@@ -3437,7 +3495,14 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
   });
   document.addEventListener('focusin', e => { const a = e.target.closest ? e.target.closest('.hint') : null; if (a && canHover()) showTip(a); });
   document.addEventListener('focusout', hideTip);
-  document.addEventListener('pointerdown', hideTip);
+  // No toque (celular e tablet) o (i) abre a explicação num aviso na base da tela. É o mesmo texto do computador.
+  document.addEventListener('click', e => {
+    if (canHover()) return;
+    const a = e.target.closest ? e.target.closest('.hint') : null; if (!a) return;
+    e.preventDefault(); e.stopPropagation();
+    toast(`<span class="ti">Ajuda</span><span>${esc(a.getAttribute('data-tip') || '')}</span>`, '', 6000);
+  }, true);
+  document.addEventListener('pointerdown', e => { if (e.target.closest && e.target.closest('.hint') && !canHover()) return; hideTip(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') hideTip(); });
   window.addEventListener('scroll', hideTip, true);
 
@@ -3584,12 +3649,12 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
       return `<div class="onb stack">
         <div class="row between"><span class="brand">Pran<i>cheta</i> FC</span><span class="tag">Temporada 2026</span></div>
         ${U.oldSave ? '<div class="notice warn small">Sua carreira anterior era de uma versão antiga do jogo, sem as Séries B, C e D, e não pôde ser carregada. Comece uma nova.</div>' : ''}
-        <h1>Escolha<br>o seu <i>clube</i>${hint('O número é a força: média das 11 maiores notas do elenco. Favorito tem meta alta e diretoria impaciente; azarão tem meta menor e mais paciência.')}</h1>
-        <p class="muted" style="max-width:62ch">Você é o técnico: escala o time, decide a postura no intervalo, contrata, vende e responde à diretoria. Comece escolhendo um dos 156 clubes das Séries A, B, C e D de 2026. O número é a força dos titulares e o rótulo diz o papel do clube na série. Começar por baixo e subir de série é o caminho mais longo; na Série A a cobrança é maior.</p>
+        <h1 class="onb-h1">Escolha<br>o seu <i>clube</i>${hint('O número é a força: média das 11 maiores notas do elenco. Favorito tem meta alta e diretoria impaciente; azarão tem meta menor e mais paciência.')}</h1>
+        <p class="muted" style="max-width:62ch;margin:0">Você é o técnico. O número é a força do time; o rótulo diz o que a diretoria espera.</p>
         <div class="seg wide" role="tablist">${['A', 'B', 'C', 'D'].map(x => `<button role="tab" data-act="onbDiv" data-v="${x}" aria-pressed="${d === x}">${DIVN[x]}</button>`).join('')}</div>
         <label class="sr" for="club-q">Buscar clube</label><input id="club-q" class="txt" placeholder="Buscar clube, cidade ou estado" value="${esc(o.q || '')}" autocomplete="off">
         <div class="club-grid">${clubCards()}</div>
-        <div class="row" style="gap:10px">${crestMultiBtn('btn')}<span class="small muted">${Object.keys(CRESTS).length ? `${Object.keys(CRESTS).length} de ${E.CLUBS.length} escudos carregados.` : 'Tem os arquivos oficiais dos escudos? Carregue aqui ou depois em Clube.'}</span></div>
+        ${DEV ? `<div class="row" style="gap:10px">${crestMultiBtn('btn')}<span class="small muted">${Object.keys(CRESTS).length} de ${E.CLUBS.length} escudos carregados.</span></div>` : ''}
         <p class="tiny muted">Elencos reais e completos das Séries A, B, C e D de 2026 (Transfermarkt, 3 de outubro de 2026); clubes, estádios e capacidades da Wikipédia. Notas e atributos são estimativas calculadas a partir do valor de mercado, da idade, dos minutos jogados e dos gols e assistências de 2026. Elencos com menos de 23 jogadores são completados com garotos da base de nomes gerados, e os que surgem nas temporadas seguintes também são fictícios.</p>
       </div>`;
     }
@@ -3599,6 +3664,8 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
       <button class="btn ghost" data-act="onbBack" style="justify-self:start">← Trocar de clube</button>
       <div class="row">${badge(o.club, 'lg')}<div><div class="eyebrow">Seu clube · ${DIVN[c.div]}</div><h1 style="font-size:clamp(34px,6vw,54px)">${esc(c.name)}</h1></div></div>
       <div class="notice info"><b>${t.role}.</b> Meta da diretoria: ${t.label.charAt(0).toLowerCase() + t.label.slice(1)}, com cobrança ${t.press}.${c.div === 'D' ? ' Na Série D a meta vale para o grupo de 6 da primeira fase.' : ''} Se a campanha ficar muito abaixo disso por vários jogos seguidos, a diretoria demite.</div>
+      <button class="btn primary big block" data-act="onbStart">Começar carreira no ${esc(c.name)}</button>
+      <p class="small muted" style="margin:-4px 0 0">Nome, visual e jeito de comandar já vêm prontos. Mude abaixo se quiser; dá para trocar depois em Clube.</p>
       <section class="card stack" style="gap:12px"><h2>Quem é o técnico?${hint('Nome e visual aparecem no jogo. O visual dá para mudar depois em Clube.')}</h2>
         <label class="stack" style="gap:6px"><span class="eyebrow">Nome do técnico</span><input id="coach-name" class="txt" maxlength="28" placeholder="Seu nome" value="${esc(o.name)}" autocomplete="name"></label>
         <div class="av-wrap"><div class="av-prev">${avatarSVG(o.avatar, o.club, 150)}</div>${avatarEditor(o.avatar)}</div></section>
@@ -3709,6 +3776,27 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
   // ---------- vida do técnico: coletivas, eventos, promessas e formação (fase 3) ----------
   const IC_MIC = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3M9 21h6"/></svg>';
   const IC_BOLT = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>';
+  // ---------- pendências: tudo o que espera decisão, numa linha cada, com prazo ----------
+  function pendencias() {
+    const out = []; const w = G.windowInfo(S.round);
+    const pz = S.life && S.life.presser; if (pz && pz.week === S.round) out.push({ t: 'Coletiva de imprensa esperando resposta', prazo: 'hoje', alvo: 'press' });
+    const ev = S.life && S.life.event; if (ev && ev.week === S.round) out.push({ t: ev.title, prazo: 'hoje', alvo: 'evento' });
+    if (G.sponsorPending(S)) out.push({ t: 'Escolher o patrocinador', prazo: 'antes de avançar', alvo: 'spons' });
+    const a = S.market.auction && S.market.auction.status === 'open' ? S.market.auction : null;
+    if (a) out.push({ t: `Leilão por ${S.players[a.pid].n}`, prazo: 'acaba em breve', act: 'goAuction' });
+    const n = S.market.offers.length; if (n) out.push({ t: `${n} ${plural(n, 'proposta', 'propostas')} por ${n === 1 ? 'um jogador seu' : 'jogadores seus'}`, prazo: w.open ? `janela fecha ${T.dateLabel(S.year, Math.min(G.WEEKS - 1, S.round + w.closesIn), true)}` : '', act: 'goSell' });
+    if (w.open && w.closesIn <= 2 && !n) out.push({ t: 'Janela de transferências fechando', prazo: `fecha ${T.dateLabel(S.year, Math.min(G.WEEKS - 1, S.round + w.closesIn), true)}`, go: 'mercado' });
+    return out;
+  }
+  function pendCard() {
+    const al = G.alertaTexto(S);
+    const list = pendencias();
+    if (!al && !list.length) return '';
+    const alHtml = al ? `<div class="notice ${al.k === 'ultimato' ? 'bad' : 'warn'}"><b>${esc(al.titulo)}.</b> ${esc(al.txt)}</div>` : '';
+    const rows = list.map(p => `<button class="pend" ${p.act ? `data-act="${p.act}"` : p.go ? `data-act="go" data-v="${p.go}"` : `data-act="scrollTo" data-v="${p.alvo}"`}><span>${esc(p.t)}</span><span class="tiny muted">${esc(p.prazo)}</span></button>`).join('');
+    return `<section class="card" id="resolver"><div class="head"><h2>Para resolver${hint('O que espera uma decisão sua. Nada aqui trava o jogo, mas o que não for respondido some no fim da data.')}</h2>${list.length ? `<span class="tag">${list.length}</span>` : ''}</div>${alHtml}${rows}</section>`;
+  }
+
   function pressCard() {
     const pz = S.life && S.life.presser; if (!pz || pz.week !== S.round) return '';
     return `<section class="card press" id="press"><div class="head"><h2><span class="inf-ic">${IC_MIC}</span>Coletiva de imprensa${hint('Uma pergunta por semana, no máximo. Cada resposta tem efeito imediato; algumas viram promessa que a diretoria e o elenco cobram depois. Se não responder, a assessoria dá uma resposta neutra.')}</h2></div>
@@ -3777,7 +3865,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
           ${`<div class="${first ? 'coachmark' : ''}">${first ? '<div class="tip">Seu time já está escalado. No intervalo, o jogo para e você escolhe a postura.</div>' : ''}<button class="btn gold big block" data-act="play" ${tipA('Começa a partida. O jogo para no intervalo, em gol sofrido, na reta final e em lesão para você decidir.')}>Jogar</button></div>`}
           <button class="btn block" style="background:rgba(0,0,0,.25);border-color:transparent;color:#fff" data-act="go" data-v="elenco" ${tipA('Abre o Elenco para mexer em formação, titulares, banco e postura.')}>Ajustar escalação</button>
         </div></section>`;
-        c1 += pressCard() + eventCard();
+        c1 += pendCard() + pressCard() + eventCard();
         c1 += `<section class="card"><div class="head"><h2>Objetivos do jogo${hint(OBJ_TIP)}</h2><span class="xp">+${S.objectives.length * 20} XP</span></div>
           ${S.objectives.map(o => `<div class="obj"><span class="box"></span><span class="t">${esc(o.txt)}</span><span class="xp">+${o.xp}</span></div>`).join('')}
           <p class="tiny muted" style="margin:8px 0 0">Cada objetivo cumprido também paga um bônus em dinheiro.</p></section>`;
@@ -3792,7 +3880,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
           ${nx && nx.w > S.round + 1 ? `<button class="btn block" style="background:rgba(0,0,0,.25);border-color:transparent;color:#fff" data-act="skipTo" ${tipA('Simula todas as semanas até o próximo jogo do seu time.')}>Avançar até o próximo jogo (${nx.w - S.round} ${plural(nx.w - S.round, 'data', 'datas')})</button>` : ''}
           ${!nx ? `<button class="btn block" style="background:rgba(0,0,0,.25);border-color:transparent;color:#fff" data-act="skipTo" ${tipA('Simula as semanas restantes e mostra o fim da temporada.')}>Simular até o fim da temporada</button>` : ''}
         </div></section>`;
-        c1 += eventCard();
+        c1 += pendCard() + eventCard();
         if (pend) c1 += sponsorCard();
       }
     }
@@ -3900,7 +3988,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
     const offers = G.fireOffers(S);
     return `<section class="card stack" style="max-width:640px;margin:0 auto">
       <div class="eyebrow">Fim de linha</div><h2 style="font-size:40px">Você foi demitido</h2>
-      <p>A confiança da diretoria ficou abaixo de 15 por 3 jogos da liga seguidos. Seu nível e suas conquistas continuam com você.</p>
+      <p>A diretoria perdeu a paciência: o ultimato venceu sem o time sair do buraco. Seu nível e suas conquistas continuam com você.</p>
       <div class="eyebrow">Propostas recebidas</div>
       ${offers.map(id => `<button class="club-card" data-act="takeJob" data-id="${id}">${badge(id)}<span><b>${esc(club(id).name)}</b><span class="small muted">${DIVN[club(id).div]} · força ${Math.round(G.strength(S, id))}</span></span></button>`).join('')}
     </section>`;
@@ -3955,6 +4043,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
           <div class="chips wrap" role="group" aria-label="Formação">${forms}</div>
           <p class="small muted" style="margin:0">${f.txt}</p>
         </section>
+        ${!S.trocouUmaVez ? `<div class="notice info small" style="margin:0">Toque num jogador no campo e escolha quem entra no lugar. "Escalar os melhores" faz isso sozinho.</div>` : ''}
         <div class="pitch" aria-label="Campo">${'<div class="lines"></div><div class="box-top"></div><div class="box-bot"></div>'}${mags}</div>
         ${out.length ? `<div class="notice bad small">${out.map(p => `${esc(p.n)} ${p.inj > 0 ? `lesionado (${p.inj} ${plural(p.inj, 'semana', 'semanas')})` : 'suspenso'}`).join(' · ')}. Toque no ímã para trocar.</div>` : ''}
         <section class="card"><div class="head"><h2>Banco${hint('Até 9 reservas para as trocas durante o jogo (até 5 por partida). Clique numa vaga para escolher quem fica nela.')}</h2><span class="tiny muted">Entra primeiro quem está antes</span></div><div class="row" style="gap:8px">${bench}</div></section>
@@ -3966,8 +4055,10 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
           <p class="small" style="margin:0"><span class="ment-now only-sm">${ment.label}. </span>${ment.txt}</p>
           <div class="stats3">${[['Defesa', sec.def], ['Meio', sec.mid], ['Ataque', sec.att]].map(([l, v]) => `<div class="stat" ${tipA(SECTOR_TIP[l])}><div class="lbl">${l}</div><div class="disp" style="text-align:center;font-size:26px;font-weight:900">${Math.round(v)}</div></div>`).join('')}</div>
         </section>
+        <details class="more card-more" ${canHover() ? 'open' : ''}><summary>Mais ajustes: bola parada, capitão e times salvos</summary>
         ${takersCard()}
         ${presetsCard()}
+        </details>
         <section class="card"><div class="head"><h2>Elenco${hint('Clique num jogador para ver números, valor e salário e para colocá-lo à venda. A barra ao lado é a condição física.')}</h2><span class="small muted">${myPlayers().length} jogadores</span></div>${squadList()}</section>
       </div>
     </div>`;
@@ -4101,7 +4192,8 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
     if (!tabs.some(x => x[0] === m.tab)) m.tab = 'buy';
     const head = `<section class="card stack" style="gap:12px"><div class="head" style="margin:0"><h2>Mercado${hint(JANELA_TIP + ' O caixa paga a transferência e o salário precisa caber no teto da folha.')}</h2><span class="tag ${w.open ? 'good' : ''}">${w.open ? `Janela aberta · fecha em ${w.closesIn} ${plural(w.closesIn, 'semana', 'semanas')}` : w.opensIn ? `Janela fechada · abre em ${w.opensIn} ${plural(w.opensIn, 'semana', 'semanas')}` : `Janela fechada até ${S.year + 1}`}</span></div>
       <div class="fin small"><span>Caixa</span><b class="num">${fmt(club(me()).cash)}</b><span>Espaço na folha${hint(FOLHA_TIP)}</span><b class="num ${G.wageRoom(S) < 0 ? 'neg-c' : ''}">${fmt(G.wageRoom(S))} por mês</b><span>Elenco${hint('Limite de 42 jogadores, contando quem veio emprestado. Mínimo de 18.')}</span><b>${myPlayers().length} de 42</b></div>
-      ${(() => { const vi = G.verbaInfo(S); return `<div class="row between" style="gap:8px"><span class="small muted">${vi.used ? 'Verba já pedida nesta janela.' : vi.open ? 'Precisa de dinheiro para reforços? Peça à diretoria.' : 'Verba extra só com a janela aberta.'}</span><button class="btn" data-act="verba" ${tipA('Pede dinheiro extra para reforços. Uma vez por janela; a chance depende da confiança.')}>Pedir verba</button></div>`; })()}
+      ${(() => { const vi = G.verbaInfo(S); const folgado = club(me()).cash > 6 * G.wageBill(S, me()); const livre = Math.max(0, club(me()).cash - 3 * G.wageBill(S, me()));
+        return `<div class="row between" style="gap:8px"><span class="small muted">${folgado ? `Dá para gastar até ${fmt(livre)} e ainda guardar 3 folhas.` : vi.used ? 'Verba já pedida nesta janela.' : vi.open ? `Caixa cobre ${dec(club(me()).cash / Math.max(1, G.wageBill(S, me())))} folhas. Precisa de mais? Peça à diretoria.` : 'Verba extra só com a janela aberta.'}</span><button class="btn" data-act="verba" ${tipA('Pede dinheiro extra para reforços. Uma vez por janela; a chance depende da confiança.')}>Pedir verba</button></div>`; })()}
       <div class="seg wide" role="tablist">${tabs.map(([k, l]) => `<button role="tab" data-act="mktTab" data-v="${k}" aria-pressed="${m.tab === k}">${l}</button>`).join('')}</div></section>`;
     let body = '';
     if (m.tab === 'buy') {
@@ -4410,7 +4502,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
           <div class="row" style="margin-top:12px"><button class="btn" data-act="sound" ${tipA('Liga ou desliga os sons do jogo.')}>${U.settings.sound ? IC.sound + ' Som ligado' : IC.mute + ' Som desligado'}</button>
           ${U.confirmNew ? `<button class="btn danger" data-act="newCareerYes">Confirmar: apagar esta carreira</button><button class="btn ghost" data-act="newCareerNo">Cancelar</button>` : `<button class="btn danger" data-act="newCareer" ${tipA('Apaga a carreira deste navegador e começa do zero. Pede confirmação antes.')}>Nova carreira</button>`}</div>
           <p class="tiny muted" style="margin:10px 0 0">O jogo salva sozinho neste navegador depois de cada semana.</p></section>
-        ${crestCard()}
+        ${(DEV ? crestCard() : '')}
       </div>`;
     }
     return `<div class="stack" style="max-width:1100px;margin:0 auto">${seg}${body}</div>`;
@@ -4522,9 +4614,11 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
   function matchControls() {
     const ms = U.ms, m = U.match;
     if (m.done) return `<button class="btn primary big block" data-act="finishMatch">Ver resumo do jogo</button>`;
+    if (ms.rapido) return `<span class="small muted" style="flex:1">Avançando até a próxima parada…</span><button class="btn" data-act="stopFast">Parar</button>`;
     return `<div class="seg" role="group" aria-label="Velocidade">${[1, 2, 4].map(s => `<button data-act="speed" data-v="${s}" aria-pressed="${ms.speed === s}" ${tipA('Velocidade da narração: ' + s + '×.')}>${s}×</button>`).join('')}</div>
       <button class="btn primary" style="flex:1" data-act="openMoment" data-v="manual" ${tipA('Pausa o jogo para mudar a postura ou fazer substituições.')}>${ms.running ? 'Mexer<span class="hide-sm"> no time</span>' : 'Ajustar<span class="hide-sm"> e voltar</span>'}</button>
-      <button class="btn" data-act="skip" ${tipA('Simula até o fim sem paradas. Lesionados são trocados sozinhos.')}>Pular</button>
+      <button class="btn" data-act="skipNext" ${tipA('Avança rápido até a próxima parada do jogo: intervalo, gol sofrido, lesão ou reta final.')}>Pular</button>
+      <button class="btn ghost" data-act="skip" ${tipA('Simula até o fim sem paradas. Lesionados são trocados sozinhos.')}>Até o fim</button>
       <button class="btn" data-act="sound" aria-label="${U.settings.sound ? 'Desligar som' : 'Ligar som'}" ${tipA(U.settings.sound ? 'Desligar som' : 'Ligar som')}>${U.settings.sound ? IC.sound : IC.mute}</button>`;
   }
 
@@ -4547,13 +4641,16 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
     $('ctl').innerHTML = matchControls();
   }
 
-  function animateBall(side, goal) {
+  function animateBall(side, goal, quem) {
     const b = document.getElementById('ball'); if (!b) return;
     const x = side === 0 ? (goal ? 95 : 72 + Math.random() * 16) : (goal ? 5 : 12 + Math.random() * 16);
     b.style.left = x + '%'; b.style.top = (goal ? 50 : 30 + Math.random() * 40) + '%';
-    if (goal) { const mp = document.getElementById('mp'); const f = document.createElement('div'); f.className = 'goal-flash'; f.textContent = 'GOL!'; mp.appendChild(f); setTimeout(() => f.remove(), 1500); setTimeout(() => { b.style.left = '50%'; b.style.top = '50%'; }, 1200); }
+    if (goal) { const mp = document.getElementById('mp'); const f = document.createElement('div'); f.className = 'goal-flash'; f.innerHTML = `GOL!${quem ? `<small>${esc(quem)}</small>` : ''}`; mp.appendChild(f); mp.classList.remove('shake'); void mp.offsetWidth; mp.classList.add('shake'); setTimeout(() => f.remove(), 1800); setTimeout(() => { b.style.left = '50%'; b.style.top = '50%'; }, 1200); }
   }
-  function idleBall() { const m = U.match; const b = document.getElementById('ball'); if (!b || !m) return; const poss = m.minute ? m.possAcc / m.minute : 0.5; b.style.left = (30 + poss * 40 + (Math.random() - 0.5) * 30) + '%'; b.style.top = (25 + Math.random() * 50) + '%'; }
+  function idleBall() { const m = U.match; const b = document.getElementById('ball'); if (!b || !m) return; const poss = m.minute ? m.possAcc / m.minute : 0.5; const cur = parseFloat(b.style.left) || 50, curT = parseFloat(b.style.top) || 50;
+    // a bola anda um pouco a cada minuto, puxada para o lado de quem tem a posse, sem pular pelo campo
+    const alvo = 25 + poss * 50; const nx = cur + (alvo - cur) * 0.15 + (Math.random() - 0.5) * 12; const ny = curT + (Math.random() - 0.5) * 16;
+    b.style.left = Math.max(8, Math.min(92, nx)) + '%'; b.style.top = Math.max(15, Math.min(85, ny)) + '%'; }
 
   function startMatch() {
     const m = G.prepareUserMatch(S); m.startXI = m.side[m.userSide].xi.map(o => o.p).filter(Boolean);
@@ -4578,10 +4675,11 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
     const shown = evs.filter(e => e.t !== 'chance' || e.xg > 0.13 || e.kind === 'post');
     updateMatchUI(shown);
     let goalSide = null;
-    evs.forEach(e => { if (e.t === 'goal') goalSide = e.side; else if (e.t === 'chance' && e.xg > 0.13) animateBall(e.side, false); });
-    if (goalSide != null) { animateBall(goalSide, true); const sc = document.getElementById('sc'); sc.classList.remove('flash'); void sc.offsetWidth; sc.classList.add('flash'); if (goalSide === us) { cheer(); NAT.nativo ? NAT.gol() : buzz([60, 40, 90]); } else { beep(180, 0, 0.35, 'sawtooth', 0.04); NAT.levouGol(); } }
-    else if (m.minute % 3 === 0) idleBall();
-    if (m.done) { whistle(3); ms.running = false; updateMatchUI([]); return; }
+    let goalWho = null;
+    evs.forEach(e => { if (e.t === 'goal') { goalSide = e.side; goalWho = e.pn; } else if (e.t === 'chance' && e.xg > 0.13) animateBall(e.side, false); });
+    if (goalSide != null) { animateBall(goalSide, true, goalWho); const sc = document.getElementById('sc'); sc.classList.remove('flash'); void sc.offsetWidth; sc.classList.add('flash'); if (goalSide === us) { cheer(); NAT.nativo ? NAT.gol() : buzz([60, 40, 90]); } else { beep(180, 0, 0.35, 'sawtooth', 0.04); NAT.levouGol(); } }
+    else idleBall();
+    if (m.done) { if (ms.aoParar) { const f = ms.aoParar; ms.aoParar = null; f(); } whistle(3); ms.running = false; updateMatchUI([]); return; }
     // momentos-chave
     let mo = null;
     if (m.minute === 45) mo = 'ht';
@@ -4604,6 +4702,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
 
   function openMoment(kind) {
     const m = U.match; U.ms.running = false; clearTimeout(U.ms.timer);
+    if (U.ms.aoParar) { const f = U.ms.aoParar; U.ms.aoParar = null; f(); }
     U.sheet = { type: 'moment', kind, pick: m.side[m.userSide].ment, subOut: null };
     renderSheet(); const c = document.getElementById('ctl'); if (c) c.innerHTML = matchControls();
   }
@@ -4645,7 +4744,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
     report.achievements.concat(report.newAch).forEach(k => { setTimeout(() => { toast(`<span class="ti">${IC.star}</span><span>Conquista: <b>${G.ACH[k][0]}</b> · +50 XP</span>`, 'gold', 4000); beep(880, 0, 0.15, 'triangle', 0.05); beep(1320, 0.12, 0.25, 'triangle', 0.05); }, delay); delay += 900; });
     if (report.cupQuota) { setTimeout(() => toast(`Copa do Brasil: cota de ${fmt(report.cupQuota)} no caixa.`, 'gold', 3500), delay); delay += 700; }
     if (report.built) { setTimeout(() => toast(`Obra concluída: ${esc(report.built.name)}.`, 'gold', 3500), delay); delay += 700; }
-    if (report.levelAfter > report.levelBefore) setTimeout(() => { confetti(90); toast(`<span class="ti">Nível ${report.levelAfter}</span><span>${G.LEVEL_TITLES[report.levelAfter - 1]}${report.unlocks.length ? ' · libera ' + report.unlocks.join(', ') : ''}</span>`, 'gold', 5000); }, delay);
+    if (report.levelAfter > report.levelBefore) setTimeout(() => { if (report.res !== 'D') confetti(90); toast(`<span class="ti">Nível ${report.levelAfter}</span><span>${G.LEVEL_TITLES[report.levelAfter - 1]}${report.unlocks.length ? ' · libera ' + report.unlocks.join(', ') : ''}</span>`, 'gold', 5000); }, delay);
   }
 
   function tieNotice(t) {
@@ -4654,12 +4753,24 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
     const what = t.label ? esc(t.label.split(' · ')[0]) : 'Mata-mata';
     return `<section class="notice ${t.won ? 'good' : 'bad'}"><b>${t.won ? 'Classificado!' : 'Eliminado.'}</b> ${what}: ${t.legs === 2 ? `placar somado ${agg[0]} a ${agg[1]}.` : `${agg[0]} a ${agg[1]}.`}${pen}</section>`;
   }
+  // o que espera o técnico na volta: uma frase com data, para a sessão terminar com algo em aberto
+  function gancho() {
+    if (S.fired || S.seasonOver) return '';
+    const nx = G.nextUserWeek(S, S.round); const w = G.windowInfo(S.round);
+    const a = S.market.auction && S.market.auction.status === 'open' ? S.market.auction : null;
+    if (a) return `O leilão por ${S.players[a.pid].n} ainda está aberto.`;
+    if (S.market.offers.length) return `${S.market.offers.length} ${plural(S.market.offers.length, 'proposta espera', 'propostas esperam')} resposta antes da janela fechar.`;
+    if (w.open && w.closesIn <= 3) return `A janela fecha ${T.dateLabel(S.year, Math.min(G.WEEKS - 1, S.round + w.closesIn), true)}.`;
+    if (!w.open && w.opensIn && w.opensIn <= 3) return `A janela abre ${T.dateLabel(S.year, Math.min(G.WEEKS - 1, S.round + w.opensIn), true)}.`;
+    if (nx) return `Próximo jogo: ${club(nx.fx.opp).name}, ${T.dateLabel(S.year, nx.w)}, ${nx.fx.isHome ? 'em casa' : 'fora'}.`;
+    return '';
+  }
   function vPost() {
     const r = U.post; const fx = S.lastMatch.fx; const words = { V: 'Vitória', E: 'Empate', D: 'Derrota' };
     const goals = S.lastMatch.events.filter(e => e.t === 'goal');
     const xpBeforePct = (() => { const lv = r.levelBefore; const cur = G.LEVELS[lv - 1] || 0, nxt = G.LEVELS[lv] || cur + 1000; return Math.min(100, (r.xpBefore - cur) / (nxt - cur) * 100); })();
     const lv = S.coach.level; const cur = G.LEVELS[lv - 1] || 0, nxt = G.LEVELS[lv] || cur + 1000; const toPct = Math.min(100, (S.coach.xp - cur) / (nxt - cur) * 100);
-    const fin = r.finance || {}; const total = (fin.tv || 0) + (fin.wage || 0) + (fin.gate || 0) + (fin.bonus || 0) + (fin.sponsor || 0) + (fin.winBonus || 0) + (fin.loja || 0) + (fin.maint || 0) + (r.cupQuota || 0) + (r.contPrize || 0);
+    const fin = r.finance || {}; const total = (fin.tv || 0) + (fin.wage || 0) + (fin.gate || 0) + (fin.bonus || 0) + (fin.sponsor || 0) + (fin.winBonus || 0) + (fin.loja || 0) + (fin.maint || 0) + (fin.bicho || 0) + (r.cupQuota || 0) + (r.contPrize || 0);
     const myIsHome = fx.home;
     return `<div class="stack reveal" style="max-width:760px;margin:0 auto">
       <section class="result ${r.res}"><div class="eyebrow" style="color:rgba(255,255,255,.85)">${esc(S.lastMatch.label || '')} · ${fx.neutral ? 'campo neutro' : fx.isHome ? 'em casa' : 'fora'}</div>
@@ -4667,6 +4778,8 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
         <div class="word" style="margin-top:6px">${words[r.res]}</div>
         <div class="small" style="opacity:.9">${goals.map(g => `${esc(g.pn)} ${g.min}'`).join(' · ') || 'Sem gols'}</div></section>
       ${r.tie ? tieNotice(r.tie) : ''}
+      ${(() => { const al = !S.fired && G.alertaTexto(S); return al ? `<div class="notice ${al.k === 'ultimato' ? 'bad' : 'warn'}"><b>${esc(al.titulo)}.</b> ${esc(al.txt)}</div>` : ''; })()}
+      ${r.alerta && r.alerta.k === 'salvo' ? '<div class="notice good"><b>Ultimato cumprido.</b> A diretoria recua, por enquanto.</div>' : ''}
       ${r.mvp ? `<section class="card row between"><div><div class="eyebrow">Craque da partida</div><b style="font-size:20px">${esc(r.mvp.n)}</b><div class="small muted">${esc(club(r.mvp.club).name)}</div></div><span class="ovr t1" style="font-size:26px;height:44px;min-width:60px">${r.mvp.r.toFixed(1)}</span></section>` : ''}
       <section class="card"><div class="head"><h2>Objetivos${hint(OBJ_TIP)}</h2><span class="xp">+${r.xp} XP</span></div>
         ${r.objectives.map(o => `<div class="obj ${o.done ? 'done' : ''}"><span class="box">${o.done ? IC.check : ''}</span><span class="t">${esc(o.txt)}</span><span class="xp">${o.done ? '+' + o.xp : ''}</span></div>`).join('')}
@@ -4674,7 +4787,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
       ${r.evolutions.length ? `<section class="card"><div class="head"><h2>Evolução${hint('Jogadores de até 23 anos podem subir a nota quando jogam bem. Acima de 31, atuações ruins podem baixar.')}</h2></div>${r.evolutions.map(e => `<div class="evo">${ovr(e.to)}<b style="flex:1">${esc(e.n)}</b><span class="${e.to > e.from ? 'up' : 'dn'}">${e.from} → ${e.to}</span></div>`).join('')}</section>` : ''}
       <section class="card"><div class="head"><h2>Notas do time${hint('Nota de cada jogador na partida, de 4 a 10. Verde: 7 ou mais. Vermelho: abaixo de 6.')}</h2></div><div class="row" style="gap:6px">${r.myRatings.slice(0, 14).map(p => `<span class="chip" style="cursor:default">${esc(shortN(p.n))} <b class="${p.r >= 7 ? 'pos-c' : p.r < 6 ? 'neg-c' : ''}">${p.r.toFixed(1)}</b></span>`).join('')}</div></section>
       <div class="grid g2">
-        <section class="card"><div class="head"><h2>Caixa${hint('O que entrou e saiu do caixa nesta data. Folha, cota de TV e patrocínio só caem na virada do mês.')}</h2>${r.payday ? `<span class="tag gold">Fechamento de ${esc(r.payday)}</span>` : ''}</div><div class="fin">${r.payday ? `<span>Cota de TV</span><b class="num pos-c">+${fmt(fin.tv || 0)}</b>` : '<span class="muted" style="grid-column:1/-1">Fora da virada do mês só entra a bilheteria e o que a loja vende. A folha e a cota de TV caem no último jogo do mês.</span>'}${fin.sponsor ? `<span>Patrocínio · ${esc(r.sponsorName || '')}</span><b class="num pos-c">+${fmt(fin.sponsor)}</b>` : ''}${fin.winBonus ? `<span>Bônus por vitória</span><b class="num pos-c">+${fmt(fin.winBonus)}</b>` : ''}${r.payday ? `<span>Folha salarial</span><b class="num neg-c">${fmt(fin.wage || 0)}</b>` : ''}${fin.gate ? `<span>Bilheteria · ${(r.attendance || 0).toLocaleString('pt-BR')} pessoas${r.fill != null ? ` (${Math.round(r.fill * 100)}%)` : ''}</span><b class="num pos-c">+${fmt(fin.gate)}</b>` : ''}${fin.bonus ? `<span>Bônus dos objetivos</span><b class="num pos-c">+${fmt(fin.bonus)}</b>` : ''}${fin.loja ? `<span>Loja · lucro das camisas</span><b class="num pos-c">+${fmt(fin.loja)}</b>` : ''}${fin.maint ? `<span>Manutenção da estrutura</span><b class="num neg-c">${fmt(fin.maint)}</b>` : ''}${r.cupQuota ? `<span>Cota da Copa do Brasil</span><b class="num pos-c">+${fmt(r.cupQuota)}</b>` : ''}${r.contPrize ? `<span>Prêmio da CONMEBOL${hint('Valores da CONMEBOL 2026 em dólar, convertidos a R$ 5,30 (câmbio fixo do jogo): cota por jogo em casa e por vitória na fase de grupos, prêmio por fase alcançada e pela final.')}</span><b class="num pos-c">+${fmt(r.contPrize)}</b>` : ''}<span class="tot">Saldo da data</span><b class="tot num ${total < 0 ? 'neg-c' : 'pos-c'}">${total < 0 ? '' : '+'}${fmt(total)}</b></div></section>
+        <section class="card"><div class="head"><h2>Caixa${hint('O que entrou e saiu do caixa nesta data. Folha, cota de TV e patrocínio só caem na virada do mês.')}</h2>${r.payday ? `<span class="tag gold">Fechamento de ${esc(r.payday)}</span>` : ''}</div><div class="fin">${r.payday ? `<span>Cota de TV</span><b class="num pos-c">+${fmt(fin.tv || 0)}</b>` : '<span class="muted" style="grid-column:1/-1">Fora da virada do mês só entra a bilheteria e o que a loja vende. A folha e a cota de TV caem no último jogo do mês.</span>'}${fin.sponsor ? `<span>Patrocínio · ${esc(r.sponsorName || '')}</span><b class="num pos-c">+${fmt(fin.sponsor)}</b>` : ''}${fin.winBonus ? `<span>Bônus por vitória</span><b class="num pos-c">+${fmt(fin.winBonus)}</b>` : ''}${r.payday ? `<span>Folha salarial</span><b class="num neg-c">${fmt(fin.wage || 0)}</b>` : ''}${fin.gate ? `<span>Bilheteria · ${(r.attendance || 0).toLocaleString('pt-BR')} pessoas${r.fill != null ? ` (${Math.round(r.fill * 100)}%)` : ''}</span><b class="num pos-c">+${fmt(fin.gate)}</b>` : ''}${fin.bonus ? `<span>Bônus dos objetivos</span><b class="num pos-c">+${fmt(fin.bonus)}</b>` : ''}${fin.loja ? `<span>Loja · lucro das camisas</span><b class="num pos-c">+${fmt(fin.loja)}</b>` : ''}${fin.bicho ? `<span>Bicho para o elenco${hint('Prêmio que os jogadores recebem por vitória (6% da folha mensal) ou empate (2,5%), como no futebol brasileiro. Quanto mais o time ganha, mais paga.')}</span><b class="num neg-c">${fmt(fin.bicho)}</b>` : ''}${fin.maint ? `<span>Manutenção da estrutura</span><b class="num neg-c">${fmt(fin.maint)}</b>` : ''}${r.cupQuota ? `<span>Cota da Copa do Brasil</span><b class="num pos-c">+${fmt(r.cupQuota)}</b>` : ''}${r.contPrize ? `<span>Prêmio da CONMEBOL${hint('Valores da CONMEBOL 2026 em dólar, convertidos a R$ 5,30 (câmbio fixo do jogo): cota por jogo em casa e por vitória na fase de grupos, prêmio por fase alcançada e pela final.')}</span><b class="num pos-c">+${fmt(r.contPrize)}</b>` : ''}<span class="tot">Saldo da data</span><b class="tot num ${total < 0 ? 'neg-c' : 'pos-c'}">${total < 0 ? '' : '+'}${fmt(total)}</b></div></section>
         <section class="card"><div class="head"><h2>Diretoria${hint('Variação da confiança neste jogo: o resultado comparado com o esperado pela força dos times e pelo mando, mais o ajuste por estar dentro ou longe da meta.')}</h2></div><div class="row between"><span>Confiança</span><b class="disp" style="font-size:28px">${Math.round(S.board.conf)} <span class="${r.conf >= 0 ? 'pos-c' : 'neg-c'}" style="font-size:20px">${r.conf >= 0 ? '+' : ''}${r.conf}</span></b></div>${r.compKey && G.position(S, me(), r.compKey) ? `<div class="row between"><span>Posição · ${esc(keyName(r.compKey))}</span><b class="disp" style="font-size:28px">${G.position(S, me(), r.compKey)}º</b></div>` : ""}<p class="small muted" style="margin:6px 0 0">Meta: ${S.board.target.label}.</p>${r.offers ? `<div class="notice info small" style="margin-top:8px">${r.offers} ${plural(r.offers, 'nova proposta', 'novas propostas')} por jogadores seus.</div>` : ''}</section>
       </div>
       ${(r.promises || []).map(p => `<div class="notice ${p.ok ? 'good' : 'bad'}"><b>${p.ok ? 'Promessa cumprida' : 'Promessa quebrada'}:</b> ${esc(p.txt)}.${p.eff ? ` ${esc(p.eff.charAt(0).toUpperCase() + p.eff.slice(1))}.` : ''}</div>`).join('')}
@@ -4683,7 +4796,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
       ${r.peneira ? `<div class="notice info row between"><span><b>Peneira:</b> ${r.peneira} ${plural(r.peneira, 'garoto novo', 'garotos novos')} na base.</span><button class="btn" data-act="goInfra" data-v="inf-base">Ver base</button></div>` : ''}
       ${r.sponsorEnded && !S.fired ? `<div class="notice info"><b>Acabou o contrato com ${esc(r.sponsorEnded)}.</b> Há novas propostas de patrocínio na Central.</div>` : ''}
       ${S.fired ? `<div class="notice bad"><b>A diretoria perdeu a paciência.</b> Veja as propostas na Central.</div>` : ''}
-      <p class="stop">Jogo salvo. Um bom momento para uma pausa, ou siga para a próxima data.</p>
+      <p class="stop">Jogo salvo. Um bom momento para uma pausa, ou siga para a próxima data.${(() => { const g = gancho(); return g ? ` <b>${esc(g)}</b>` : ''; })()}</p>
       <button class="btn primary big block" data-act="postDone">${r.season ? 'Ver fim de temporada' : 'Continuar'}</button></div>`;
   }
 
@@ -4752,7 +4865,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
     formation: el => { const f = el.dataset.v; const keep = { ...S.lineup }; const auto = E.autoLineup(G.squadOf(S, me()), f); S.lineup = { ...auto, ment: keep.ment, formation: f, takers: keep.takers }; S.lineupFrom = null; save(); render(); toast('Formação ' + f + ': time reescalado nas posições novas.'); },
     ment: el => { S.lineup.ment = el.dataset.v; save(); render(); },
     auto: () => { S.lineup = { ...E.autoLineup(G.squadOf(S, me()), S.lineup.formation), ment: S.lineup.ment, takers: S.lineup.takers }; S.lineupFrom = null; save(); render(); toast('Escalados os melhores para esta formação, já contando o cansaço.'); },
-    slot: el => { U.sheet = { type: 'pick', i: +el.dataset.i }; renderSheet(); },
+    slot: el => { S.trocouUmaVez = true; U.sheet = { type: 'pick', i: +el.dataset.i }; renderSheet(); },
     benchslot: el => { U.sheet = { type: 'bench', i: +el.dataset.i }; renderSheet(); },
     pick: el => {
       const pid = +el.dataset.pid; const lu = S.lineup; lu.bench = lu.bench || [];
@@ -4836,6 +4949,15 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
       if (U.sheet.pick !== s.ment) { s.ment = U.sheet.pick; U.ms.lastMent[us] = s.ment; E.recalc(m, s); updateMatchUI([{ t: 'ment', side: us, min: m.minute, v: s.ment }]); }
       U.sheet = null; renderSheet(); U.ms.running = true; tickLoop(); const c = document.getElementById('ctl'); if (c) c.innerHTML = matchControls();
     },
+    // avança rápido até a próxima parada, sem pular a decisão do intervalo e dos momentos-chave
+    skipNext: () => {
+      const m = U.match; if (!m || m.done) return; clearTimeout(U.ms.timer); U.ms.running = true;
+      const save = U.ms.speed; U.ms.speed = 40; U.ms.rapido = true;
+      const back = () => { U.ms.speed = save; U.ms.rapido = false; const c = document.getElementById('ctl'); if (c) c.innerHTML = matchControls(); };
+      U.ms.aoParar = back; tickLoop();
+    },
+    scrollTo: el => { const t = document.getElementById(el.dataset.v); if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' }); },
+    stopFast: () => { if (U.ms.aoParar) { const f = U.ms.aoParar; U.ms.aoParar = null; f(); } },
     skip: () => {
       const m = U.match, us = m.userSide; U.ms.running = false; clearTimeout(U.ms.timer);
       const all = [];

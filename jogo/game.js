@@ -11,6 +11,10 @@
   // SEM_ANO é a quantidade de rodadas do calendário antigo, usada só para manter o caixa dos clubes
   // no mesmo patamar de antes da virada para data real. Não é um número de jogo, é de calibragem.
   const MESES_FOLHA = 13, MESES_TV = 12, SEM_ANO = 58;
+  // Bicho: prêmio que o elenco recebe por resultado, como no futebol brasileiro de verdade.
+  // É o atrito que cresce junto com o sucesso: quem ganha muito paga muito. Fração da folha mensal.
+  const BICHO = { V: 0.06, E: 0.025 };
+  function bicho(wb, res) { return Math.round(wb * (BICHO[res] || 0) / 1000) * 1000; }
 
   // ---------- Passe de Técnico ----------
   // A primeira meia temporada é de graça: estadual inteiro e os 19 jogos do primeiro turno.
@@ -145,7 +149,8 @@
   // metas por série (rank = posição de força na série; na Série D, dentro do grupo de 6)
   function targetFor(rank, div = 'A') {
     if (div === 'A') {
-      if (rank <= 3) return { pos: 6, label: 'Brigar pelo título e terminar no G-6', role: 'Favorito', meta: 'G-6', press: 'alta' };
+      if (rank <= 2) return { pos: 3, label: 'Brigar pelo título e terminar no pódio', role: 'Favorito', meta: 'pódio', press: 'alta' };
+      if (rank <= 4) return { pos: 6, label: 'Brigar pelo título e terminar no G-6', role: 'Favorito', meta: 'G-6', press: 'alta' };
       if (rank <= 8) return { pos: 10, label: 'Terminar entre os 10 primeiros', role: 'Briga por vaga', meta: 'top 10', press: 'média' };
       if (rank <= 14) return { pos: 14, label: 'Terminar entre os 14 primeiros', role: 'Meio de tabela', meta: 'top 14', press: 'média' };
       return { pos: 16, label: 'Fugir do Z-4', role: 'Azarão', meta: 'fugir do Z-4', press: 'baixa' };
@@ -264,7 +269,7 @@
     const me = st.coach.club, d = st.clubs[me].div; let rank;
     if (d === 'D') { const key = C.leagueKey(st.comp, me); rank = Object.keys(st.comp.tables[key]).sort((a, b) => strength(st, b) - strength(st, a)).indexOf(me) + 1; }
     else rank = strengthRanks(st, d).indexOf(me) + 1;
-    st.board.target = { ...targetFor(rank, d), div: d }; st.board.rankStrength = rank; st.board.low = 0;
+    st.board.target = { ...targetFor(rank, d), div: d }; st.board.rankStrength = rank; st.board.low = 0; st.board.alerta = null; st.board.ultimato = null;
   }
 
   function pushNews(st, type, txt) { st.news.unshift({ y: st.year, r: st.round + 1, type, txt }); if (st.news.length > 80) st.news.length = 80; }
@@ -379,7 +384,7 @@
   }
 
   function checkObjectives(st, ctx) {
-    const bonus = Math.round(wageBill(st, st.coach.club) * 0.02 / 1000) * 1000;
+    const bonus = Math.round(wageBill(st, st.coach.club) * 0.01 / 1000) * 1000;
     const done = [];
     st.objectives.forEach(o => {
       let ok = false;
@@ -536,6 +541,38 @@
   }
 
   // ---------- fechar a semana (com ou sem jogo do usuário) ----------
+  // ---------- paciência da diretoria em três degraus ----------
+  // 1. Aviso: confiança abaixo de 35 e fora da meta, depois de 9 jogos de liga. Só avisa.
+  // 2. Ultimato: confiança abaixo de 25 e 3 ou mais posições abaixo da meta. Três jogos de liga para
+  //    voltar a até 2 posições da meta ou recuperar a confiança; senão, rua.
+  // 3. Demissão direta: confiança abaixo de 10.
+  // Devolve o que mudou nesta rodada, para a tela avisar. st.board.alerta guarda o degrau atual.
+  const ALERTA = { aviso: 35, ultimato: 28, rua: 12 };
+  function boardAlert(st, lj, pos) {
+    const b = st.board; const gap = pos - b.target.pos; const conf = b.conf; let ev = null;
+    const foraDaMeta = gap > 0;
+    if (conf < ALERTA.rua && lj >= 5) { b.alerta = 'rua'; return { k: 'rua' }; }
+    if (b.ultimato) {
+      const ok = gap <= 2;
+      if (ok) { b.ultimato = null; b.alerta = conf < ALERTA.aviso && foraDaMeta ? 'aviso' : null; ev = { k: 'salvo' }; }
+      else { b.ultimato.left--; if (b.ultimato.left <= 0) { b.alerta = 'rua'; return { k: 'rua' }; } ev = { k: 'ultimato', left: b.ultimato.left }; }
+      return ev;
+    }
+    if (lj < 9) return null;
+    if (conf < ALERTA.ultimato && gap > 2) { b.ultimato = { left: 3, since: st.round }; b.alerta = 'ultimato'; return { k: 'ultimato', left: 3, novo: true }; }
+    if (conf < ALERTA.aviso && foraDaMeta) { if (b.alerta !== 'aviso') ev = { k: 'aviso', novo: true }; b.alerta = 'aviso'; return ev; }
+    if (b.alerta) { b.alerta = null; return { k: 'calmo' }; }
+    return null;
+  }
+  // texto curto de cada degrau, para a central e o pós-jogo
+  function alertaTexto(st) {
+    const b = st.board; if (!b.alerta) return null;
+    const meta = b.target.label.charAt(0).toLowerCase() + b.target.label.slice(1);
+    if (b.alerta === 'aviso') return { k: 'aviso', titulo: 'A diretoria quer reação', txt: `Meta: ${meta}. Hoje: ${position(st)}º. A paciência está acabando; dois bons resultados acalmam.` };
+    if (b.alerta === 'ultimato') return { k: 'ultimato', titulo: `Ultimato: ${b.ultimato ? b.ultimato.left : 0} ${b.ultimato && b.ultimato.left === 1 ? 'jogo' : 'jogos'} de liga`, txt: `Volte a até 2 posições da meta (${meta}) ou a diretoria demite.` };
+    return { k: 'rua', titulo: 'Demitido', txt: 'A diretoria encerrou o contrato.' };
+  }
+
   function finishRound(st, userMatch) {
     const me = st.coach.club;
     const report = { xp: 0, xpBefore: st.coach.xp, levelBefore: st.coach.level, evolutions: [], achievements: [], finance: [], conf: 0, objectives: [], news: [], week: st.round + 1, played: !!userMatch };
@@ -573,7 +610,7 @@
       if (st.clubs[me].cash < 0) dc -= 2;
       if (res === 'D' && dc < 0 && life(st).flags.underdog === st.round) dc = Math.round(dc / 2);
       st.board.conf = Math.max(0, Math.min(100, st.board.conf + dc)); report.conf = dc;
-      if (isLeague) { if (st.board.conf < 15 && lj >= 9 && pos - st.board.target.pos > 2) st.board.low++; else st.board.low = 0; }
+      if (isLeague) report.alerta = boardAlert(st, lj, pos);
       // conquistas
       const ach = k => { if (!st.achievements[k]) { st.achievements[k] = `${st.year}·S${st.round + 1}`; report.achievements.push(k); xp += 50; } };
       if (res === 'V') ach('first_win');
@@ -605,18 +642,21 @@
     const payday = C.isMonthEnd(st.year, st.round);
     const mesNome = C.monthLabel(st.year, st.round);
     const homeGame = {}; fixtures.forEach(mt => { if (!mt.neutral) homeGame[mt.h] = mt; });
+    const resOf = {}; results.forEach(r => { if (r.gh === r.ga) { resOf[r.h] = 'E'; resOf[r.a] = 'E'; } else { resOf[r.gh > r.ga ? r.h : r.a] = 'V'; } });
     Object.values(st.clubs).forEach(c => {
       if (c.div === 'X') return;
-      const isUser = c.id === me; const wb = payday ? wageBill(st, c.id) : 0;
+      const isUser = c.id === me; const wbNow = (payday || resOf[c.id]) ? wageBill(st, c.id) : 0; const wb = payday ? wbNow : 0;
+      const prem = resOf[c.id] ? bicho(wbNow, resOf[c.id]) : 0;
       let gate = 0;
       if (homeGame[c.id]) {
         const cw = crowd(st, c.id, homeGame[c.id]); gate = cw.gate;
         if (isUser) { report.attendance = cw.att; report.fill = cw.fill; report.ticket = cw.price; const inf = infra(st); inf.att.unshift(cw.att); if (inf.att.length > 6) inf.att.length = 6; }
       }
-      if (!isUser) { c.cash += gate + (payday ? c.tv - wb : 0); return; }
-      report.finance = { tv: 0, wage: 0, gate, bonus: obj.done.length * obj.bonus, sponsor: 0, winBonus: 0 };
+      if (!isUser) { c.cash += gate - prem + (payday ? c.tv - wb : 0); return; }
+      report.finance = { tv: 0, wage: 0, gate, bonus: obj.done.length * obj.bonus, sponsor: 0, winBonus: 0, bicho: -prem };
       report.mid = mid;
       if (gate) money(st, 'gate', gate, `Bilheteria (${(report.attendance || 0).toLocaleString('pt-BR')} torcedores)`);
+      if (prem) money(st, 'bicho', -prem, res === 'V' ? 'Bicho da vitória para o elenco' : 'Bicho do empate para o elenco');
       const sp = st.sponsor;
       // o bônus por vitória é do jogo, então cai no mesmo dia da partida
       if (sp && sp.winBonus && res === 'V') { money(st, 'sponsor', sp.winBonus, `Bônus por vitória (${sp.brand.name})`); sp.earned += sp.winBonus; report.finance.winBonus = sp.winBonus; }
@@ -675,7 +715,7 @@
     }
     st.round++;
     lifeWeek(st, report, mid);
-    if (st.board.low >= 3) { st.fired = true; pushNews(st, 'club', `${st.coach.name} é demitido do ${st.clubs[me].name}.`); }
+    if (st.board.alerta === 'rua') { st.fired = true; st.board.alerta = null; st.board.ultimato = null; pushNews(st, 'club', `${st.coach.name} é demitido do ${st.clubs[me].name}.`); }
     if (st.round >= WEEKS) report.season = endSeason(st);
     else { genObjectives(st); auctionTick(st); report.preset = applyPresetFor(st); }
     return report;
@@ -1654,12 +1694,16 @@
       } else c.cash += c.tv - 2 * wb;
     });
     const tvRef = myc.tvFull || myc.tv;
-    const prize = Math.round(tvRef * Math.max(0, tab.length + 1 - myPos) * 0.22 * (d === 'D' ? 3 : 1) / 10000) * 10000;
+    // premiação por posição: cresce ao quadrado com a colocação. O campeão leva cerca de 3 cotas mensais cheias,
+    // o 10º leva perto de 1 e o lanterna quase nada. Antes era linear e o meio da tabela ficava rico demais.
+    const frac = Math.max(0, tab.length + 1 - myPos) / tab.length;
+    const prize = Math.round(tvRef * 3 * frac * frac * (d === 'D' ? 3 : 1) / 10000) * 10000;
     money(st, 'prize', prize, `Premiação: ${myPos}º lugar (${d === 'D' ? 'grupo da Série D' : C.DIV_NAME[d]})`);
     const reach = C.cupReach(st.comp, me);
     const cupPrize = st.cupEarned || 0;
     const estKey = C.estOf(st.comp, me); const estWon = estKey && out.est[estKey] === me;
-    if (estWon) money(st, 'prize', Math.round(tvRef * 3 / 10000) * 10000, `Título: ${st.comp.est[estKey].name}`);
+    // título estadual paga pouco, como na vida real: perto de 40% de uma cota mensal cheia
+    if (estWon) money(st, 'prize', Math.round(tvRef * 0.4 / 10000) * 10000, `Título: ${st.comp.est[estKey].name}`);
     const promo = (out.up[d] || []).includes(me) ? 'up' : (out.down[d] || []).includes(me) ? 'down' : null;
     const divChamp = out.champ[d] === me, cupChamp = out.champ.CDB === me;
     const contR = C.contReach(st.comp, me); const libChamp = out.champ.LIB === me, sulChamp = out.champ.SUL === me;
@@ -1739,7 +1783,7 @@
   }
 
   function restartAfterFire(st, newClub) {
-    st.coach.club = newClub; st.fired = false; st.board.conf = 55; st.board.low = 0; st.morale = 55;
+    st.coach.club = newClub; st.fired = false; st.board.conf = 55; st.board.low = 0; st.board.alerta = null; st.board.ultimato = null; st.morale = 55;
     splitSponsor(st, newClub); infra(st); st.sponsor = null; st.sponsorOffers = sponsorOffers(st);
     setTarget(st);
     st.lineup = { ...E.autoLineup(squadOf(st, newClub), '4-3-3'), ment: 'equilibrada' };
@@ -1763,6 +1807,6 @@
     return `${s}R$ ${a.toLocaleString('pt-BR')}`;
   }
 
-  const api = { WEEKS, SEASON_WEEKS, isMid, abreSponsor, PRECOS, PASSE_DATA, temPasse, passeNaHora, passeTrava, passeInfo, ativarPasse, CONT_PRIZE, USD, contGroups, WINDOWS, LEVELS, LEVEL_TITLES, UNLOCKS, ACH, TICKET, CUP_QUOTA, cupQuota, CAP_MAX, capAt, rngFor, hashSeed, levelFromXp, formationsFor, squadOf, wageBill, strength, windowOpen, windowInfo, strengthRanks, divClubs, targetFor, newCareer, startSeason, weekFixtures, userFixture, nextUserWeek, leagueKey, sortedTable, position, prepareUserMatch, suggestMent, sponsorOffers, signSponsor, sponsorPending, sponsorPerf, migrate, BRANDS, withB, finishRound, simWeek, askPrice, sellerAsk, disposition, interest, marketWage, buyTerms, signPlayer, loanTerms, loanIn, INTEREST_OK, mValue, prestige, loanFee, respondOffer, endLoans, aiMarketTick, marketList, wageRoom, makeOffer, acceptOffer, quickSell, auctionBid, auctionRivalTick, auctionClose, nextSeason, restartAfterFire, fireOffers, fmt, userSide, LIC, LIC_ORDER, COURSES, life, hasLic, licNeed, xpMult, studyOptions, startStudy, answerPresser, answerEvent, checkLicense, PRESETS, PRESET_COMP, compKind, savePreset, loadPreset, applyPresetFor, INFRA, PROSPECTS, TICKET_MULT, TICKET_NAME, BASE_MAX, PENEIRA_WEEK, SQUAD_MAX, infra, infraCost, infraStart, infraMaint, infraLabel, ctBonus, crowd, lojaInfo, idolOf, kitPrice, promoteProspect, releaseProspect, verbaInfo, askVerba };
+  const api = { BICHO, bicho, ALERTA, alertaTexto, WEEKS, SEASON_WEEKS, isMid, abreSponsor, PRECOS, PASSE_DATA, temPasse, passeNaHora, passeTrava, passeInfo, ativarPasse, CONT_PRIZE, USD, contGroups, WINDOWS, LEVELS, LEVEL_TITLES, UNLOCKS, ACH, TICKET, CUP_QUOTA, cupQuota, CAP_MAX, capAt, rngFor, hashSeed, levelFromXp, formationsFor, squadOf, wageBill, strength, windowOpen, windowInfo, strengthRanks, divClubs, targetFor, newCareer, startSeason, weekFixtures, userFixture, nextUserWeek, leagueKey, sortedTable, position, prepareUserMatch, suggestMent, sponsorOffers, signSponsor, sponsorPending, sponsorPerf, migrate, BRANDS, withB, finishRound, simWeek, askPrice, sellerAsk, disposition, interest, marketWage, buyTerms, signPlayer, loanTerms, loanIn, INTEREST_OK, mValue, prestige, loanFee, respondOffer, endLoans, aiMarketTick, marketList, wageRoom, makeOffer, acceptOffer, quickSell, auctionBid, auctionRivalTick, auctionClose, nextSeason, restartAfterFire, fireOffers, fmt, userSide, LIC, LIC_ORDER, COURSES, life, hasLic, licNeed, xpMult, studyOptions, startStudy, answerPresser, answerEvent, checkLicense, PRESETS, PRESET_COMP, compKind, savePreset, loadPreset, applyPresetFor, INFRA, PROSPECTS, TICKET_MULT, TICKET_NAME, BASE_MAX, PENEIRA_WEEK, SQUAD_MAX, infra, infraCost, infraStart, infraMaint, infraLabel, ctBonus, crowd, lojaInfo, idolOf, kitPrice, promoteProspect, releaseProspect, verbaInfo, askVerba };
   if (NODE) module.exports = api; else root.Game = api;
 })(typeof window !== 'undefined' ? window : globalThis);
