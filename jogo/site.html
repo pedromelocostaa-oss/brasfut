@@ -61,13 +61,18 @@ a{color:var(--ima)}
 .abas{display:flex;gap:6px;flex-wrap:wrap}
 .abas button{font:inherit;font-weight:700;font-size:14px;padding:8px 13px;min-height:36px;border-radius:999px;border:1px solid var(--linha);background:var(--quadro);color:var(--tinta2);cursor:pointer}
 .abas button[aria-pressed=true]{background:var(--gram);border-color:var(--gram);color:#fff}
-.grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:8px;max-height:min(52vh,420px);overflow:auto;padding:2px;scrollbar-width:thin}
-@media (max-width:420px){.grade{grid-template-columns:repeat(auto-fill,minmax(132px,1fr))}}
+.grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));gap:8px;max-height:min(52vh,420px);overflow:auto;padding:2px;scrollbar-width:thin}
+@media (max-width:520px){.grade{grid-template-columns:1fr;max-height:min(46vh,340px)}}
 .clube{display:flex;align-items:center;gap:9px;padding:9px 10px;min-height:52px;border-radius:11px;border:1px solid var(--linha);background:var(--quadro);color:var(--tinta);text-decoration:none;text-align:left}
 .clube:hover,.clube:focus-visible{border-color:var(--gram);background:var(--sup2);outline:none}
-.sig{flex:0 0 36px;height:36px;border-radius:9px;display:grid;place-items:center;font-family:'Big Shoulders Display','Arial Narrow',sans-serif;font-weight:900;font-size:15px;letter-spacing:.02em;border:1px solid rgba(0,0,0,.12)}
+.sig{flex:0 0 38px;height:38px;border-radius:9px;display:grid;place-items:center;background:#fff;border:1px solid var(--linha);overflow:hidden}
+.sig img{display:block;width:34px;height:34px;object-fit:contain}
+.sig i{display:none}
+.sig.sem-img{background:none;border:0}
+.sig.sem-img img{display:none}
+.sig.sem-img i{display:grid;place-items:center;width:100%;height:100%;border-radius:9px;font-family:'Big Shoulders Display','Arial Narrow',sans-serif;font-weight:900;font-size:15px;font-style:normal;letter-spacing:.02em}
 .clube .nm{min-width:0}
-.clube .nm b{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere;font-size:14.5px;line-height:1.2}
+.clube .nm b{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:break-word;font-size:14.5px;line-height:1.2}
 .clube .nm span{display:block;font-size:12px;color:var(--tinta2)}
 .vazio{padding:22px 4px;color:var(--tinta2);font-size:15px}
 .rodape-escolha{margin:12px 0 0;font-size:14px;color:var(--tinta2)}

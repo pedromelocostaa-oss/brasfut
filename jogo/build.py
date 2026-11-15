@@ -154,7 +154,9 @@ for sig, nome, cidade, uf, serie, cor1, cor2, cap, fan, estadio in sorted(CLUBES
     busca = _chave(nome, sig, cidade, uf, estadio)
     cards.append(
         f'<a class="clube" href="/jogar/?clube={sig}" data-s="{serie}" data-b="{busca}">'
-        f'<span class="sig" style="background:{_sigla(cor1)[0]};color:{_sigla(cor1)[1]};box-shadow:inset 0 -4px 0 {cor2}">{sig}</span>'
+        f'<span class="sig"><img src="/jogar/escudos/{sig}.png" alt="" width="34" height="34" loading="lazy" decoding="async"'
+        f' onerror="this.closest(\'.sig\').className=\'sig sem-img\'">'
+        f'<i style="background:{_sigla(cor1)[0]};color:{_sigla(cor1)[1]};box-shadow:inset 0 -4px 0 {cor2}">{sig}</i></span>'
         f'<span class="nm"><b>{nome}</b><span>{SERIE[serie]} · {uf}</span></span></a>')
 
 site = (d / 'site.html').read_text().replace('<!--CLUBES-->', '\n'.join(cards))
