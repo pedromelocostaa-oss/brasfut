@@ -124,14 +124,14 @@
   // ---------- posturas (calibradas por simulacao: ver documento de design) ----------
   const MENT_KEYS = ['retranca', 'defensiva', 'equilibrada', 'ofensiva', 'pressao'];
   const MENT = {
-    retranca: { label: 'Retranca', pace: 0.62, tilt: -0.08, expose: 0.92, counter: 1.12, tired: 1, cards: 1.25, cond: 0.9, txt: 'Todos atrás da linha da bola. Corta o ritmo do jogo: ideal para segurar resultado.' },
-    defensiva: { label: 'Defensiva', pace: 0.84, tilt: -0.05, expose: 0.96, counter: 1.22, tired: 1, cards: 1.1, cond: 0.95, txt: 'Linhas baixas e saída rápida. Pune quem se expõe no contra-ataque.' },
+    retranca: { label: 'Retranca', pace: 0.62, tilt: -0.08, expose: 0.92, counter: 1.08, tired: 1, cards: 1.25, cond: 0.9, txt: 'Todos atrás da linha da bola. Corta o ritmo do jogo: ideal para segurar resultado.' },
+    defensiva: { label: 'Defensiva', pace: 0.84, tilt: -0.05, expose: 0.96, counter: 1.15, tired: 1, cards: 1.1, cond: 0.95, txt: 'Linhas baixas e saída rápida. Pune quem se expõe no contra-ataque.' },
     equilibrada: { label: 'Equilibrada', pace: 1, tilt: 0, expose: 1, counter: 1, tired: 1, cards: 1, cond: 1, txt: 'O jogo fica do tamanho dos elencos.' },
     ofensiva: { label: 'Ofensiva', pace: 1.10, tilt: 0.06, expose: 1.10, counter: 1, tired: 0.95, cards: 1, cond: 1.08, txt: 'Laterais sobem e o time vai para cima. Mais gols a favor e contra.' },
     pressao: { label: 'Pressão total', pace: 1.20, tilt: 0.11, expose: 1.20, counter: 1, tired: 0.85, cards: 1.45, cond: 1.3, txt: 'Marcação no campo todo. Abre retranca, mas cansa depois dos 65\' e expõe a defesa.' },
   };
   const SIEGE = { 'pressao|retranca': 0.07, 'pressao|defensiva': 0.02, 'ofensiva|retranca': 0.03 };
-  const P = { baseChances: 9.6, possExp: 2.7, attExp: 2.05, baseXg: 0.112, home: 1.13, away: 0.90, coverPen: 0.35, lateAmp: 2.0, convAdj: 4, penRate: 0.13, fkRate: 0.45 };
+  const P = { baseChances: 9.6, possExp: 2.7, attExp: 2.05, baseXg: 0.112, home: 1.16, away: 0.89, coverPen: 0.35, lateAmp: 2.0, convAdj: 4, penRate: 0.13, fkRate: 0.45 };
 
   const PERSONAS = {
     motivador: { label: 'Motivador', txt: 'Levanta o time nos momentos difíceis.', match: 'Perdendo no 2º tempo, o time cria 10% mais chances.' },
@@ -255,7 +255,10 @@
   function rates(m, minute) {
     const H = m.side[0], A = m.side[1];
     const sH = H.sec, sA = A.sec;
-    const pe = P.possExp; const sh = Math.pow(sH.mid, pe) / (Math.pow(sH.mid, pe) + Math.pow(sA.mid, pe));
+    // posse: força do meio, ajustada pela postura (quem se fecha fica menos com a bola, quem pressiona fica mais)
+    const pe = P.possExp; const pm = { retranca: 0.80, defensiva: 0.90, equilibrada: 1, ofensiva: 1.08, pressao: 1.18 };
+    const midH = sH.mid * pm[H.ment], midA = sA.mid * pm[A.ment];
+    const sh = Math.pow(midH, pe) / (Math.pow(midH, pe) + Math.pow(midA, pe));
     const amp = minute > 65 ? P.lateAmp : 1; const dev = v => 1 + (v - 1) * amp;
     const mh = MENT[H.ment], ma = MENT[A.ment];
     const pace = Math.sqrt(dev(mh.pace) * dev(ma.pace));
@@ -270,13 +273,17 @@
     let xh = P.baseXg * Math.pow(75 / sA.gk, 1) * ma.expose, xa = P.baseXg * Math.pow(75 / sH.gk, 1) * mh.expose;
     if (ma.expose > 1) xh *= mh.counter; if (mh.expose > 1) xa *= ma.counter;
     if (minute > 65) { lh *= mh.tired; la *= ma.tired; }
-    // personalidades
+    // buscar o resultado: quem está perdendo no 2º tempo e vai para o ataque ou a pressão rende mais
     const diff = m.score[0] - m.score[1];
+    if (minute > 45) { if (diff < 0 && (H.ment === 'ofensiva' || H.ment === 'pressao')) lh *= 1.08; if (diff > 0 && (A.ment === 'ofensiva' || A.ment === 'pressao')) la *= 1.08; }
+    // personalidades
     if (H.persona === 'motivador' && minute > 45 && diff < 0) lh *= 1.10;
     if (A.persona === 'motivador' && minute > 45 && diff > 0) la *= 1.10;
     if (H.persona === 'disciplinador') la *= 0.97; if (A.persona === 'disciplinador') lh *= 0.97;
     // expulsoes
-    lh *= Math.pow(0.85, H.reds) * Math.pow(1.08, A.reds); la *= Math.pow(0.85, A.reds) * Math.pow(1.08, H.reds);
+    lh *= Math.pow(0.78, H.reds) * Math.pow(1.15, A.reds); la *= Math.pow(0.78, A.reds) * Math.pow(1.15, H.reds);
+    // com um a menos, a defesa não fecha: cada chance do adversário vale mais
+    xh *= Math.pow(1.12, A.reds); xa *= Math.pow(1.12, H.reds);
     return { lh, la, xh, xa, sh };
   }
 
@@ -459,7 +466,7 @@
     const s = m.side[si]; if (s.human) return;
     const diff = m.score[si] - m.score[1 - si];
     if (m.minute === 60 || m.minute === 75) {
-      if (diff < 0) s.ment = diff <= -2 && m.minute >= 75 ? 'equilibrada' : 'pressao';
+      if (diff < 0) s.ment = s.reds ? 'equilibrada' : diff <= -2 && m.minute >= 75 ? 'equilibrada' : 'pressao';
       else if (diff === 1 && m.minute >= 75) s.ment = 'retranca';
       else if (diff === 1) s.ment = 'defensiva';
       // troca o mais cansado

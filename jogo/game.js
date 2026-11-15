@@ -520,8 +520,12 @@
         ratings[pid] = r;
         p.apps++; p.rsum += r; p.g += p._g || 0; p.a += p._a || 0;
         if (p.condLive != null) p.cond = Math.max(5, p.condLive);
-        if (p._yc) { p.yc += p._yc >= 2 ? 0 : 1; if (p.yc >= 3) { p.sus = 1; p.yc = 0; } }
-        if (p._red) p.sus = 1;
+        // amarelos contam por competição: o 3º na mesma competição suspende o próximo jogo e a conta recomeça.
+        // O amarelo do jogo em que foi expulso não conta.
+        const compK = m.mt.comp || 'liga';
+        if (p._yc && !p._red) { p.ycc = p.ycc || {}; p.ycc[compK] = (p.ycc[compK] || 0) + 1; p.yc = p.ycc[compK];
+          if (p.ycc[compK] >= 3) { p.sus = 1; p.ycc[compK] = 0; p.yc = 0; if (p.club === st.coach.club) pushNews(st, 'club', `${p.n} leva o 3º amarelo e cumpre suspensão no próximo jogo.`); } }
+        if (p._red) { p.sus = 1; if (p.club === st.coach.club) pushNews(st, 'club', `${p.n} foi expulso e cumpre suspensão no próximo jogo.`); }
         if (p._inj) { let d = p._inj; if (p.club === st.coach.club) d = Math.max(1, Math.floor(d * (1 - ctBonus(st).inj) + rngFor(st, 'inj', st.round, pid)())); p.inj = d; }
       });
     });
