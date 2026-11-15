@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Prancheta FC: seja o técnico do seu time na temporada 2026</title>
+<meta name="description" content="Você já escala o time todo domingo. Aqui a escalação vale. 156 clubes das Séries A, B, C e D, temporada 2026 inteira, no navegador, sem instalar e sem cadastro.">
+<meta name="theme-color" content="#22744A">
+<link rel="icon" href="/jogar/icone-192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="/jogar/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Prancheta FC">
+<meta property="og:title" content="Você já escala o time todo domingo. Aqui a escalação vale.">
+<meta property="og:description" content="Escolha entre 156 clubes das Séries A, B, C e D e jogue a temporada 2026 inteira. Abre no navegador, sem instalar e sem cadastro.">
+<meta property="og:locale" content="pt_BR">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+:root{color-scheme:light;--quadro:#E9EEEA;--sup:#F8FAF8;--sup2:#EFF4F0;--tinta:#10201A;--tinta2:#4D5F56;--linha:#C7D2CB;--ima:#2350C8;--gram:#22744A;--gram2:#1B5E3B;--ouro:#E8B400;--sombra:0 1px 2px rgba(16,32,26,.06),0 8px 24px rgba(16,32,26,.06)}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--quadro:#0D1512;--sup:#15201B;--sup2:#1B2922;--tinta:#E6EEE9;--tinta2:#9DB0A6;--linha:#2A3A32;--ima:#5B83F2;--gram:#1B5E3B;--gram2:#14432B;--ouro:#F0C53A;--sombra:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.28);color-scheme:dark}}
+:root[data-theme=dark]{--quadro:#0D1512;--sup:#15201B;--sup2:#1B2922;--tinta:#E6EEE9;--tinta2:#9DB0A6;--linha:#2A3A32;--ima:#5B83F2;--gram:#1B5E3B;--gram2:#14432B;--ouro:#F0C53A;--sombra:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.28);color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--quadro);color:var(--tinta);font:17px/1.6 'Atkinson Hyperlegible','Segoe UI',system-ui,sans-serif;-webkit-text-size-adjust:100%}
+.in{max-width:1060px;margin:0 auto;padding-inline:16px}
+.estreito{max-width:720px}
+h1,h2,h3,.marca,.num{font-family:'Big Shoulders Display','Arial Narrow',sans-serif;text-transform:uppercase;letter-spacing:.01em}
+h1{font-weight:900;font-size:clamp(38px,8.5vw,76px);line-height:.95;margin:0 0 14px;text-wrap:balance}
+h2{font-weight:900;font-size:clamp(28px,5vw,44px);line-height:1;margin:0 0 10px;text-wrap:balance}
+h3{font-weight:800;font-size:21px;margin:0 0 4px}
+p{margin:0 0 14px}
+a{color:var(--ima)}
+.lead{font-size:clamp(17px,2.2vw,21px);color:var(--tinta2);max-width:54ch;margin:0 0 22px}
+
+/* topo */
+.barra{position:sticky;top:0;z-index:20;background:var(--gram);color:#fff;padding-block:10px;padding-top:calc(10px + env(safe-area-inset-top,0px))}
+.barra .in{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.marca{font-weight:900;font-size:24px;color:#fff;text-decoration:none;white-space:nowrap}
+.marca i{font-style:normal;color:var(--ouro)}
+.menu{display:flex;gap:16px;align-items:center}
+.menu a{color:#fff;text-decoration:none;font-size:15px;font-weight:700;opacity:.88;display:inline-flex;align-items:center;min-height:40px;padding-inline:4px}
+.menu a:hover{opacity:1;text-decoration:underline}
+@media (max-width:560px){.menu a.some{display:none}}
+
+/* herói */
+.heroi{background:linear-gradient(170deg,var(--gram) 0%,var(--gram2) 100%);color:#fff;padding-block:clamp(32px,6vw,64px) clamp(26px,4vw,44px)}
+.heroi h1{color:#fff}
+.heroi h1 i{font-style:normal;color:var(--ouro)}
+.heroi .lead{color:rgba(255,255,255,.9);font-size:clamp(17px,2.4vw,22px);max-width:46ch}
+.selos{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 4px;padding:0;list-style:none}
+.selos li{font-size:13px;font-weight:700;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:5px 11px}
+
+/* escolha de clube */
+.escolha{background:var(--sup);color:var(--tinta);border:1px solid var(--linha);border-radius:18px;box-shadow:var(--sombra);padding:16px;margin-top:22px}
+.escolha .cab{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.escolha .cab b{font-size:18px}
+.busca{position:relative;flex:1 1 220px;min-width:0}
+.busca input{width:100%;font:inherit;font-size:16px;padding:11px 13px;border-radius:11px;border:2px solid var(--linha);background:var(--quadro);color:var(--tinta)}
+.busca input:focus{outline:none;border-color:var(--gram)}
+.abas{display:flex;gap:6px;flex-wrap:wrap}
+.abas button{font:inherit;font-weight:700;font-size:14px;padding:8px 13px;min-height:36px;border-radius:999px;border:1px solid var(--linha);background:var(--quadro);color:var(--tinta2);cursor:pointer}
+.abas button[aria-pressed=true]{background:var(--gram);border-color:var(--gram);color:#fff}
+.grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:8px;max-height:min(52vh,420px);overflow:auto;padding:2px;scrollbar-width:thin}
+@media (max-width:420px){.grade{grid-template-columns:repeat(auto-fill,minmax(132px,1fr))}}
+.clube{display:flex;align-items:center;gap:9px;padding:9px 10px;min-height:52px;border-radius:11px;border:1px solid var(--linha);background:var(--quadro);color:var(--tinta);text-decoration:none;text-align:left}
+.clube:hover,.clube:focus-visible{border-color:var(--gram);background:var(--sup2);outline:none}
+.sig{flex:0 0 36px;height:36px;border-radius:9px;display:grid;place-items:center;font-family:'Big Shoulders Display','Arial Narrow',sans-serif;font-weight:900;font-size:15px;letter-spacing:.02em;border:1px solid rgba(0,0,0,.12)}
+.clube .nm{min-width:0}
+.clube .nm b{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere;font-size:14.5px;line-height:1.2}
+.clube .nm span{display:block;font-size:12px;color:var(--tinta2)}
+.vazio{padding:22px 4px;color:var(--tinta2);font-size:15px}
+.rodape-escolha{margin:12px 0 0;font-size:14px;color:var(--tinta2)}
+
+/* seções */
+section{padding-block:clamp(40px,6vw,72px)}
+section.alt{background:var(--sup)}
+.olho{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gram);margin:0 0 8px}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .olho{color:#5FBF8A}}
+:root[data-theme=dark] .olho{color:#5FBF8A}
+.cartoes{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:26px}
+.cartao{background:var(--sup);border:1px solid var(--linha);border-radius:14px;padding:18px}
+section.alt .cartao{background:var(--quadro)}
+.cartao p{margin:0;color:var(--tinta2);font-size:15.5px}
+.lista{list-style:none;padding:0;margin:20px 0 0;display:grid;gap:10px}
+.lista li{display:flex;gap:10px;align-items:flex-start;font-size:16px}
+.lista li::before{content:'';flex:0 0 8px;height:8px;border-radius:50%;background:var(--gram);margin-top:9px}
+.duas{display:grid;grid-template-columns:1fr;gap:26px}
+@media (min-width:820px){.duas{grid-template-columns:1fr 1fr;gap:40px;align-items:start}}
+
+/* perguntas */
+details{border-bottom:1px solid var(--linha);padding:4px 0}
+details summary{cursor:pointer;font-weight:700;font-size:17px;padding:13px 0;list-style:none;display:flex;justify-content:space-between;gap:12px;align-items:center}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:'+';font-family:'Big Shoulders Display',sans-serif;font-size:26px;line-height:1;color:var(--gram);flex:0 0 auto}
+details[open] summary::after{content:'–'}
+details p{margin:0 0 14px;color:var(--tinta2)}
+
+/* chamada final */
+.fim{background:var(--gram);color:#fff;text-align:center}
+.fim h2{color:#fff}
+.fim p{color:rgba(255,255,255,.9);max-width:46ch;margin-inline:auto}
+.btn{display:inline-block;background:var(--ouro);color:#20170A;font-family:'Big Shoulders Display','Arial Narrow',sans-serif;font-weight:900;text-transform:uppercase;font-size:23px;letter-spacing:.02em;padding:14px 30px;min-height:52px;border-radius:12px;text-decoration:none;border:0;cursor:pointer}
+.btn:hover{filter:brightness(1.07)}
+
+/* rodapé */
+footer{background:var(--sup);border-top:1px solid var(--linha);padding-block:30px;font-size:15px;color:var(--tinta2)}
+footer .links{display:flex;flex-wrap:wrap;gap:4px 18px;margin-bottom:10px}
+footer .links a{display:inline-flex;align-items:center;min-height:40px}
+footer p{margin:0;max-width:62ch}
+</style>
+</head>
+<body>
+
+<header class="barra">
+  <div class="in">
+    <a class="marca" href="/">PRAN<i>CHETA</i> FC</a>
+    <nav class="menu">
+      <a href="#oque" class="some">O jogo</a>
+      <a href="novidades.html" class="some">Novidades</a>
+      <a href="como-jogar.html">Como jogar</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<div class="heroi">
+  <div class="in">
+    <h1>Você já escala<br>o time <i>todo domingo</i>.</h1>
+    <p class="lead">Aqui a escalação vale. Escolha entre 156 clubes das Séries A, B, C e D e jogue a temporada 2026 inteira.</p>
+    <ul class="selos">
+      <li>Abre no navegador</li>
+      <li>Não precisa instalar</li>
+      <li>Não precisa de conta</li>
+      <li>Sem anúncio</li>
+    </ul>
+
+    <div class="escolha">
+      <div class="cab">
+        <b>Comece pelo seu time</b>
+        <div class="abas" id="abas" role="group" aria-label="Filtrar por série">
+          <button type="button" data-s="" aria-pressed="true">Todos</button>
+          <button type="button" data-s="A" aria-pressed="false">Série A</button>
+          <button type="button" data-s="B" aria-pressed="false">Série B</button>
+          <button type="button" data-s="C" aria-pressed="false">Série C</button>
+          <button type="button" data-s="D" aria-pressed="false">Série D</button>
+        </div>
+      </div>
+      <div class="busca"><input id="q" type="search" placeholder="Busque seu clube ou a sua cidade" aria-label="Busque seu clube ou a sua cidade" autocomplete="off"></div>
+      <div class="grade" id="grade"><!--CLUBES--></div>
+      <p class="vazio" id="vazio" hidden>Nenhum clube com esse nome nas Séries A a D de 2026.</p>
+      <p class="rodape-escolha">Tocou no clube, a carreira começa. O jogo salva sozinho no seu aparelho.</p>
+    </div>
+  </div>
+</div>
+
+<section id="oque">
+  <div class="in">
+    <p class="olho">O que você faz</p>
+    <h2>O time é seu. As decisões também.</h2>
+    <p class="lead">Nada de assistir. Toda rodada passa pela sua mão, e cada escolha tem um custo escrito na tela antes de você decidir.</p>
+    <div class="cartoes">
+      <div class="cartao">
+        <h3>Escala</h3>
+        <p>Formação, titulares, banco por ordem de entrada, cobradores de falta e pênalti, capitão. Ou toca em "escalar os melhores" e sai jogando.</p>
+      </div>
+      <div class="cartao">
+        <h3>Decide no jogo</h3>
+        <p>A partida acontece na sua frente, minuto a minuto. No intervalo você muda a postura, tira quem está apagado e vai buscar o resultado.</p>
+      </div>
+      <div class="cartao">
+        <h3>Negocia</h3>
+        <p>Contrata, vende, empresta, pede verba à diretoria. O caixa é o do seu clube de verdade: time da Série D não compra como time da Série A.</p>
+      </div>
+      <div class="cartao">
+        <h3>Responde</h3>
+        <p>A diretoria cobra a meta, a torcida reclama e a imprensa pergunta. Fase ruim e a paciência acaba: primeiro vem o aviso, depois o ultimato.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="in duas">
+    <div>
+      <p class="olho">O calendário</p>
+      <h2>Domingo tem rodada.<br>Quarta tem copa.</h2>
+      <p>O ano não é uma barra de progresso. É um calendário com dia e mês de verdade: o estadual no começo do ano, a rodada de Brasileirão no domingo, a copa no meio de semana.</p>
+      <p>O dinheiro segue a mesma lógica. Folha, cota de TV, patrocínio e manutenção caem na última data de cada mês. Em dezembro o clube paga duas folhas, porque existe décimo terceiro.</p>
+      <p>Nenhuma tela do jogo fala em "semana 12 de 38".</p>
+    </div>
+    <div>
+      <p class="olho">As competições</p>
+      <h2>Da Série D<br>à Libertadores.</h2>
+      <ul class="lista">
+        <li>156 clubes das Séries A, B, C e D de 2026, com elencos reais</li>
+        <li>Estaduais: Mineiro, Paulista, Carioca, Gaúcho e os outros</li>
+        <li>Brasileirão com subida e descida de verdade</li>
+        <li>Copa do Brasil do começo ao fim</li>
+        <li>Libertadores e Sul-Americana, com os clubes de fora</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="in estreito">
+    <p class="olho">Quanto custa</p>
+    <h2>Sem pegadinha.</h2>
+    <!-- Preço: este texto é o mesmo de app/suporte.html. Mudou aqui, muda lá. -->
+    <p>O estadual e o primeiro turno do Brasileirão são grátis para sempre. Depois disso o Passe de Técnico libera o resto: R$ 49,90 uma vez, ou R$ 12,90 por mês.</p>
+    <p>Não tem anúncio, não tem caixa de recompensa, não tem sorteio e não tem nada para comprar dentro do jogo que deixe seu time mais forte. Quem ganha é quem escala melhor.</p>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="in duas">
+    <div>
+      <p class="olho">Para quem já jogou</p>
+      <h2>Lembra do Brasfoot?</h2>
+      <p>A ideia é a mesma: você é o técnico, o elenco é real, a temporada é inteira. O que mudou é o resto.</p>
+      <p>Abre no navegador, no celular ou no computador, sem instalar e sem registrar nada. O calendário tem data de verdade. A partida acontece na sua frente e você decide a postura no intervalo. E tem Libertadores e Sul-Americana.</p>
+    </div>
+    <div>
+      <p class="olho">Para os pais</p>
+      <h2>O que seu filho vai achar aqui.</h2>
+      <ul class="lista">
+        <li>Nenhum anúncio, em nenhuma tela</li>
+        <li>Nenhuma mecânica de azar: sem caixa surpresa, sem sorteio, sem roleta</li>
+        <li>Nenhum cadastro e nenhuma coleta de dados: o jogo salva no próprio aparelho</li>
+        <li>Nenhum chat e nenhum contato com estranhos</li>
+        <li>Nada para comprar que deixe o time mais forte</li>
+      </ul>
+      <p style="margin-top:16px;line-height:2.1"><a href="privacidade.html">Política de privacidade</a> e <a href="suporte.html">contato direto com quem fez o jogo</a>.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="in estreito">
+    <p class="olho">Perguntas</p>
+    <h2>O que todo mundo pergunta.</h2>
+    <details><summary>Precisa instalar alguma coisa?</summary><p>Não. O jogo abre no navegador do celular, do tablet ou do computador. Se quiser, dá para adicionar o atalho na tela de início e ele vira um ícone como qualquer app.</p></details>
+    <details><summary>Precisa criar conta?</summary><p>Não. Você escolhe o clube e começa. Não pedimos e-mail, telefone nem nada.</p></details>
+    <details><summary>Funciona sem internet?</summary><p>Sim. Depois que o jogo abre uma vez, ele continua funcionando offline.</p></details>
+    <details><summary>Se eu fechar, perco a carreira?</summary><p>Não. O jogo salva sozinho no seu aparelho. Mas a carreira fica só nele: se você limpar os dados do navegador ou trocar de celular, ela não vai junto.</p></details>
+    <details><summary>Dá para jogar no computador?</summary><p>Dá, e a tela se ajusta sozinha. A maioria joga no celular.</p></details>
+    <details><summary>Meu time está no jogo?</summary><p>Se ele disputou a Série A, B, C ou D de 2026, está. São 156 clubes, mais os times de fora que jogam a Libertadores e a Sul-Americana.</p></details>
+    <details><summary>Quem fez isso?</summary><p>Uma pessoa só, no Brasil, torcedor como você. O jogo não tem vínculo com a CBF, com a Conmebol, com clubes ou com atletas. Dúvida, erro ou sugestão: <a href="suporte.html">fale comigo</a>.</p></details>
+  </div>
+</section>
+
+<section class="fim">
+  <div class="in">
+    <h2>Seu time começa a temporada agora.</h2>
+    <p>São 38 rodadas, mais estadual e copa. Dá tempo de errar e consertar.</p>
+    <p style="margin-top:22px"><a class="btn" href="/jogar/">Escolher meu clube</a></p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="in">
+    <div class="links">
+      <a href="/jogar/">Jogar</a>
+      <a href="como-jogar.html">Como jogar</a>
+      <a href="novidades.html">Novidades</a>
+      <a href="suporte.html">Suporte</a>
+      <a href="privacidade.html">Privacidade</a>
+      <a href="termos.html">Termos de uso</a>
+    </div>
+    <p>Prancheta FC. Jogo independente, sem vínculo com a CBF, com a Conmebol, com clubes, ligas ou jogadores. Nomes de clubes e de atletas aparecem como referência factual à temporada de 2026.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var grade = document.getElementById('grade'), q = document.getElementById('q'),
+      vazio = document.getElementById('vazio'), abas = document.getElementById('abas');
+  var itens = [].slice.call(grade.children), serie = '';
+  function limpa(s) { return s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase(); }
+  function filtra() {
+    var t = limpa(q.value.trim()), n = 0;
+    itens.forEach(function (el) {
+      var ok = (!serie || el.dataset.s === serie) && (!t || el.dataset.b.indexOf(t) >= 0);
+      el.hidden = !ok; if (ok) n++;
+    });
+    vazio.hidden = n > 0;
+  }
+  q.addEventListener('input', filtra);
+  abas.addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    serie = b.dataset.s;
+    [].forEach.call(abas.children, function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+    filtra(); grade.scrollTop = 0;
+  });
+})();
+</script>
+</body>
+</html>

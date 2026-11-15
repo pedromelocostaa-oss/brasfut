@@ -1,7 +1,7 @@
 {
   "appId": "br.com.prancheta.fc",
   "appName": "Prancheta FC",
-  "webDir": "../app",
+  "webDir": "../app/jogar",
   "backgroundColor": "#10201AFF",
   "ios": {
     "contentInset": "never",

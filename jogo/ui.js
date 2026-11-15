@@ -1642,6 +1642,14 @@
   function start(data) {
     loadCrests();
     if (data && data.S) { S = G.migrate(data.S); if (data.settings) U.settings = data.settings; } else load();
+    // vindo do site com um clube escolhido (/jogar/?clube=CRU): já abre no passo do técnico.
+    // Só vale quando não há carreira salva, para não atropelar quem já está jogando.
+    if (!S) try {
+      const alvo = (new URLSearchParams(location.search).get('clube') || '').toUpperCase();
+      const c = alvo && E.CLUBS.find(x => x.id === alvo && x.div !== 'X');
+      if (c) { U.onb.club = c.id; U.onb.step = 2; if (!U.onb.avatar) U.onb.avatar = randomAvatar(); }
+      if (alvo) history.replaceState(null, '', location.pathname);
+    } catch (e) { /* sem URL utilizável */ }
     render();
     NAT.pronto();
     // botão voltar do Android: fecha o painel, sai da partida, volta para a Central, e só aí deixa sair do app

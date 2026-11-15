@@ -3,7 +3,8 @@
 #   app/index.html   -> documento completo do PWA, com manifest, service worker e ícone
 import pathlib, hashlib, re
 d = pathlib.Path(__file__).parent
-app = d.parent / 'app'
+raiz = d.parent / 'app'
+app = raiz / 'jogar'
 css = (d / 'styles.css').read_text()
 files = ('nativo.js', 'rosters.js', 'clubs.js', 'foreign.js', 'engine.js', 'comps.js', 'game.js', 'ui.js')
 scripts = '\n'.join(f'<script>\n{(d / f).read_text()}\n</script>' for f in files)
@@ -95,11 +96,68 @@ self.addEventListener('fetch', e => {
   // rede primeiro para o documento (pega versão nova), cache como rede de segurança
   if (e.request.mode === 'navigate') {
     // só o jogo tem reserva offline; privacidade, termos e suporte vão para a rede
-    const ehJogo = u.pathname === '/' || u.pathname.endsWith('/index.html');
+    const ehJogo = u.pathname === '/jogar/' || u.pathname.endsWith('/jogar/index.html');
     e.respondWith(fetch(e.request).then(r => { if (ehJogo) { const c = r.clone(); caches.open(V).then(x => x.put('./index.html', c)); } return r; }).catch(() => ehJogo ? caches.match('./index.html') : Response.error()));
     return;
   }
   e.respondWith(caches.match(e.request).then(r => r || fetch(e.request).then(res => { const c = res.clone(); caches.open(V).then(x => x.put(e.request, c)); return res; })));
 });
 ''')
-print('artifact', len(frag), '| pwa', len(pwa), '| versão do cache', ver)
+
+# ---------- site (app/index.html) ----------
+# A grade de 156 clubes sai do clubs.js, para nao ter a lista escrita a mao em dois lugares.
+import json
+_raw = (d / 'clubs.js').read_text()
+_i = _raw.index('const C = ') + len('const C = ')
+_j = _raw.index(']];', _i) + 2
+CLUBES = json.loads(_raw[_i:_j])
+
+def _lum(hexcor):
+    h = hexcor.lstrip('#')
+    r, g, b = (int(h[k:k+2], 16) / 255 for k in (0, 2, 4))
+    f = lambda c: c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4
+    return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b)
+
+def _ratio(a, b):
+    hi, lo = max(a, b), min(a, b)
+    return (hi + 0.05) / (lo + 0.05)
+
+def _mistura(hexcor, alvo, t):
+    h = hexcor.lstrip('#'); a = alvo.lstrip('#')
+    out = []
+    for k in (0, 2, 4):
+        c1, c2 = int(h[k:k+2], 16), int(a[k:k+2], 16)
+        out.append(round(c1 + (c2 - c1) * t))
+    return '#%02X%02X%02X' % tuple(out)
+
+def _sigla(cor):
+    """Fundo e tinta da sigla. Mantem a cor do clube, mas escurece ou clareia o minimo
+    necessario para a sigla passar de 4.5:1, que e o limite de contraste para texto normal."""
+    PRETO, BRANCO = '#10201A', '#FFFFFF'
+    tinta = PRETO if _ratio(_lum(cor), _lum(PRETO)) >= _ratio(_lum(cor), _lum(BRANCO)) else BRANCO
+    destino = BRANCO if tinta == PRETO else PRETO
+    fundo = cor
+    for i in range(21):
+        if _ratio(_lum(fundo), _lum(tinta)) >= 4.5:
+            break
+        fundo = _mistura(cor, destino, (i + 1) * 0.05)
+    return fundo, tinta
+
+def _chave(*partes):
+    import unicodedata
+    t = ' '.join(partes).lower()
+    return ''.join(c for c in unicodedata.normalize('NFD', t) if unicodedata.category(c) != 'Mn')
+
+SERIE = {'A': 'Série A', 'B': 'Série B', 'C': 'Série C', 'D': 'Série D'}
+cards = []
+for sig, nome, cidade, uf, serie, cor1, cor2, cap, fan, estadio in sorted(CLUBES, key=lambda c: (c[4], c[1])):
+    busca = _chave(nome, sig, cidade, uf, estadio)
+    cards.append(
+        f'<a class="clube" href="/jogar/?clube={sig}" data-s="{serie}" data-b="{busca}">'
+        f'<span class="sig" style="background:{_sigla(cor1)[0]};color:{_sigla(cor1)[1]};box-shadow:inset 0 -4px 0 {cor2}">{sig}</span>'
+        f'<span class="nm"><b>{nome}</b><span>{SERIE[serie]} · {uf}</span></span></a>')
+
+site = (d / 'site.html').read_text().replace('<!--CLUBES-->', '\n'.join(cards))
+(raiz / 'index.html').write_text(site)
+
+print('site', len(site), '|', len(CLUBES), 'clubes |', 'artifact', len(frag), '| pwa', len(pwa), '| versão do cache', ver)
