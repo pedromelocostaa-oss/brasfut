@@ -23,10 +23,15 @@
   const PASSE_DATA = C.ligaWeek(18);             // domingo do fim do primeiro turno
   const PASSE_TRAVA = false;                      // vira true quando a cobrança estiver no ar
   const PRECOS = {
-    passe: { id: 'passe', nome: 'Passe de Técnico', preco: 4990, tipo: 'uma vez',
-      itens: ['Temporadas sem limite, de 2026 em diante', 'Libertadores e Sul-Americana', 'Trocar de clube quando quiser', 'Várias carreiras salvas ao mesmo tempo', 'Carreira salva na nuvem, para trocar de aparelho'] },
-    mensal: { id: 'mensal', nome: 'Mensal', preco: 1290, tipo: 'por mês',
-      itens: ['O mesmo do passe, enquanto a assinatura estiver ativa', 'Cancela quando quiser'] },
+    passe: {
+      id: 'passe', nome: 'Passe de Técnico', preco: 5900, tipo: 'uma vez',
+      itens: [
+        'Temporadas sem limite, de 2026 em diante',
+        'Libertadores e Sul-Americana',
+        'Trocar de clube quando quiser',
+        'Várias carreiras salvas ao mesmo tempo',
+      ],
+    },
   };
   function temPasse(st) { return !!(st.passe && st.passe.ativo); }
   // true quando o jogador chegou no ponto em que o jogo pede o passe

@@ -1641,10 +1641,15 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
   const PASSE_DATA = C.ligaWeek(18);             // domingo do fim do primeiro turno
   const PASSE_TRAVA = false;                      // vira true quando a cobrança estiver no ar
   const PRECOS = {
-    passe: { id: 'passe', nome: 'Passe de Técnico', preco: 4990, tipo: 'uma vez',
-      itens: ['Temporadas sem limite, de 2026 em diante', 'Libertadores e Sul-Americana', 'Trocar de clube quando quiser', 'Várias carreiras salvas ao mesmo tempo', 'Carreira salva na nuvem, para trocar de aparelho'] },
-    mensal: { id: 'mensal', nome: 'Mensal', preco: 1290, tipo: 'por mês',
-      itens: ['O mesmo do passe, enquanto a assinatura estiver ativa', 'Cancela quando quiser'] },
+    passe: {
+      id: 'passe', nome: 'Passe de Técnico', preco: 5900, tipo: 'uma vez',
+      itens: [
+        'Temporadas sem limite, de 2026 em diante',
+        'Libertadores e Sul-Americana',
+        'Trocar de clube quando quiser',
+        'Várias carreiras salvas ao mesmo tempo',
+      ],
+    },
   };
   function temPasse(st) { return !!(st.passe && st.passe.ativo); }
   // true quando o jogador chegou no ponto em que o jogo pede o passe
@@ -4467,7 +4472,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
   const brl = c => 'R$ ' + (c / 100).toFixed(2).replace('.', ',');
   function planoBox(pl, destaque) {
     return `<div class="verba" style="${destaque ? 'border-color:var(--ouro);border-width:2px' : ''}">
-      <div class="row between" style="align-items:baseline"><b style="font-size:19px">${pl.nome}</b>${destaque ? '<span class="tag gold">Melhor escolha</span>' : ''}</div>
+      <div class="row between" style="align-items:baseline"><b style="font-size:19px">${pl.nome}</b>${pl.tipo === 'uma vez' ? '<span class="tag gold">Uma vez só</span>' : ''}</div>
       <div class="disp" style="font-size:38px;line-height:1;margin:4px 0 2px">${brl(pl.preco)}</div>
       <div class="tiny muted" style="margin-bottom:10px">${pl.tipo === 'uma vez' ? 'Pagamento único. Não renova, não cobra de novo.' : 'Cobrado todo mês. Cancela quando quiser.'}</div>
       <ul class="why" style="margin:0 0 10px">${pl.itens.map(i => `<li><span>${esc(i)}</span><span>${IC.check}</span></li>`).join('')}</ul>
@@ -4477,8 +4482,8 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
     const pi = G.passeInfo(S); const P = pi.precos;
     return `<div class="row between nowrap" style="margin-bottom:12px;gap:10px"><h2 class="disp sheet-t" style="text-transform:uppercase;line-height:1;flex:1;min-width:0">Passe de Técnico</h2><button class="btn" style="flex:none;white-space:nowrap" data-act="closeSheet">Agora não</button></div>
       <p style="margin:0 0 4px;font-size:17px">${pi.naHora ? 'Você fechou o primeiro turno. Daqui para a frente o jogo pede o passe.' : 'O primeiro turno é de graça. Depois dele, o passe libera o resto.'}</p>
-      <p class="small muted" style="margin:0 0 14px">O que você já jogou fica salvo. Estadual e primeiro turno são de graça para sempre, em qualquer carreira.</p>
-      <div class="stack" style="gap:12px">${planoBox(P.passe, true)}${planoBox(P.mensal, false)}</div>
+      <p class="small muted" style="margin:0 0 14px">O que você já jogou fica salvo. Estadual e primeiro turno são de graça para sempre, em qualquer carreira. Pagamento único, não é assinatura.</p>
+      <div class="stack" style="gap:12px">${planoBox(P.passe, true)}</div>
       <p class="tiny muted" style="margin:14px 0 0">A cobrança ainda não está ligada. Por enquanto o jogo segue liberado e esta tela serve para você ver a oferta. Quando o pagamento entrar no ar, quem já estiver jogando continua de onde parou.</p>`;
   }
   function passeCard() {
