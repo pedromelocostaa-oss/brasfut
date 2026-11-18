@@ -115,6 +115,11 @@ details p{margin:0 0 14px;color:var(--tinta2)}
 .fim p{color:rgba(255,255,255,.9);max-width:46ch;margin-inline:auto}
 .btn{display:inline-block;background:var(--ouro);color:#20170A;font-family:'Big Shoulders Display','Arial Narrow',sans-serif;font-weight:900;text-transform:uppercase;font-size:23px;letter-spacing:.02em;padding:14px 30px;min-height:52px;border-radius:12px;text-decoration:none;border:0;cursor:pointer}
 .btn:hover{filter:brightness(1.07)}
+.btn.bar{font-size:17px;padding:9px 18px;min-height:40px;border-radius:999px;white-space:nowrap;flex:none}
+@media (max-width:420px){.menu{display:none}}
+.retomar{display:none;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;background:var(--sup2);border:1px solid var(--linha);border-radius:12px;padding:10px 12px;margin-bottom:12px}
+.retomar.ver{display:flex}
+.retomar p{margin:0;font-size:15px;color:var(--tinta);min-width:0}
 
 /* rodapé */
 footer{background:var(--sup);border-top:1px solid var(--linha);padding-block:30px;font-size:15px;color:var(--tinta2)}
@@ -133,6 +138,7 @@ footer p{margin:0;max-width:62ch}
       <a href="novidades.html" class="some">Novidades</a>
       <a href="como-jogar.html">Como jogar</a>
     </nav>
+    <a class="btn bar" id="btn-jogar" href="/jogar/">Jogar</a>
   </div>
 </header>
 
@@ -150,6 +156,10 @@ footer p{margin:0;max-width:62ch}
     </ul>
 
     <div class="escolha">
+      <div class="retomar" id="retomar">
+        <p>Voc&ecirc; tem uma carreira salva<b id="retomar-clube"></b>.</p>
+        <a class="btn bar" href="/jogar/">Continuar</a>
+      </div>
       <div class="cab">
         <b>Comece pelo seu time</b>
         <div class="abas" id="abas" role="group" aria-label="Filtrar por série">
@@ -311,6 +321,20 @@ footer p{margin:0;max-width:62ch}
     });
     vazio.hidden = n > 0;
   }
+  // o jogo mora no mesmo dominio, entao da para saber aqui se existe carreira salva
+  try {
+    var bruto = localStorage.getItem('prancheta.v1');
+    if (bruto) {
+      var sig = '', i = bruto.indexOf('"coach":');
+      if (i >= 0) { var m = bruto.slice(i, i + 400).match(/"club":"([A-Z]{2,4})"/); if (m) sig = m[1]; }
+      var nome = '';
+      if (sig) { var a = grade.querySelector('a[href$="clube=' + sig + '"]'); if (a && a.querySelector('.nm b')) nome = a.querySelector('.nm b').textContent; }
+      var bt = document.getElementById('btn-jogar'); if (bt) bt.textContent = 'Continuar';
+      var r = document.getElementById('retomar');
+      if (r) { document.getElementById('retomar-clube').textContent = nome ? ' no ' + nome : ''; r.className = 'retomar ver'; }
+    }
+  } catch (e) { /* sem armazenamento: o botao segue como Jogar */ }
+
   q.addEventListener('input', filtra);
   abas.addEventListener('click', function (e) {
     var b = e.target.closest('button'); if (!b) return;
