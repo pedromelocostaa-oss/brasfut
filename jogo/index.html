@@ -3465,7 +3465,8 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
     const c = club(id) || E.CLUBS.find(x => x.id === id);
     const cor = `style="--c1:${c.c1};--c2:${c.c2};color:${txtOn(c.c1)}"`;
     const sigla = c.div === 'X' ? c.id.slice(1) : c.id;
-    const src = CRESTS[id] || (c.div !== 'X' ? `escudos/${c.id}.png` : '');
+    // estrangeiro tambem tem escudo agora; quem nao tem arquivo cai no onerror e volta a mostrar a sigla
+    const src = CRESTS[id] || `escudos/${c.id}.png`;
     if (!src) return `<span class="badge ${cls}" ${cor} aria-hidden="true">${sigla}</span>`;
     return `<span class="badge temEscudo ${cls}" ${cor} aria-hidden="true">${sigla}<img src="${src}" alt="" loading="lazy" onerror="this.closest('.badge').classList.remove('temEscudo');this.remove()"></span>`;
   }
