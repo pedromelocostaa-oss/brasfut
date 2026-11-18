@@ -1631,6 +1631,9 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
   const MESES_FOLHA = 13, MESES_TV = 12, SEM_ANO = 58;
   // Bicho: prêmio que o elenco recebe por resultado, como no futebol brasileiro de verdade.
   // É o atrito que cresce junto com o sucesso: quem ganha muito paga muito. Fração da folha mensal.
+  // Só o clube do jogador paga. Cobrar de todo mundo quebrava a liga: clube da IA não tem patrocínio
+  // e roda com margem quase zero, então o bicho a cada resultado somava duas folhas e meia por ano
+  // e deixava 102 dos 156 clubes no vermelho, contra 25 sem ele. Medido em quatro carreiras.
   const BICHO = { V: 0.06, E: 0.025 };
   function bicho(wb, res) { return Math.round(wb * (BICHO[res] || 0) / 1000) * 1000; }
 
@@ -2273,7 +2276,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
     Object.values(st.clubs).forEach(c => {
       if (c.div === 'X') return;
       const isUser = c.id === me; const wbNow = (payday || resOf[c.id]) ? wageBill(st, c.id) : 0; const wb = payday ? wbNow : 0;
-      const prem = resOf[c.id] ? bicho(wbNow, resOf[c.id]) : 0;
+      const prem = (isUser && resOf[c.id]) ? bicho(wbNow, resOf[c.id]) : 0;
       let gate = 0;
       if (homeGame[c.id]) {
         const cw = crowd(st, c.id, homeGame[c.id]); gate = cw.gate;
