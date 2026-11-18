@@ -252,7 +252,9 @@
         <p class="tiny muted">Elencos reais e completos das Séries A, B, C e D de 2026 (Transfermarkt, 3 de outubro de 2026); clubes, estádios e capacidades da Wikipédia. Notas e atributos são estimativas calculadas a partir do valor de mercado, da idade, dos minutos jogados e dos gols e assistências de 2026. Elencos com menos de 23 jogadores são completados com garotos da base de nomes gerados, e os que surgem nas temporadas seguintes também são fictícios.</p>
       </div>`;
     }
-    const tmp = window.__preview; const c = tmp.clubs[o.club]; const t = roleOf(tmp, o.club);
+    // quem chega pelo site cai direto neste passo e nunca passou pelo passo 1, onde a previa era criada
+    const tmp = window.__preview || (window.__preview = G.newCareer(20261003, 'FLA', 'x', 'motivador'));
+    const c = tmp.clubs[o.club]; const t = roleOf(tmp, o.club);
     const ps = Object.entries(E.PERSONAS).map(([k, p]) => `<button class="persona" data-act="onbPersona" data-v="${k}" aria-pressed="${o.persona === k}"><b>${p.label}</b><span class="small muted">${p.txt}</span><span class="small">${p.match}</span></button>`).join('');
     return `<div class="onb stack" style="max-width:820px">
       <button class="btn ghost" data-act="onbBack" style="justify-self:start">← Trocar de clube</button>
@@ -1219,6 +1221,7 @@
   function updateMatchUI(newEvents = []) {
     const m = U.match; if (!m || U.view !== 'match') return;
     const us = m.userSide;
+    { const mp = document.getElementById('mp'); if (mp && !mp.querySelector('.pl')) pitchPlayers(); }
     const $ = id => document.getElementById(id);
     const sc = $('sc'); if (!sc) return;
     sc.textContent = `${m.score[0]} × ${m.score[1]}`;
@@ -1235,16 +1238,60 @@
     $('ctl').innerHTML = matchControls();
   }
 
-  function animateBall(side, goal, quem) {
+  // Os 22 no campo. O motor ja entrega x e y de cada titular pela formacao (lineupFrom),
+  // entao aqui so vira coordenada do mini campo, que e deitado: y da formacao vira profundidade.
+  function pitchPlayers() {
+    const m = U.match, mp = document.getElementById('mp'); if (!m || !mp) return;
+    mp.querySelectorAll('.pl').forEach(e => e.remove());
+    const cor = [0, 1].map(i => { const c = club(m.side[i].club) || {}; let k = c.c1 || '#DDD'; if (lum(k) > 0.82) k = c.c2 || '#222'; return k; });
+    [0, 1].forEach(i => (m.side[i].xi || []).forEach(o => {
+      if (!o.p) return;
+      const prof = Math.max(0, Math.min(1, (o.y || 6) / 84));
+      const bx = i === 0 ? 4 + prof * 38 : 96 - prof * 38;
+      const d = document.createElement('div');
+      d.className = 'pl' + (o.slot === 'GK' ? ' gk' : '');
+      d.dataset.pid = o.p.id; d.dataset.side = i; d.dataset.bx = bx.toFixed(2);
+      // o goleiro quase nao acompanha o bloco; o atacante acompanha inteiro
+      d.dataset.peso = (0.25 + prof * 0.75).toFixed(2);
+      d.style.left = bx.toFixed(2) + '%';
+      d.style.top = (10 + (i === 0 ? o.x : 100 - o.x) * 0.8).toFixed(1) + '%';
+      d.style.background = cor[i];
+      mp.appendChild(d);
+    }));
+  }
+  // desloca os dois blocos: positivo empurra o lado 0 para a frente e recua o lado 1
+  function pushTeams(p0) {
+    const mp = document.getElementById('mp'); if (!mp) return;
+    mp.querySelectorAll('.pl').forEach(d => {
+      const lado = +d.dataset.side, base = +d.dataset.bx, peso = +d.dataset.peso;
+      const sh = (lado === 0 ? p0 : -p0) * peso;
+      d.style.left = Math.max(2, Math.min(98, base + sh)).toFixed(2) + '%';
+    });
+  }
+  function destaca(pid) {
+    const mp = document.getElementById('mp'); if (!mp) return;
+    mp.querySelectorAll('.pl.on').forEach(e => e.classList.remove('on'));
+    const d = pid != null && mp.querySelector('.pl[data-pid="' + pid + '"]');
+    if (d) { d.classList.add('on'); setTimeout(() => d.classList.remove('on'), 1600); }
+  }
+
+  function animateBall(side, goal, quem, pid) {
     const b = document.getElementById('ball'); if (!b) return;
+    pushTeams(side === 0 ? 11 : -11);
+    const mp0 = document.getElementById('mp');
+    const alvo = pid != null && mp0 && mp0.querySelector('.pl[data-pid="' + pid + '"]');
     const x = side === 0 ? (goal ? 95 : 72 + Math.random() * 16) : (goal ? 5 : 12 + Math.random() * 16);
-    b.style.left = x + '%'; b.style.top = (goal ? 50 : 30 + Math.random() * 40) + '%';
+    if (alvo && !goal) { b.style.left = alvo.style.left; b.style.top = alvo.style.top; }
+    else { b.style.left = x + '%'; b.style.top = (goal ? 50 : 30 + Math.random() * 40) + '%'; }
+    destaca(pid);
     if (goal) { const mp = document.getElementById('mp'); const f = document.createElement('div'); f.className = 'goal-flash'; f.innerHTML = `GOL!${quem ? `<small>${esc(quem)}</small>` : ''}`; mp.appendChild(f); mp.classList.remove('shake'); void mp.offsetWidth; mp.classList.add('shake'); setTimeout(() => f.remove(), 1800); setTimeout(() => { b.style.left = '50%'; b.style.top = '50%'; }, 1200); }
   }
   function idleBall() { const m = U.match; const b = document.getElementById('ball'); if (!b || !m) return; const poss = m.minute ? m.possAcc / m.minute : 0.5; const cur = parseFloat(b.style.left) || 50, curT = parseFloat(b.style.top) || 50;
     // a bola anda um pouco a cada minuto, puxada para o lado de quem tem a posse, sem pular pelo campo
     const alvo = 25 + poss * 50; const nx = cur + (alvo - cur) * 0.15 + (Math.random() - 0.5) * 12; const ny = curT + (Math.random() - 0.5) * 16;
-    b.style.left = Math.max(8, Math.min(92, nx)) + '%'; b.style.top = Math.max(15, Math.min(85, ny)) + '%'; }
+    b.style.left = Math.max(8, Math.min(92, nx)) + '%'; b.style.top = Math.max(15, Math.min(85, ny)) + '%';
+    // o bloco segue a bola: quem esta com ela sobe, o outro recua
+    pushTeams((nx - 50) * 0.22); }
 
   function startMatch() {
     const m = G.prepareUserMatch(S); m.startXI = m.side[m.userSide].xi.map(o => o.p).filter(Boolean);
@@ -1268,10 +1315,10 @@
     if (S.coach.persona === 'motivador' && m.minute > 45 && diff < 0 && !ms.coachSaid) { ms.coachSaid = true; evs.push({ t: 'coach', min: m.minute, txt: `${esc(S.coach.name)} vai à beira do campo e empurra o time: mais chances até o fim.` }); }
     const shown = evs.filter(e => e.t !== 'chance' || e.xg > 0.13 || e.kind === 'post');
     updateMatchUI(shown);
-    let goalSide = null;
+    let goalSide = null, goalPid = null;
     let goalWho = null;
-    evs.forEach(e => { if (e.t === 'goal') { goalSide = e.side; goalWho = e.pn; } else if (e.t === 'chance' && e.xg > 0.13) animateBall(e.side, false); });
-    if (goalSide != null) { animateBall(goalSide, true, goalWho); const sc = document.getElementById('sc'); sc.classList.remove('flash'); void sc.offsetWidth; sc.classList.add('flash'); if (goalSide === us) { cheer(); NAT.nativo ? NAT.gol() : buzz([60, 40, 90]); } else { beep(180, 0, 0.35, 'sawtooth', 0.04); NAT.levouGol(); } }
+    evs.forEach(e => { if (e.t === 'goal') { goalSide = e.side; goalWho = e.pn; goalPid = e.p; } else if (e.t === 'chance' && e.xg > 0.13) animateBall(e.side, false, null, e.p); });
+    if (goalSide != null) { animateBall(goalSide, true, goalWho, goalPid); const sc = document.getElementById('sc'); sc.classList.remove('flash'); void sc.offsetWidth; sc.classList.add('flash'); if (goalSide === us) { cheer(); NAT.nativo ? NAT.gol() : buzz([60, 40, 90]); } else { beep(180, 0, 0.35, 'sawtooth', 0.04); NAT.levouGol(); } }
     else idleBall();
     if (m.done) { if (ms.aoParar) { const f = ms.aoParar; ms.aoParar = null; f(); } whistle(3); ms.running = false; updateMatchUI([]); return; }
     // momentos-chave

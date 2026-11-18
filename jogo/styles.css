@@ -284,6 +284,12 @@ table.tbl .pts { font-family: var(--f-display); font-weight: 900; font-size: 19p
 .mini-pitch .gl { left: 8px; border-left: 0; } .mini-pitch .gr { right: 8px; border-right: 0; }
 .ball { position: absolute; width: 14px; height: 14px; border-radius: 50%; background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,.4); transform: translate(-50%, -50%); transition: left .6s cubic-bezier(.3,.7,.3,1), top .6s cubic-bezier(.3,.7,.3,1); }
 .mini-pitch.shake { animation: shake .5s ease; }
+.mini-pitch .pl { position: absolute; width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,.85); box-shadow: 0 1px 2px rgba(0,0,0,.45); transition: left .5s ease, top .5s ease, transform .25s ease; pointer-events: none; }
+.mini-pitch .pl.gk { border-color: var(--ouro); }
+.mini-pitch .pl.on { transform: scale(1.7); box-shadow: 0 0 0 3px var(--ouro), 0 1px 3px rgba(0,0,0,.5); }
+.mini-pitch .ball { z-index: 2; }
+@media (min-width: 1024px) { .mini-pitch .pl { width: 13px; height: 13px; margin: -6.5px 0 0 -6.5px; border-width: 2px; } }
+@media (prefers-reduced-motion: reduce) { .mini-pitch .pl { transition: none; } }
 @keyframes shake { 0%,100% { transform: none; } 20% { transform: translate(-4px, 2px); } 40% { transform: translate(4px, -2px); } 60% { transform: translate(-3px, 1px); } 80% { transform: translate(3px, -1px); } }
 .mini-pitch .goal-flash small { display: block; font-size: 18px; font-family: var(--f-body); font-weight: 800; color: #fff; letter-spacing: 0; }
 .mini-pitch .goal-flash { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--f-display); font-weight: 900; font-size: 56px; color: var(--ouro); text-shadow: 0 3px 0 rgba(0,0,0,.4); animation: pop 1.7s ease forwards; pointer-events: none; text-align: center; }
