@@ -287,8 +287,31 @@
     return { lh, la, xh, xa, sh };
   }
 
+  // Formacao livre: o tecnico arrasta o jogador e a funcao da posicao sai de onde ele ficou.
+  // O motor inteiro trabalha com o codigo do slot (W, NEED, effRating), entao e aqui que a
+  // posicao vira regra. y e a profundidade (0 = proprio gol), x a largura (0 = esquerda).
+  function slotFromXY(x, y) {
+    if (y <= 13) return 'GK';
+    const esq = x <= 25, dir = x >= 75;
+    if (y <= 34) return esq ? 'LB' : dir ? 'RB' : 'CB';
+    if (y <= 47) return 'DM';
+    if (y <= 62) return esq ? 'LW' : dir ? 'RW' : 'CM';
+    if (y <= 74) return esq ? 'LW' : dir ? 'RW' : 'AM';
+    return esq ? 'LW' : dir ? 'RW' : 'ST';
+  }
+  // as 11 coordenadas de uma formacao pronta, para servir de ponto de partida da livre
+  function coordsOf(formation) {
+    const f = FORMATIONS[formation] || FORMATIONS['4-3-3'];
+    return f.slots.map(([, x, y]) => [x, y]);
+  }
+  // 11 pares (x,y) viram a lista de slots que o motor entende
+  function slotsOfCoords(coords) { return coords.map(([x, y]) => slotFromXY(x, y)); }
+
   function lineupFrom(club, players, lineup) {
-    // lineup: { formation, slots:[pid], bench:[pid], corridor, ment }
+    // lineup: { formation, slots:[pid], bench:[pid], corridor, ment, livre:[[x,y] x11] }
+    if (lineup.livre && lineup.livre.length === 11) {
+      return lineup.livre.map(([x, y], i) => ({ slot: slotFromXY(x, y), p: players[lineup.slots[i]] || null, x, y }));
+    }
     const f = FORMATIONS[lineup.formation];
     return f.slots.map(([slot], i) => ({ slot, p: players[lineup.slots[i]] || null, x: f.slots[i][1], y: f.slots[i][2] }));
   }
@@ -500,13 +523,15 @@
   function playFull(m) { while (!m.done) { aiInGame(m, 0); aiInGame(m, 1); step(m); } return m; }
 
   // ---------- escalacao automatica ----------
-  function autoLineup(squad, formation) {
-    const f = FORMATIONS[formation]; const used = new Set(); const slots = [];
+  function autoLineup(squad, formation, livre) {
+    // com livre (11 pares x,y) os slots saem das coordenadas, nao de uma formacao pronta
+    const codes = livre && livre.length === 11 ? slotsOfCoords(livre) : (FORMATIONS[formation] || FORMATIONS['4-3-3']).slots.map(s => s[0]);
+    const used = new Set(); const slots = [];
     const avail = squad.filter(p => p.inj <= 0 && p.sus <= 0);
     // preencher os slots mais "exigentes" primeiro
-    const order = f.slots.map((s, i) => i).sort((a, b) => (f.slots[a][0] === 'GK' ? -1 : 0) - (f.slots[b][0] === 'GK' ? -1 : 0));
+    const order = codes.map((s, i) => i).sort((a, b) => (codes[a] === 'GK' ? -1 : 0) - (codes[b] === 'GK' ? -1 : 0));
     order.forEach(i => {
-      const slot = f.slots[i][0];
+      const slot = codes[i];
       let best = null, bv = -1;
       avail.forEach(p => { if (used.has(p.id)) return; const v = effRating(p, slot, {}); if (v > bv) { bv = v; best = p; } });
       slots[i] = best ? best.id : null; if (best) used.add(best.id);
@@ -514,7 +539,7 @@
     const bench = avail.filter(p => !used.has(p.id)).sort((a, b) => b.ovr * (0.8 + 0.2 * b.cond / 100) - a.ovr * (0.8 + 0.2 * a.cond / 100));
     // banco: 1 goleiro + 8 melhores de linha
     const gk = bench.find(p => p.pos === 'GK'); const rest = bench.filter(p => p !== gk).slice(0, 8);
-    return { formation, slots, bench: (gk ? [gk.id] : []).concat(rest.map(p => p.id)) };
+    return { formation, slots, livre: livre || null, bench: (gk ? [gk.id] : []).concat(rest.map(p => p.id)) };
   }
 
   function teamStrength(squad) {
@@ -533,7 +558,7 @@
     return Math.max(4, Math.min(10, Math.round(r * 10) / 10));
   }
 
-  const api = { FCLUBS, FOREIGN, makeRng, assistInGame, realPlayer, estAttrs, normAt, av, atBonus, FAM, FAM_NAME, POOL, ATTR_NAME, ATTR_SHORT, ATTR_TIP, ARCH, SHOT, TAKER, bestTaker, takerOf, capBonus, CLUBS, POS, POS_PT, POS_NAME, GROUP, W, FORMATIONS, MENT, MENT_KEYS, PERSONAS, P, fitFactor, wageFor, valueFor, genPlayer, genSquad, roundRobin, effRating, sectors, rates, lineupFrom, newMatch, step, substitute, aiMentality, aiInGame, playFull, autoLineup, teamStrength, matchRating, recalc };
+  const api = { FCLUBS, FOREIGN, makeRng, assistInGame, realPlayer, estAttrs, normAt, av, atBonus, FAM, FAM_NAME, POOL, ATTR_NAME, ATTR_SHORT, ATTR_TIP, ARCH, SHOT, TAKER, bestTaker, takerOf, capBonus, CLUBS, POS, POS_PT, POS_NAME, GROUP, W, FORMATIONS, MENT, MENT_KEYS, PERSONAS, P, fitFactor, wageFor, valueFor, genPlayer, genSquad, roundRobin, effRating, sectors, rates, lineupFrom, slotFromXY, coordsOf, slotsOfCoords, newMatch, step, substitute, aiMentality, aiInGame, playFull, autoLineup, teamStrength, matchRating, recalc };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.Engine = api;
 })(typeof window !== 'undefined' ? window : globalThis);
 

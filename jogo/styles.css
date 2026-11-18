@@ -463,10 +463,13 @@ input.txt { width: 100%; min-height: 48px; padding: 10px 14px; border-radius: 12
 .offer .tag { justify-self: start; }
 .offer .fin { font-size: 14px; }
 .offer .offer-txt { margin: 0; }
-.brandmark { display: grid; gap: 1px; padding: 10px 12px; border-radius: 10px; background: var(--placar); color: var(--placar-tx); border-left: 6px solid var(--bs, var(--ima)); min-width: 0; }
+.brandmark { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 10px; background: var(--placar); color: var(--placar-tx); border-left: 6px solid var(--bs, var(--ima)); min-width: 0; }
+.brandmark .bm-txt { display: grid; gap: 1px; min-width: 0; }
+.blogo { flex: none; display: block; }
 .brandmark b { font-family: var(--f-display); font-weight: 900; font-size: 22px; line-height: 1; text-transform: uppercase; letter-spacing: .01em; overflow-wrap: anywhere; }
 .brandmark span { font-size: 12px; font-weight: 700; opacity: .85; }
-.brandmark.sm { display: inline-grid; padding: 3px 8px; border-radius: 6px; }
+.brandmark.sm { display: inline-flex; gap: 6px; padding: 3px 8px; border-radius: 6px; }
+.brandmark.sm b { font-size: 15px; }
 .brandmark.sm b { font-size: 15px; }
 
 /* ---------- ajuda: (i) ao passar o mouse no computador, no toque no celular ---------- */
@@ -668,3 +671,15 @@ select.txt { min-height: 40px; padding: 6px 10px; border-radius: 10px; border: 1
 
 .passos { margin: 0; padding-left: 20px; display: grid; gap: 10px; font-size: 15px; line-height: 1.5; }
 .passos li::marker { font-family: var(--f-display); font-weight: 900; color: var(--ima); }
+
+.swatches { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+
+/* Arrastar jogador no campo. touch-action no ima para o dedo mover o jogador
+   em vez de rolar a pagina; sobra espaco entre eles para rolar normalmente. */
+.pitch .mag { touch-action: none; }
+.pitch .mag.arrastando { z-index: 9; transform: translate(-50%, -50%) scale(1.12); box-shadow: 0 10px 20px rgba(0,0,0,.35); cursor: grabbing; }
+.pitch.arrastando { cursor: grabbing; }
+.pitch .mag .slot-live { position: absolute; left: 50%; transform: translateX(-50%); bottom: -34px; white-space: nowrap;
+  background: var(--placar); color: var(--placar-tx); font-size: 11px; font-weight: 800; letter-spacing: .05em;
+  text-transform: uppercase; padding: 2px 7px; border-radius: 6px; pointer-events: none; }
+@media (hover: hover) { .pitch .mag { cursor: grab; } }

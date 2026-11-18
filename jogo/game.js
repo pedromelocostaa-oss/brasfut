@@ -303,22 +303,50 @@
 
   function pushNews(st, type, txt) { st.news.unshift({ y: st.year, r: st.round + 1, type, txt }); if (st.news.length > 80) st.news.length = 80; }
   // ---------- patrocinio (marcas ficticias do prototipo) ----------
-  // empresas reais citadas so pelo nome (sem logo, sem cores da marca) como patrocinadoras no prototipo.
+  // patrocinadoras do jogo. Todas inventadas: usar marca real afirmaria um patrocinio que nao existe.
   // Fora da lista de proposito: casas de apostas, bebida alcoolica e tabaco.
   // art: artigo usado nas frases ("fecha com o Itaú", "com a Samsung").
+  // Marcas inventadas para o jogo. Nenhuma e real: desenhar o logo de uma empresa de
+  // verdade afirmaria um patrocinio que nao existe. Campos: id, nome, artigo, setor,
+  // cor e simbolo (desenhado em brandLogo, na interface).
   const BRANDS = [
-    ['itau', 'Itaú', 'o', 'Banco'], ['bradesco', 'Bradesco', 'o', 'Banco'], ['bb', 'Banco do Brasil', 'o', 'Banco'], ['caixa', 'Caixa', 'a', 'Banco'],
-    ['santander', 'Santander', 'o', 'Banco'], ['nubank', 'Nubank', 'o', 'Banco digital'], ['picpay', 'PicPay', 'o', 'Pagamentos'],
-    ['cocacola', 'Coca-Cola', 'a', 'Bebidas'], ['guarana', 'Guaraná Antarctica', 'o', 'Bebidas'], ['pepsi', 'Pepsi', 'a', 'Bebidas'], ['gatorade', 'Gatorade', 'o', 'Bebidas'],
-    ['sadia', 'Sadia', 'a', 'Alimentos'], ['seara', 'Seara', 'a', 'Alimentos'], ['nestle', 'Nestlé', 'a', 'Alimentos'], ['piracanjuba', 'Piracanjuba', 'a', 'Alimentos'],
-    ['samsung', 'Samsung', 'a', 'Tecnologia'], ['motorola', 'Motorola', 'a', 'Tecnologia'],
-    ['vivo', 'Vivo', 'a', 'Telefonia'], ['claro', 'Claro', 'a', 'Telefonia'], ['tim', 'TIM', 'a', 'Telefonia'],
-    ['mercadolivre', 'Mercado Livre', 'o', 'Varejo'], ['magalu', 'Magalu', 'o', 'Varejo'], ['casasbahia', 'Casas Bahia', 'a', 'Varejo'], ['renner', 'Renner', 'a', 'Moda'],
-    ['natura', 'Natura', 'a', 'Beleza'], ['boticario', 'Boticário', 'o', 'Beleza'], ['ype', 'Ypê', 'a', 'Limpeza'],
-    ['petrobras', 'Petrobras', 'a', 'Energia'], ['ipiranga', 'Ipiranga', 'a', 'Combustível'],
-    ['latam', 'LATAM', 'a', 'Aviação'], ['gol', 'Gol', 'a', 'Aviação'], ['azul', 'Azul', 'a', 'Aviação'],
-    ['unimed', 'Unimed', 'a', 'Saúde'], ['localiza', 'Localiza', 'a', 'Aluguel de carros'], ['fiat', 'Fiat', 'a', 'Automóveis'], ['ifood', 'iFood', 'o', 'Delivery'],
-  ].map(([id, name, art, cat]) => ({ id, name, art, cat }));
+    ['araxa', 'Banco Araxá', 'o', 'Banco', '#1B4D8F', 'escudo'],
+    ['pontal', 'Banco Pontal', 'o', 'Banco', '#0F5C4A', 'anel'],
+    ['credipar', 'Credipar', 'a', 'Banco', '#8A2F4D', 'barras'],
+    ['serrano', 'Banco Serrano', 'o', 'Banco', '#2B3A67', 'montanha'],
+    ['zepi', 'Zepi', 'a', 'Banco digital', '#6B2FD6', 'raio'],
+    ['pagocerto', 'PagoCerto', 'o', 'Pagamentos', '#0B7A5B', 'certo'],
+    ['refriko', 'Refriko', 'a', 'Bebidas', '#C8372D', 'bolhas'],
+    ['jatoba', 'Guaraná Jatobá', 'o', 'Bebidas', '#D1711A', 'gota'],
+    ['tonga', 'Tonga', 'a', 'Bebidas', '#1E7FBF', 'onda'],
+    ['vitalis', 'Vitalis', 'o', 'Isotônicos', '#E0A21B', 'raio'],
+    ['boamesa', 'Boa Mesa', 'a', 'Alimentos', '#B5452C', 'folha'],
+    ['rioclaro', 'Fazenda Rio Claro', 'a', 'Alimentos', '#3F7A2E', 'folha'],
+    ['mandacaia', 'Leite Mandaçaia', 'o', 'Alimentos', '#1F6AA8', 'gota'],
+    ['nutrisafra', 'Nutrisafra', 'a', 'Alimentos', '#7A8F1E', 'grao'],
+    ['orbik', 'Orbik', 'a', 'Tecnologia', '#273043', 'anel'],
+    ['tecnomax', 'Tecnomax', 'a', 'Tecnologia', '#444C5C', 'hexagono'],
+    ['falae', 'Falaê', 'a', 'Telefonia', '#7B2D8E', 'sinal'],
+    ['conecta', 'Conecta', 'a', 'Telefonia', '#0E7490', 'sinal'],
+    ['ondatel', 'Onda Telecom', 'a', 'Telefonia', '#1D4ED8', 'onda'],
+    ['comprala', 'Compralá', 'a', 'Varejo', '#D4A017', 'carrinho'],
+    ['girassol', 'Lojas Girassol', 'a', 'Varejo', '#E08A00', 'estrela'],
+    ['mercadao', 'Mercadão do Lar', 'o', 'Varejo', '#9A3412', 'casa'],
+    ['vestua', 'Vestuá', 'a', 'Moda', '#111827', 'triangulo'],
+    ['florenca', 'Florença', 'a', 'Beleza', '#B03A6E', 'flor'],
+    ['cerrado', 'Essência do Cerrado', 'a', 'Beleza', '#5E7F3A', 'folha'],
+    ['limpex', 'Limpex', 'a', 'Limpeza', '#0891B2', 'bolhas'],
+    ['voltabr', 'Volta Brasil', 'a', 'Energia', '#15803D', 'raio'],
+    ['petroluz', 'Petroluz', 'a', 'Combustível', '#1F2937', 'gota'],
+    ['voare', 'Voare', 'a', 'Aviação', '#1E40AF', 'asa'],
+    ['aerosul', 'AeroSul', 'a', 'Aviação', '#0369A1', 'asa'],
+    ['tucano', 'Linhas Tucano', 'a', 'Aviação', '#C2410C', 'asa'],
+    ['saudeja', 'Saúde Já', 'a', 'Saúde', '#0D9488', 'cruz'],
+    ['vidaplena', 'Vida Plena', 'a', 'Saúde', '#2563A8', 'cruz'],
+    ['rodai', 'Rodaí', 'a', 'Aluguel de carros', '#4338CA', 'roda'],
+    ['velozmotors', 'Veloz Motors', 'a', 'Automóveis', '#991B1B', 'roda'],
+    ['chegai', 'Chegaí', 'o', 'Delivery', '#DC2626', 'seta']
+  ].map(([id, name, art, cat, cor, sym]) => ({ id, name, art, cat, cor, sym }));
   const withB = b => `${b.art || 'a'} ${b.name}`;
   // valores em multiplos da base de patrocinio do clube (40% da cota antiga). Cada tipo tem um perfil de risco:
   // longo = seguro e com luvas na assinatura; alto = mais dinheiro agora, renovação depende do desempenho;
@@ -455,7 +483,9 @@
     const lu = st.lineup; const me = st.coach.club; const squad = squadOf(st, me);
     const ok = id => id && st.players[id] && st.players[id].club === me && st.players[id].inj <= 0 && st.players[id].sus <= 0;
     const assist = st.coach.assist !== false;
-    const fslots = E.FORMATIONS[lu.formation].slots;
+    // com formacao livre a funcao de cada vaga vem das coordenadas, nao da formacao pronta;
+    // sem isso o auxiliar escolheria o substituto pela posicao errada
+    const fslots = (lu.livre && lu.livre.length === 11) ? E.slotsOfCoords(lu.livre).map(c => [c]) : E.FORMATIONS[lu.formation].slots;
     // a escalacao do tecnico fica salva; trocas do auxiliar valem so para este jogo
     const slots = lu.slots.map((id, i) => (ok(id) && !lu.slots.slice(0, i).includes(id)) ? id : null);
     const notes = [];
@@ -486,16 +516,17 @@
   function compKind(comp) { return comp === 'EST' ? 'est' : comp === 'CDB' ? 'cdb' : comp === 'LIB' || comp === 'SUL' ? 'cont' : 'liga'; }
   function savePreset(st, k) {
     if (!PRESETS[k]) return false; st.presets = st.presets || {};
-    const lu = st.lineup; st.presets[k] = { formation: lu.formation, slots: lu.slots.slice(), bench: (lu.bench || []).slice(), ment: lu.ment, takers: { ...(lu.takers || {}) }, saved: `${st.year}·S${st.round + 1}` };
+    const lu = st.lineup; st.presets[k] = { formation: lu.formation, livre: lu.livre ? lu.livre.map(c => c.slice()) : null, slots: lu.slots.slice(), bench: (lu.bench || []).slice(), ment: lu.ment, takers: { ...(lu.takers || {}) }, saved: `${st.year}·S${st.round + 1}` };
     return true;
   }
   function loadPreset(st, k) {
     const pr = st.presets && st.presets[k]; if (!pr) return false;
     const me = st.coach.club; const mine = id => id && st.players[id] && st.players[id].club === me;
-    st.lineup = { formation: pr.formation, slots: pr.slots.map(id => mine(id) ? id : null), bench: pr.bench.filter(mine), ment: pr.ment, takers: { ...(pr.takers || {}) } };
+    st.lineup = { formation: pr.formation, livre: pr.livre ? pr.livre.map(c => c.slice()) : null, slots: pr.slots.map(id => mine(id) ? id : null), bench: pr.bench.filter(mine), ment: pr.ment, takers: { ...(pr.takers || {}) } };
     // vaga de quem saiu do clube: o melhor disponível da posição
-    const f = E.FORMATIONS[st.lineup.formation]; const used = new Set(st.lineup.slots.filter(Boolean));
-    st.lineup.slots = st.lineup.slots.map((id, i) => { if (id) return id; let b = null, bv = -1; squadOf(st, me).forEach(p => { if (used.has(p.id) || p.inj > 0 || p.sus > 0) return; const v = E.effRating(p, f.slots[i][0], {}); if (v > bv) { bv = v; b = p; } }); if (b) used.add(b.id); return b ? b.id : null; });
+    const codes = (st.lineup.livre && st.lineup.livre.length === 11) ? E.slotsOfCoords(st.lineup.livre) : E.FORMATIONS[st.lineup.formation].slots.map(x => x[0]);
+    const used = new Set(st.lineup.slots.filter(Boolean));
+    st.lineup.slots = st.lineup.slots.map((id, i) => { if (id) return id; let b = null, bv = -1; squadOf(st, me).forEach(p => { if (used.has(p.id) || p.inj > 0 || p.sus > 0) return; const v = E.effRating(p, codes[i], {}); if (v > bv) { bv = v; b = p; } }); if (b) used.add(b.id); return b ? b.id : null; });
     st.lineupFrom = k; return true;
   }
   // no começo de cada semana com jogo: usa o time salvo escolhido para aquela competição
