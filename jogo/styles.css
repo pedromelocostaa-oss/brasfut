@@ -44,6 +44,8 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 
 /* ---------- casca ---------- */
 .shell { min-height: 100%; display: grid; grid-template-columns: 1fr; padding-bottom: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px)); }
+/* no celular .content nao tinha min-width:0, entao o sangramento do placar esticava a pagina inteira e ela rolava de lado */
+.content { min-width: 0; overflow-x: clip; }
 .topbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: color-mix(in srgb, var(--quadro) 88%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--linha); }
 .topbar .club { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .topbar .club b { font-family: var(--f-display); font-size: 22px; font-weight: 800; text-transform: uppercase; line-height: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -51,7 +53,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .topbar .meta .pill { display: inline-flex; gap: 6px; align-items: center; }
 .brand { font-family: var(--f-display); font-weight: 900; font-size: 20px; letter-spacing: .02em; text-transform: uppercase; }
 .brand i { font-style: normal; color: var(--ima); }
-main { padding: 16px; padding-block: 16px 24px; max-width: 1240px; width: 100%; margin: 0 auto; min-width: 0; }
+main { padding: 16px; padding-block: 16px 24px; max-width: 1240px; width: 100%; margin: 0 auto; min-width: 0; overflow-x: clip; }
 
 .nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: grid; grid-template-columns: repeat(5, 1fr); background: var(--sup); border-top: 1px solid var(--linha); padding-bottom: env(safe-area-inset-bottom, 0px); }
 .nav button { background: none; border: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; height: var(--nav-h); font-size: 12px; color: var(--tinta2); font-weight: 700; }
@@ -206,7 +208,14 @@ table.tbl .pts { font-family: var(--f-display); font-weight: 900; font-size: 19p
 @media (max-width: 400px) { .mag { width: 62px; } .mag .disc { width: 42px; height: 42px; font-size: 20px; } .mag .nm { max-width: 80px; font-size: 12px; padding: 1px 4px; } }
 
 .lineup-layout { display: grid; gap: 16px; }
-@media (min-width: 900px) { .lineup-layout { grid-template-columns: minmax(340px, 520px) 1fr; align-items: start; } .lineup-layout .side { position: sticky; top: 76px; } }
+@media (min-width: 900px) { .lineup-layout { grid-template-columns: minmax(320px, 480px) 1fr; align-items: stretch; }
+  .lineup-layout .side { align-self: start; }
+  /* sem isso o grid estica as linhas da coluna e o bloco fica sem espaco para deslizar */
+  .lineup-layout > .stack { align-content: start; }
+  /* o campo fica parado e a coluna da direita rola: quem escala olha o campo o tempo todo */
+  .campo-fixo { position: sticky; top: 76px; }
+  .campo-fixo .pitch { height: min(62vh, 580px); width: auto; max-width: 100%; } }
+@media (min-width: 900px) and (max-height: 700px) { .campo-fixo .pitch { height: 58vh; } }
 
 /* ---------- linhas de jogador ---------- */
 .plist { display: grid; }
@@ -223,11 +232,17 @@ table.tbl .pts { font-family: var(--f-display); font-weight: 900; font-size: 19p
 
 /* ---------- postura ---------- */
 .ruler { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; background: var(--sup2); padding: 4px; border-radius: 12px; }
-.ruler button { border: 0; background: transparent; min-height: 52px; border-radius: 9px; font-size: 13px; font-weight: 700; color: var(--tinta2); padding: 6px 2px; line-height: 1.1; display: grid; justify-items: center; align-content: end; gap: 5px; min-width: 0; }
-.ruler .rk { display: block; width: 8px; height: calc(6px + var(--h) * 4px); border-radius: 2px; background: currentColor; opacity: .45; }
-.ruler button[aria-pressed="true"] .rk { opacity: 1; background: var(--ima); }
+.ruler button { border: 0; background: transparent; min-height: 82px; border-radius: 9px; font-size: 13px; font-weight: 700; color: var(--tinta2); padding: 6px 2px; line-height: 1.1; display: grid; justify-items: center; align-content: end; gap: 5px; min-width: 0; }
+/* mini campo: a linha do time sobe conforme a postura arrisca mais. O gol do rival e em cima. */
+.ruler .rk { position: relative; display: block; width: 30px; height: 40px; border: 1.5px solid currentColor; border-radius: 3px; opacity: .5; background: transparent; }
+.ruler .rk::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; border-top: 1.5px solid currentColor; opacity: .55; }
+.ruler .rk b { position: absolute; left: 50%; width: 4px; height: 4px; margin-left: -2px; margin-top: -2px; border-radius: 50%; background: currentColor;
+  box-shadow: -7px 0 0 currentColor, 7px 0 0 currentColor; top: calc(78% - (var(--h) - 1) * 16%); transition: top .18s ease; }
+.ruler button[aria-pressed="true"] .rk { opacity: 1; border-color: var(--ima); color: var(--ima); }
+.ruler button[aria-pressed="true"] .rk::before { border-color: var(--ima); }
+@media (prefers-reduced-motion: reduce) { .ruler .rk b { transition: none; } }
 .ruler .rl { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-@media (max-width: 560px) { .ruler .rl { display: none; } .ruler button { min-height: 44px; align-content: center; } }
+@media (max-width: 560px) { .ruler .rl { display: none; } .ruler button { min-height: 58px; align-content: center; } .ruler .rk { width: 24px; height: 32px; } }
 .ment-now { font-family: var(--f-display); font-weight: 900; text-transform: uppercase; font-size: 18px; letter-spacing: .02em; }
 .ruler button[aria-pressed="true"] { background: var(--sup); color: var(--tinta); box-shadow: var(--sombra); }
 .ruler-ends { display: flex; justify-content: space-between; font-size: 12px; color: var(--tinta2); text-transform: uppercase; letter-spacing: .06em; margin-top: 4px; }
@@ -397,7 +412,10 @@ input.txt { width: 100%; min-height: 48px; padding: 10px 14px; border-radius: 12
 .lvl { display: flex; align-items: center; gap: 12px; }
 .lvl .n { width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; background: var(--tinta); color: var(--sup); font-family: var(--f-display); font-weight: 900; font-size: 30px; }
 .unlocks { display: grid; gap: 6px; margin-top: 12px; }
-.unlocks div { display: flex; gap: 8px; align-items: center; font-size: 14px; }
+.unlocks .unl { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: start; font-size: 14px; padding: 8px 0; border-top: 1px solid var(--linha); }
+.unlocks .unl:first-child { border-top: 0; }
+.unlocks .unl > span:last-child { display: grid; gap: 2px; min-width: 0; }
+.unlocks .unl:not(.on) { opacity: .62; }
 .code { font-family: var(--f-display); font-weight: 900; font-size: 44px; letter-spacing: .18em; }
 .auction .timer { font-family: var(--f-display); font-weight: 900; font-size: 40px; line-height: 1; }
 .coachmark { position: relative; }
@@ -594,3 +612,59 @@ select.txt { min-height: 40px; padding: 6px 10px; border-radius: 10px; border: 1
 .card-more[open] > summary::before { content: '▾ '; }
 .card-more[open] > summary { border-bottom: 1px solid var(--linha); }
 .card-more > section { border: 0; box-shadow: none; border-radius: 0; }
+
+/* Estatisticas da partida em linhas, como transmissao: casa a esquerda, visitante a direita,
+   o nome no meio e uma barra unica que mostra de quem e a vantagem. */
+.cmp { display: grid; gap: 10px; }
+.cmp .lin { display: grid; grid-template-columns: 54px 1fr 54px; align-items: center; gap: 10px; }
+.cmp .n { font-family: var(--f-display); font-weight: 900; font-size: 20px; font-variant-numeric: tabular-nums; }
+.cmp .n.r { text-align: right; }
+.cmp .mid { min-width: 0; }
+.cmp .lb { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--tinta2); font-weight: 700; text-align: center; margin-bottom: 4px; }
+.cmp .bar2 { display: flex; height: 7px; border-radius: 4px; overflow: hidden; background: var(--sup2); }
+.cmp .bar2 i { background: var(--ima); transition: width .3s ease; }
+.cmp .bar2 em { background: var(--tinta2); opacity: .55; flex: 1; }
+.cmp .n.meu { color: var(--ima); }
+@media (prefers-reduced-motion: reduce) { .cmp .bar2 i { transition: none; } }
+
+/* Diretoria: regras viram linhas com o sinal na frente, em vez de um paragrafo por regra. */
+.regras { display: grid; gap: 8px; margin: 12px 0 0; }
+.regras .rg { display: grid; grid-template-columns: 58px 1fr; gap: 10px; align-items: baseline; font-size: 14px; }
+.regras .sg { font-family: var(--f-display); font-weight: 900; font-size: 15px; text-align: right; font-variant-numeric: tabular-nums; }
+.regras .sg.p { color: var(--verde); } .regras .sg.n { color: var(--cartao); }
+.meta-linha { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: var(--sup2); font-size: 14px; }
+
+/* Momento-chave: o botao de acao fica preso no rodape da folha e o placar no topo,
+   para o tecnico nunca precisar rolar para achar o que fazer. */
+.moment { display: grid; gap: 0; }
+.mo-topo { position: sticky; top: -16px; z-index: 3; background: var(--sup); padding: 2px 0 10px; margin-top: -2px; }
+.mo-placar { font-size: clamp(22px, 5vw, 30px); line-height: 1.1; margin-top: 6px; }
+.mo-corpo { padding-bottom: 8px; }
+.mo-acao { position: sticky; bottom: calc(-16px - env(safe-area-inset-bottom, 0px)); z-index: 3; background: var(--sup); padding: 10px 0 2px; box-shadow: 0 -10px 16px -10px rgba(0,0,0,.22); }
+.moment .ruler button { position: relative; }
+.moment .ruler .rec { position: absolute; top: 4px; right: 4px; width: 7px; height: 7px; border-radius: 50%; background: var(--ouro); }
+.moment .plist { max-height: 46vh; overflow: auto; }
+.ouro-tx { color: var(--ouro-tx); }
+:root[data-theme="dark"] .ouro-tx { color: var(--ouro); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .ouro-tx { color: var(--ouro); } }
+
+/* em 390px os cinco controles da partida nao cabiam e o botao de som ficava fora da tela */
+@media (max-width: 430px) {
+  .controls { gap: 5px; padding: 5px; }
+  .controls .btn { padding: 8px 8px; }
+  .controls .seg button { padding-inline: 7px; }
+}
+
+/* Comparar jogadores lado a lado */
+.cmp-tab { overflow-x: auto; }
+.cmp-tab table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.cmp-tab th, .cmp-tab td { padding: 8px 6px; text-align: center; border-top: 1px solid var(--linha); vertical-align: middle; }
+.cmp-tab thead th { position: relative; border-top: 0; padding: 26px 6px 8px; min-width: 86px; }
+.cmp-tab tbody th[scope="row"] { width: 1%; text-align: left; font-weight: 700; color: var(--tinta2); font-size: 13px; white-space: nowrap; }
+.cmp-tab .cmp-nome { display: block; font-family: var(--f-display); font-weight: 900; font-size: 16px; text-transform: uppercase; line-height: 1.1; }
+.cmp-tab .cmp-x { position: absolute; top: 0; right: 2px; width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--linha); background: var(--sup); color: var(--tinta2); font-size: 14px; line-height: 1; padding: 0; }
+.cmp-tab tr.sep th { text-align: left; background: var(--sup2); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+.cmp-tab .num { font-variant-numeric: tabular-nums; }
+
+.passos { margin: 0; padding-left: 20px; display: grid; gap: 10px; font-size: 15px; line-height: 1.5; }
+.passos li::marker { font-family: var(--f-display); font-weight: 900; color: var(--ima); }

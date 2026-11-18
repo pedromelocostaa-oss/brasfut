@@ -128,6 +128,21 @@
   // ---------- casca ----------
   const NAV = [['central', 'Central'], ['elenco', 'Elenco'], ['tabela', 'Tabela'], ['mercado', 'Mercado'], ['clube', 'Clube']];
   const NAV_TIP = { central: 'Próximo jogo, objetivos, patrocínio e resumo do clube.', elenco: 'Escalação, formação, banco, postura e lista de jogadores.', tabela: 'Classificação do Brasileirão e jogos da rodada.', mercado: 'Comprar, vender e leilões. Negócios só fecham com a janela aberta.', clube: 'Técnico, diretoria, finanças, conquistas, escudos e opções.', liga: 'Prévia do modo liga com amigos.' };
+  // No Safari do iPhone e do iPad a Apple apaga o armazenamento de qualquer site depois de
+  // 7 dias sem interacao do usuario, e e la que a carreira mora. Um web app aberto pela tela
+  // de inicio e isento. Esse aviso so aparece para quem esta no risco, e so uma vez.
+  function riscoApagar() {
+    const ios = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    if (!ios) return false;
+    const naTela = window.navigator.standalone === true || (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches);
+    return !naTela;
+  }
+  function avisoTelaInicio() {
+    if (!riscoApagar() || S.avisoTela) return '';
+    return `<div class="notice warn" id="aviso-tela"><b>Guarde o Prancheta na tela de início.</b> No iPhone e no iPad, o Safari apaga o que os sites guardam depois de 7 dias sem você abrir, e é ali que a sua carreira fica. Pelo ícone na tela de início isso não acontece.
+      <div class="row" style="gap:8px;margin-top:10px"><button class="btn primary" data-act="comoSalvar">Como faço</button><button class="btn ghost" data-act="avisoOk">Já entendi</button></div></div>`;
+  }
+
   function shell(content) {
     const c = club(me());
     const navBtns = NAV.map(([k, l]) => `<button data-act="go" data-v="${k}" ${tipA(NAV_TIP[k])} ${U.view === k ? 'aria-current="page"' : ''}>${IC[k]}<span>${l}</span></button>`).join('') + (LIGA_ONLINE ? `<button class="only-wide" data-act="go" data-v="liga" ${tipA(NAV_TIP.liga)} ${U.view === 'liga' ? 'aria-current="page"' : ''}>${IC.liga}<span>Liga</span></button>` : '');
@@ -357,7 +372,7 @@
   const FOLHA_TIP = 'Limite de salários por mês que a diretoria aceita. Sobe 25% com o acesso. Cumprir a meta da temporada aumenta o teto em 8%.';
   const TABELA_TIP = 'Sua liga. Verde ou azul: zona de classificação ou acesso. Vermelho: zona de rebaixamento. Entre as séries, 4 sobem e 4 descem por temporada.';
   const SPONS_TIP = 'Contrato longo: 3 temporadas, luvas na assinatura e valor fixo. Valor alto: 1 temporada pagando mais; a renovação acompanha a campanha. Bônus por vitória: fixo menor e extra a cada vitória. Bônus por título: extra se ganhar a sua série ou a Copa do Brasil, só para favoritos.';
-  const MATCH_TIP = { 'Posse': 'Tempo com a bola de cada time.', 'Finalizações': 'Chutes a gol de cada time.', 'Gols esperados': 'Soma da qualidade das chances criadas. Mostra quem mereceu mais, mesmo sem gol.' };
+  const MATCH_TIP = { 'Posse de bola': 'Tempo com a bola de cada time.', 'Finalizações': 'Todos os chutes de cada time, no gol ou fora.', 'No gol': 'Chutes que foram na direção do gol: viraram gol ou o goleiro defendeu.', 'Gols esperados': 'Soma da qualidade das chances criadas. Mostra quem mereceu mais, mesmo sem gol.', 'Cartões': 'Amarelos e vermelhos de cada time.' };
 
   // ---------- central ----------
   function postureLine() {
@@ -429,6 +444,7 @@
   function vCentral() {
     if (S.fired) return vFired();
     const cols = [];
+    const avTela = avisoTelaInicio();
     // coluna 1: proximo jogo + objetivos
     let c1 = '';
     const pend = G.sponsorPending(S);
@@ -459,7 +475,7 @@
           ${tiredLine()}
           ${S.lineupFrom ? `<div class="scout"><b>Time:</b> ${G.PRESETS[S.lineupFrom]}${(S.presetFor || {})[G.compKind(fx.mt.comp)] === S.lineupFrom ? ` (automático no ${G.PRESET_COMP[G.compKind(fx.mt.comp)] || 'torneio'})` : ''}.</div>` : ''}
           ${issues ? `<div class="scout"><b>${issues} ${plural(issues, 'titular fora', 'titulares fora')}</b> (lesão, suspensão ou venda): o auxiliar escala substituto se você não mexer.</div>` : ''}
-          ${`<div class="${first ? 'coachmark' : ''}">${first ? '<div class="tip">Seu time já está escalado. No intervalo, o jogo para e você escolhe a postura.</div>' : ''}<button class="btn gold big block" data-act="play" ${tipA('Começa a partida. O jogo para no intervalo, em gol sofrido, na reta final e em lesão para você decidir.')}>Jogar</button></div>`}
+          ${`<div class="${first ? 'coachmark' : ''}">${first ? '<div class="tip">Seu time já está escalado. No intervalo, o jogo para e você escolhe a postura.</div>' : ''}<button class="btn gold big block" data-act="play" ${tipA('Começa a partida. O jogo para no intervalo, em gol sofrido, na reta final e em lesão para você decidir.')}>Jogar</button><button class="btn block" style="margin-top:8px" data-act="rapido" ${tipA('Escolhe a postura e mostra só o resultado, sem narração. Boa para quando você tem pressa.')}>Simular sem narração</button></div>`}
           <button class="btn block" style="background:rgba(0,0,0,.25);border-color:transparent;color:#fff" data-act="go" data-v="elenco" ${tipA('Abre o Elenco para mexer em formação, titulares, banco e postura.')}>Ajustar escalação</button>
         </div></section>`;
         c1 += pendCard() + pressCard() + eventCard();
@@ -505,7 +521,7 @@
     cols.push(`<div class="stack">${c2}${passeCard()}</div>`);
     // coluna 3: tabela e noticias
     cols.push(`<div class="stack">${miniTable()}<section class="card"><div class="head"><h2>Notícias${hint('O que aconteceu no campeonato e no seu clube: resultados, transferências, evoluções e contratos.')}</h2></div><ul class="news">${S.news.slice(0, 7).map(n => `<li><span class="r">${n.r > G.WEEKS ? 'Fim' : T.dateLabel(n.y || S.year, n.r - 1, true)}</span>${esc(n.txt)}</li>`).join('')}</ul></section></div>`);
-    return `<div class="grid g-hub">${cols.join('')}</div>`;
+    return `${avTela}<div class="grid g-hub">${cols.join('')}</div>`;
   }
 
   function levelCard() {
@@ -618,7 +634,7 @@
 
   function vElenco() {
     const lu = S.lineup; const f = E.FORMATIONS[lu.formation]; const lv = S.coach.level;
-    const forms = Object.entries(E.FORMATIONS).map(([k, v]) => v.lvl <= lv ? `<button class="chip" data-act="formation" data-v="${k}" aria-pressed="${lu.formation === k}" ${tipA(v.txt)}>${k}</button>` : `<button class="chip lock" disabled data-tip="Libera no nível ${v.lvl} do técnico." aria-label="${k}, libera no nível ${v.lvl}">${IC.lock} ${k} <span class="lk">nv ${v.lvl}</span></button>`).join('');
+    const forms = Object.entries(E.FORMATIONS).map(([k, v]) => `<button class="chip" data-act="formation" data-v="${k}" aria-pressed="${lu.formation === k}" ${tipA(v.txt)}>${k}</button>`).join('');
     const c = club(me());
     const mags = f.slots.map(([slot, x, y], i) => {
       const p = S.players[lu.slots[i]]; const ok = p && p.club === me();
@@ -631,10 +647,11 @@
     const bench = Array.from({ length: 9 }, (_, i) => { const p = S.players[(lu.bench || [])[i]]; return p && p.club === me() ? `<button class="chip" data-act="benchslot" data-i="${i}">${p.ovr} · ${esc(shortN(p.n))} <span class="muted">${posLbl(p.pos)}</span></button>` : `<button class="chip lock" data-act="benchslot" data-i="${i}">+ vaga</button>`; }).join('');
     const sec = sectorsNow();
     const ment = E.MENT[lu.ment || 'equilibrada'];
-    const ruler = E.MENT_KEYS.map((k, i) => `<button data-act="ment" data-v="${k}" aria-pressed="${(lu.ment || 'equilibrada') === k}" aria-label="${E.MENT[k].label}" data-tip="${esc(E.MENT[k].label + ': ' + E.MENT[k].txt)}"><i class="rk" style="--h:${i + 1}"></i><span class="rl">${E.MENT[k].label.replace(' total', '')}</span></button>`).join('');
+    const ruler = E.MENT_KEYS.map((k, i) => `<button data-act="ment" data-v="${k}" aria-pressed="${(lu.ment || 'equilibrada') === k}" aria-label="${E.MENT[k].label}" data-tip="${esc(E.MENT[k].label + ': ' + E.MENT[k].txt)}"><i class="rk" style="--h:${i + 1}" aria-hidden="true"><b></b></i><span class="rl">${E.MENT[k].label.replace(' total', '')}</span></button>`).join('');
     const out = lu.slots.map(id => S.players[id]).filter(p => p && p.club === me() && (p.inj > 0 || p.sus > 0));
     return `<div class="lineup-layout">
       <div class="stack">
+        <div class="campo-fixo stack" style="gap:12px">
         <section class="card stack" style="gap:12px">
           <div class="head" style="margin:0"><h2>Escalação${hint('Clique num jogador no campo para trocar. O número no círculo é a nota já com o efeito da posição: fora dela, o jogador rende menos e aparece como improvisado.')}</h2><button class="btn" data-act="auto" ${tipA('Monta o time com os melhores para esta formação, descontando cansaço, lesão e suspensão.')}>Escalar os melhores</button></div>
           <div class="chips wrap" role="group" aria-label="Formação">${forms}</div>
@@ -642,6 +659,7 @@
         </section>
         ${!S.trocouUmaVez ? `<div class="notice info small" style="margin:0">Toque num jogador no campo e escolha quem entra no lugar. "Escalar os melhores" faz isso sozinho.</div>` : ''}
         <div class="pitch" aria-label="Campo">${'<div class="lines"></div><div class="box-top"></div><div class="box-bot"></div>'}${mags}</div>
+        </div>
         ${out.length ? `<div class="notice bad small">${out.map(p => `${esc(p.n)} ${p.inj > 0 ? `lesionado (${p.inj} ${plural(p.inj, 'semana', 'semanas')})` : 'suspenso'}`).join(' · ')}. Toque no ímã para trocar.</div>` : ''}
         <section class="card"><div class="head"><h2>Banco${hint('Até 9 reservas para as trocas durante o jogo (até 5 por partida). Clique numa vaga para escolher quem fica nela.')}</h2><span class="tiny muted">Entra primeiro quem está antes</span></div><div class="row" style="gap:8px">${bench}</div></section>
       </div>
@@ -691,6 +709,70 @@
     return `<div class="row between" style="margin-bottom:8px"><div><div class="eyebrow">${isBench ? 'Banco · vaga ' + (sh.i + 1) : 'Escolha para a posição'}</div><h2 class="disp" style="font-size:28px;text-transform:uppercase">${isBench ? 'Reserva' : E.POS_NAME[slot]}</h2></div><button class="btn" data-act="closeSheet">Fechar</button></div>
       <p class="small muted" style="margin:0 0 8px">A nota já mostra o efeito da posição: fora dela o jogador rende menos. A barra é o cansaço.</p>
       <div class="plist">${isBench && curId ? `<button class="prow" data-act="pick" data-pid="0"><span class="ovr">–</span><span class="who"><b>Deixar vaga livre</b><span>O auxiliar completa com o melhor que sobrar</span></span><span></span></button>` : ''}${rows}</div>`;
+  }
+
+  // Comparar ate 3 jogadores lado a lado. Mostra o que decide a compra: nota, idade,
+  // preco, salario e os atributos que o jogo usa na posicao de cada um.
+  // Simulacao rapida: escolhe a postura e ve so o resultado, sem a narracao minuto a minuto.
+  // E o mesmo motor da partida normal, rodado de uma vez.
+  function sheetRapido() {
+    const fx = G.userFixture(S); if (!fx) return '<p class="small muted">Nenhum jogo marcado.</p>';
+    const pick = U.sheet.pick || S.lineup.ment || 'equilibrada';
+    const oc = club(fx.opp);
+    const ms = G.strength(S, me()), os = G.strength(S, fx.opp);
+    const regua = E.MENT_KEYS.map((k, i) => `<button data-act="rapMent" data-v="${k}" aria-pressed="${pick === k}" aria-label="${E.MENT[k].label}" data-tip="${esc(E.MENT[k].label + ': ' + E.MENT[k].txt)}"><i class="rk" style="--h:${i + 1}" aria-hidden="true"><b></b></i><span class="rl">${E.MENT[k].label.replace(' total', '')}</span></button>`).join('');
+    const problemas = S.lineup.slots.map(id => S.players[id]).filter(p => !p || p.club !== me() || p.inj > 0 || p.sus > 0).length;
+    return `<div class="row between" style="margin-bottom:10px"><div><div class="eyebrow">Sem narração</div><h2 class="disp" style="font-size:26px;text-transform:uppercase">Simular o jogo</h2></div><button class="btn" data-act="closeSheet">Fechar</button></div>
+      <div class="situ"><div class="disp" style="font-size:20px">${esc(club(me()).name)} × ${esc(oc.name)}</div><div class="small" style="opacity:.85;margin-top:4px">${fx.isHome ? 'Em casa' : 'Fora de casa'} · força ${Math.round(ms)} contra ${Math.round(os)}${S.coach.level >= 2 ? ` · o rival joga ${oc.formation}` : ''}</div></div>
+      <div class="eyebrow" style="margin-top:14px">Como o time entra</div>
+      <div class="ruler" role="group" aria-label="Postura">${regua}</div>
+      <div class="ruler-ends"><span>Segura</span><span>Arrisca</span></div>
+      <p class="small" style="margin:8px 0 0"><b>${E.MENT[pick].label}.</b> ${E.MENT[pick].txt}</p>
+      ${problemas ? `<div class="notice bad small" style="margin-top:10px">${problemas} ${plural(problemas, 'posição está', 'posições estão')} com jogador indisponível. Arrume a escalação antes.</div>` : ''}
+      <button class="btn primary big block" style="margin-top:14px" data-act="rapGo">Simular e ver o resultado</button>
+      <p class="tiny muted" style="margin:8px 0 0">O jogo roda inteiro de uma vez, com as mesmas regras da partida normal. Você não para no intervalo nem faz substituições; o auxiliar troca lesionado e cansado.</p>`;
+  }
+
+  function sheetSalvar() {
+    return `<div class="row between" style="margin-bottom:10px"><div><div class="eyebrow">Para a carreira não sumir</div><h2 class="disp" style="font-size:26px;text-transform:uppercase">Guardar na tela de início</h2></div><button class="btn" data-act="closeSheet">Fechar</button></div>
+      <ol class="passos">
+        <li>Toque no botão de <b>compartilhar</b> do Safari. É o quadradinho com a seta para cima, embaixo da tela ou no canto de cima.</li>
+        <li>Role a lista e escolha <b>Adicionar à Tela de Início</b>.</li>
+        <li>Toque em <b>Adicionar</b>. O escudo do Prancheta aparece junto com os seus outros apps.</li>
+        <li>A partir daí, abra o jogo sempre por esse ícone.</li>
+      </ol>
+      <div class="notice info small" style="margin-top:12px">Por que isso importa: a sua carreira fica guardada no próprio aparelho, e o Safari apaga o que os sites guardam depois de 7 dias sem ninguém tocar. Pelo ícone da tela de início, a Apple não apaga por falta de uso. Jogar pelo menos uma vez por semana também segura.</div>
+      <button class="btn primary big block" style="margin-top:12px" data-act="avisoOk">Pronto, entendi</button>`;
+  }
+
+  function sheetCompare() {
+    const ps = (U.cmp || []).map(id => S.players[id]).filter(Boolean);
+    if (!ps.length) return '<p class="small muted">Nenhum jogador escolhido.</p>';
+    const meus = myPlayers();
+    const melhorMeu = p => { const m2 = meus.filter(x => x.pos === p.pos).sort((a, b) => b.ovr - a.ovr)[0]; return m2 ? m2.ovr : null; };
+    // atributos: a uniao dos que cada um mostra, para a tabela nao ficar com buraco
+    const chaves = []; ps.forEach(p => atKeys(p).forEach(k => { if (!chaves.includes(k)) chaves.push(k); }));
+    const melhorDe = k => Math.max(...ps.map(p => (p.at && p.at[k]) || 0));
+    const linha = (rot, f, dica) => `<tr><th scope="row">${rot}${dica ? hint(dica) : ''}</th>${ps.map(p => `<td>${f(p)}</td>`).join('')}</tr>`;
+    const meuId = me();
+    return `<div class="row between" style="margin-bottom:10px"><div><div class="eyebrow">Lado a lado</div><h2 class="disp" style="font-size:26px;text-transform:uppercase">Comparar</h2></div><button class="btn" data-act="closeSheet">Fechar</button></div>
+      <div class="cmp-tab"><table>
+        <thead><tr><td></td>${ps.map(p => `<th scope="col"><button class="cmp-x" data-act="cmpPick" data-pid="${p.id}" aria-label="Tirar ${esc(p.n)} da comparação">×</button><span class="cmp-nome">${esc(shortN(p.n))}</span><span class="tiny muted">${esc(club(p.club).name)}</span></th>`).join('')}</tr></thead>
+        <tbody>
+          ${linha('Nota', p => `${ovr(p.ovr)}${melhorMeu(p) != null ? `<span class="tiny muted" style="display:block">seu melhor ${posLbl(p.pos)}: ${melhorMeu(p)}</span>` : ''}`)}
+          ${linha('Posição', p => posLbl(p.pos))}
+          ${linha('Idade', p => `${p.age} anos`)}
+          ${linha('Preço pedido', p => p.club === meuId ? '<span class="muted">seu</span>' : `<b class="num gold-c">${fmt(G.askPrice(S, p))}</b>`, 'Quanto o clube dono pede hoje. Dá para negociar.')}
+          ${linha('Salário', p => `<b class="num">${fmt(p.wage)}</b><span class="tiny muted" style="display:block">por mês</span>`, 'Sai da sua folha todo mês, não só na compra.')}
+          ${linha('Jogos em 2026', p => p.s26 ? p.s26[0] : '<span class="muted">–</span>')}
+          ${linha('Gols', p => p.s26 ? p.s26[1] : '<span class="muted">–</span>')}
+          ${linha('Assistências', p => p.s26 ? p.s26[2] : '<span class="muted">–</span>')}
+          ${chaves.length ? `<tr class="sep"><th scope="row" colspan="${ps.length + 1}">Atributos</th></tr>` : ''}
+          ${chaves.map(k => `<tr><th scope="row">${E.ATTR_NAME[k]}${hint(E.ATTR_TIP[k])}</th>${ps.map(p => { const v = p.at && p.at[k]; if (v == null) return '<td><span class="muted">–</span></td>'; return `<td><b class="num ${v === melhorDe(k) && ps.length > 1 ? 'pos-c' : ''}">${v}</b></td>`; }).join('')}</tr>`).join('')}
+        </tbody>
+      </table></div>
+      <p class="tiny muted" style="margin:10px 0 0">Verde é o maior número da linha. O traço quer dizer que o atributo não é dos que contam na posição daquele jogador.</p>
+      <div class="row" style="gap:8px;margin-top:12px">${ps.filter(p => p.club !== meuId).map(p => `<button class="btn primary" data-act="cmpGo" data-pid="${p.id}">Negociar ${esc(shortN(p.n))}</button>`).join('')}</div>`;
   }
 
   function sheetPlayer() {
@@ -778,6 +860,14 @@
   }
 
   // ---------- mercado ----------
+  // faixas de salario do mercado. O public alvo nao quer digitar numero: escolhe a faixa com o dedo.
+  const SAL_FAIXAS = [
+    ['', 'Qualquer salário', null, null],
+    ['a', 'até 100 mil', null, 100000],
+    ['b', '100 a 300 mil', 100000, 300000],
+    ['c', '300 a 800 mil', 300000, 800000],
+    ['d', 'acima de 800 mil', 800000, null]
+  ];
   const pctTxt = v => `${v > 0 ? '+' : v < 0 ? '−' : ''}${Math.abs(Math.round(v))}%`;
   const reasonChips = rs => rs.filter(r => r[1] !== 0 || r[0]).map(([t, v]) => `<span class="rchip ${v > 0 ? 'up' : v < 0 ? 'dn' : ''}">${esc(t)}${v ? ` <b>${pctTxt(v)}</b>` : ''}</span>`).join('');
   function vMercado() {
@@ -797,11 +887,15 @@
       const pos = ['', 'GK', 'RB', 'CB', 'LB', 'DM', 'CM', 'AM', 'RW', 'ST', 'LW'];
       const divChips = ['', 'A', 'B', 'C', 'D'].map(x => `<button class="chip" data-act="mktDiv" data-v="${x}" aria-pressed="${(m.div || '') === x}">${x ? DIVN[x] : 'Todas as séries'}</button>`).join('');
       const chips = pos.map(p => `<button class="chip" data-act="mktPos" data-v="${p}" aria-pressed="${m.pos === p}">${p ? posLbl(p) : 'Todos'}</button>`).join('') + `<button class="chip" data-act="mktYoung" aria-pressed="${m.young}" ${tipA('Jovens de até 23 anos ainda evoluem: boas atuações podem subir a nota.')}>Até 23 anos</button><button class="chip" data-act="mktFit" aria-pressed="${m.fit}" ${tipA('Mostra só quem dá para pagar: caixa com margem de negociação e salário dentro do teto da folha.')}>Cabe no orçamento</button>`;
+      const salChips = SAL_FAIXAS.map(([k, l]) => `<button class="chip" data-act="mktSal" data-v="${k}" aria-pressed="${(m.salF || '') === k}" ${tipA('Salário que o jogador recebe por mês. Ele sai da sua folha todo mês, não só na compra.')}>${l}</button>`).join('');
       const myBest = {}; myPlayers().forEach(p => { myBest[p.pos] = Math.max(myBest[p.pos] || 0, p.ovr); });
       const cash = club(me()).cash, room = G.wageRoom(S);
       const fits = p => G.askPrice(S, p) * 0.86 <= cash && p.wage <= room;
-      const list = G.marketList(S, { pos: m.pos || null, maxAge: m.young ? 23 : null, div: m.div || null, q: m.q || null }).filter(p => !m.fit || fits(p) || p.loan).slice(0, 40);
-      body = `<section class="card"><input id="mkt-q" class="txt" type="search" placeholder="Buscar jogador ou clube" value="${esc(m.q || '')}" aria-label="Buscar jogador ou clube" style="margin-bottom:10px"><div class="chips" style="margin-bottom:6px">${divChips}</div><div class="chips" style="margin-bottom:8px">${chips}</div><div class="plist">${list.map(p => `<button class="prow ${fits(p) ? '' : 'dim'}" data-act="mktSel" data-pid="${p.id}">${ovr(p.ovr)}<span class="who"><b>${esc(p.n)} ${p.ovr > (myBest[p.pos] || 0) ? '<span class="tag gold" data-tip="Nota acima do seu melhor jogador nesta posição.">reforço</span>' : ''}${p.loan ? ' <span class="tag">emprestado</span>' : ''}</b><span>${posLbl(p.pos)} · ${p.age} anos · ${esc(club(p.club).name)} <span class="muted">(${club(p.club).div})</span> ${attrMini(p)}</span></span><span class="end"><b class="num gold-c">${fmt(G.askPrice(S, p))}</b><span class="tiny muted">${fmt(p.wage)}/mês</span><span class="ct-cue">Contratar</span></span></button>`).join('') || `<div class="empty">Nenhum jogador com esse filtro.${m.fit ? ' Desligue “Cabe no orçamento” para ver todos, ou venda alguém para abrir caixa e folha.' : ''}</div>`}</div><p class="tiny muted" style="margin:8px 0 0">O valor da lista é o pedido do clube. Toque no jogador para ver se ele topa vir e fazer proposta de compra ou de empréstimo.</p></section>`;
+      const fx = SAL_FAIXAS.find(f => f[0] === (m.salF || '')) || SAL_FAIXAS[0];
+      const list = G.marketList(S, { pos: m.pos || null, maxAge: m.young ? 23 : null, div: m.div || null, q: m.q || null, wageMin: fx[2], wageMax: fx[3] }).filter(p => !m.fit || fits(p) || p.loan).slice(0, 40);
+      body = `<section class="card"><input id="mkt-q" class="txt" type="search" placeholder="Buscar jogador ou clube" value="${esc(m.q || '')}" aria-label="Buscar jogador ou clube" style="margin-bottom:10px"><div class="chips" style="margin-bottom:6px">${divChips}</div><div class="chips" style="margin-bottom:8px">${chips}</div><div class="chips" style="margin-bottom:8px">${salChips}</div>
+        <div class="row between" style="gap:8px;margin-bottom:8px"><span class="small muted">${list.length} ${plural(list.length, 'jogador', 'jogadores')}${fx[2] != null || fx[3] != null ? ' nesta faixa de salário' : ''}</span><button class="btn ${U.cmp && U.cmp.length ? 'primary' : ''}" data-act="cmpMode" ${tipA('Escolhe até 3 jogadores e mostra os números deles lado a lado.')}>${U.cmpOn ? (U.cmp && U.cmp.length ? `Comparar ${U.cmp.length}` : 'Cancelar comparação') : 'Comparar jogadores'}</button></div>
+        <div class="plist">${list.map(p => `<button class="prow ${fits(p) ? '' : 'dim'} ${U.cmpOn && (U.cmp || []).includes(p.id) ? 'cur' : ''}" data-act="${U.cmpOn ? 'cmpPick' : 'mktSel'}" data-pid="${p.id}">${ovr(p.ovr)}<span class="who"><b>${esc(p.n)} ${p.ovr > (myBest[p.pos] || 0) ? '<span class="tag gold" data-tip="Nota acima do seu melhor jogador nesta posição.">reforço</span>' : ''}${p.loan ? ' <span class="tag">emprestado</span>' : ''}</b><span>${posLbl(p.pos)} · ${p.age} anos · ${esc(club(p.club).name)} <span class="muted">(${club(p.club).div})</span> ${attrMini(p)}</span></span><span class="end"><b class="num gold-c">${fmt(G.askPrice(S, p))}</b><span class="tiny muted">${fmt(p.wage)}/mês</span><span class="ct-cue">Contratar</span></span></button>`).join('') || `<div class="empty">Nenhum jogador com esse filtro.${m.fit ? ' Desligue “Cabe no orçamento” para ver todos, ou venda alguém para abrir caixa e folha.' : ''}</div>`}</div><p class="tiny muted" style="margin:8px 0 0">O valor da lista é o pedido do clube. Toque no jogador para ver se ele topa vir e fazer proposta de compra ou de empréstimo.</p></section>`;
     } else if (m.tab === 'sell') {
       const idolId = (G.idolOf(S).p || {}).id; const idolPct = (G.lojaInfo(S).idol || {}).pct || 0;
       const offs = S.market.offers.map(o => {
@@ -1075,12 +1169,29 @@
           <div class="fin small" style="margin-top:6px">${S.finance.slice(0, 12).map(f => `<span>${T.dateLabel(f.y || S.year, Math.min(f.r, G.WEEKS) - 1, true)} · ${esc(f.txt)}</span><b class="num ${f.amount < 0 ? 'neg-c' : 'pos-c'}">${f.amount < 0 ? '' : '+'}${fmt(f.amount)}</b>`).join('') || '<span class="muted">Nada ainda. A primeira rodada mexe no caixa.</span><span></span>'}</div></section>
         <section class="card"><div class="head"><h2>Diretoria${hint(CONF_TIP)}</h2><span class="tag ${S.board.conf < 30 ? 'bad' : 'good'}">${S.board.conf < 30 ? 'Cargo em risco' : 'Cargo estável'}</span></div>
           <div class="meter ${S.board.conf < 30 ? 'warn' : ''}"><div class="lbl">Confiança</div><div class="v num">${Math.round(S.board.conf)}</div><div class="bar"><i style="width:${S.board.conf}%"></i></div></div>
-          <ul class="small" style="margin:12px 0 0;padding-left:18px"><li>Meta: ${S.board.target.label}. Hoje: ${G.position(S)}º ${c.div === 'D' ? 'no grupo' : 'na ' + DIVN[c.div]}.</li><li>Cada resultado é comparado com o esperado pela força dos elencos e pelo mando: vencer fora um time bem mais forte rende até +5; perder em casa para um bem mais fraco tira até −5.</li><li>Nos jogos da liga, a partir do 8º, longe da meta tira 1 ou 2; dentro dela soma 1.</li><li>Caixa negativo tira 2 por jogo.</li><li>A partir do 10º jogo da liga, abaixo de 15 por 3 jogos da liga seguidos e mais de 2 posições abaixo da meta: demissão.</li><li>Fim de temporada: meta cumprida soma 15; acesso soma mais 10, rebaixamento tira 10.</li>${inf.pressure ? `<li><b>Verba extra aprovada:</b> se não cumprir a meta, a confiança cai mais ${inf.pressure} no fim da temporada.</li>` : ''}</ul>
+          ${(() => {
+            const pos = G.position(S), alvo = S.board.target.pos;
+            const onde = c.div === 'D' ? 'no grupo' : 'na ' + DIVN[c.div];
+            const dentro = pos <= alvo;
+            return `<div class="meta-linha"><b>Meta:</b><span>${S.board.target.label}</span><span style="flex:1"></span><b class="num">Hoje: ${pos}º ${onde}</b><span class="tag ${dentro ? 'good' : 'bad'}">${dentro ? 'dentro da meta' : 'fora da meta'}</span></div>`;
+          })()}
+          <div class="eyebrow" style="margin-top:16px">O que mexe na confiança</div>
+          <div class="regras">
+            <div class="rg"><span class="sg p">+5</span><span>Vencer fora um time bem mais forte. Cada resultado é comparado com o esperado pela força dos dois elencos e pelo mando.</span></div>
+            <div class="rg"><span class="sg n">−5</span><span>Perder em casa para um time bem mais fraco.</span></div>
+            <div class="rg"><span class="sg p">+1</span><span>Estar dentro da meta, a cada jogo da liga a partir do 8º.</span></div>
+            <div class="rg"><span class="sg n">−1 a −2</span><span>Estar longe da meta, nos mesmos jogos.</span></div>
+            <div class="rg"><span class="sg n">−2</span><span>Caixa negativo, a cada jogo.</span></div>
+            <div class="rg"><span class="sg p">+15</span><span>Cumprir a meta no fim da temporada. Subir de divisão soma mais 10.</span></div>
+            <div class="rg"><span class="sg n">−10</span><span>Ser rebaixado.</span></div>
+            ${inf.pressure ? `<div class="rg"><span class="sg n">−${inf.pressure}</span><span><b>Verba extra aprovada.</b> Desconto a mais no fim da temporada se a meta não for cumprida.</span></div>` : ''}
+          </div>
+          <div class="notice ${S.board.conf < 30 ? 'bad' : 'warn'} small" style="margin-top:12px"><b>Quando você é demitido:</b> a partir do 10º jogo da liga, confiança abaixo de 15 por 3 jogos seguidos da liga e mais de 2 posições abaixo da meta.</div>
           <button class="btn block" style="margin-top:12px" data-act="verba" ${tipA('Pede dinheiro extra para reforços. Uma vez por janela; a chance depende da confiança.')}>Pedir verba à diretoria</button></section>
       </div>`;
     } else if (tab === 'carreira') {
       const achs = Object.entries(G.ACH).map(([k, [n, d]]) => `<div class="ach ${S.achievements[k] ? 'on' : ''}"><span class="ic">${S.achievements[k] ? IC.star : IC.lock}</span><span><b>${n}</b><span>${d}</span></span></div>`).join('');
-      const unl = Object.entries(G.UNLOCKS).map(([l, items]) => `<div><span class="tag ${lv >= +l ? 'good' : ''}">${lv >= +l ? 'Liberado' : 'Nível ' + l}</span>${items.join(', ')}</div>`).join('');
+      const unl = Object.entries(G.UNLOCKS).map(([l, items]) => items.map(it => `<div class="unl ${lv >= +l ? 'on' : ''}"><span class="tag ${lv >= +l ? 'good' : ''}">${lv >= +l ? 'Você tem' : 'Nível ' + l}</span><span><b>${it}</b><span class="small muted">${G.UNLOCK_TXT[it] || ''}</span></span></div>`).join('')).join('');
       const pers = E.PERSONAS[S.coach.persona];
       body = `<div class="grid g2"><div class="stack">
         <section class="card"><div class="head"><h2>Técnico${hint('Seu estilo dá um efeito fixo em todas as partidas. O nível sobe com XP e libera formações e recursos.')}</h2></div>
@@ -1200,7 +1311,7 @@
       <div class="match-layout">
         <div class="stack" style="gap:12px">
           <div class="mini-pitch" id="mp"><div class="l"></div><div class="gl"></div><div class="gr"></div><div class="ball" id="ball" style="left:50%;top:50%"></div></div>
-          <div class="stats3" id="stats"></div>
+          <section class="card"><div class="head"><h2>Números do jogo${hint('Como os dois times estão se saindo até agora. A barra mostra de quem é a vantagem em cada item.')}</h2></div><div id="stats"></div></section>
         </div>
         <section class="card feed-wrap"><div class="head"><h2>Narração${hint('Lances do jogo, do mais recente para o mais antigo. Os gols do seu time aparecem em destaque.')}</h2><span class="tiny muted">${m.side[m.userSide].human ? 'Você é o ' + esc(club(me()).name) : ''}</span></div><div class="feed" id="feed"></div></section>
       </div>
@@ -1215,7 +1326,7 @@
     return `<div class="seg" role="group" aria-label="Velocidade">${[1, 2, 4].map(s => `<button data-act="speed" data-v="${s}" aria-pressed="${ms.speed === s}" ${tipA('Velocidade da narração: ' + s + '×.')}>${s}×</button>`).join('')}</div>
       <button class="btn primary" style="flex:1" data-act="openMoment" data-v="manual" ${tipA('Pausa o jogo para mudar a postura ou fazer substituições.')}>${ms.running ? 'Mexer<span class="hide-sm"> no time</span>' : 'Ajustar<span class="hide-sm"> e voltar</span>'}</button>
       <button class="btn" data-act="skipNext" ${tipA('Avança rápido até a próxima parada do jogo: intervalo, gol sofrido, lesão ou reta final.')}>Pular</button>
-      <button class="btn ghost" data-act="skip" ${tipA('Simula até o fim sem paradas. Lesionados são trocados sozinhos.')}>Até o fim</button>
+      <button class="btn ghost" data-act="skip" ${tipA('Simula até o fim sem paradas. Lesionados são trocados sozinhos.')}><span class="hide-sm">Até o </span>fim</button>
       <button class="btn" data-act="sound" aria-label="${U.settings.sound ? 'Desligar som' : 'Ligar som'}" ${tipA(U.settings.sound ? 'Desligar som' : 'Ligar som')}>${U.settings.sound ? IC.sound : IC.mute}</button>`;
   }
 
@@ -1232,11 +1343,24 @@
     $('marks').innerHTML = m.events.filter(e => e.t === 'goal').map(e => `<b style="left:${e.min / 90 * 100}%;background:${e.side === us ? 'var(--ouro)' : '#fff'}"></b>`).join('');
     const poss = m.minute ? Math.round(m.possAcc / m.minute * 100) : 50;
     const xg = [m.side[0].xg, m.side[1].xg];
-    const st3 = [['Posse', poss + '%', (100 - poss) + '%', poss], ['Finalizações', m.side[0].shots, m.side[1].shots, m.side[0].shots / Math.max(1, m.side[0].shots + m.side[1].shots) * 100], ['Gols esperados', xg[0].toFixed(1), xg[1].toFixed(1), xg[0] / Math.max(0.01, xg[0] + xg[1]) * 100]];
-    $('stats').innerHTML = st3.map(([l, x, y, p]) => `<div class="stat" ${tipA(MATCH_TIP[l])}><div class="lbl">${l}</div><div class="vv num"><span>${x}</span><span>${y}</span></div><div class="split"><i style="width:${p}%"></i><em style="flex:1"></em></div></div>`).join('');
+    $('stats').innerHTML = cmpStats([0, 1].map(i => ({ shots: m.side[i].shots, onTarget: m.side[i].onTarget, xg: m.side[i].xg, cards: m.side[i].cards.length })), poss / 100, us);
     const feed = $('feed');
     newEvents.forEach(e => { const txt = evText(e, m); if (!txt) return; const d = document.createElement('div'); d.className = 'ev ' + (e.t === 'goal' ? 'goal ' : '') + (e.side === us ? 'mine' : ''); d.innerHTML = `<span class="m">${e.t === 'ft' ? 'FIM' : e.min + "'"}</span><span>${txt}</span>`; feed.prepend(d); });
     $('ctl').innerHTML = matchControls();
+  }
+
+  // Estatisticas em linhas, como transmissao de TV. Serve a partida ao vivo e a tela de fim de jogo.
+  // poss e a posse do lado 0, de 0 a 1. us diz qual lado e o do jogador, para destacar a coluna dele.
+  function cmpStats(lado, poss, us) {
+    const p0 = Math.round(poss * 100);
+    const linhas = [
+      ['Posse de bola', p0 + '%', (100 - p0) + '%', p0],
+      ['Finalizações', lado[0].shots, lado[1].shots, lado[0].shots / Math.max(1, lado[0].shots + lado[1].shots) * 100],
+      ['No gol', lado[0].onTarget, lado[1].onTarget, lado[0].onTarget / Math.max(1, lado[0].onTarget + lado[1].onTarget) * 100],
+      ['Gols esperados', lado[0].xg.toFixed(1), lado[1].xg.toFixed(1), lado[0].xg / Math.max(0.01, lado[0].xg + lado[1].xg) * 100]
+    ];
+    if (lado[0].cards != null && (lado[0].cards || lado[1].cards)) linhas.push(['Cartões', lado[0].cards, lado[1].cards, lado[0].cards / Math.max(1, lado[0].cards + lado[1].cards) * 100]);
+    return `<div class="cmp">${linhas.map(([l, x, y, pc]) => `<div class="lin" ${tipA(MATCH_TIP[l] || '')}><span class="n r${us === 0 ? ' meu' : ''}">${x}</span><span class="mid"><span class="lb">${l}</span><span class="bar2"><i style="width:${Math.round(pc)}%"></i><em></em></span></span><span class="n${us === 1 ? ' meu' : ''}">${y}</span></div>`).join('')}</div>`;
   }
 
   // Os 22 no campo. O motor ja entrega x e y de cada titular pela formacao (lineupFrom),
@@ -1355,23 +1479,38 @@
     const [rec, why] = recommend(m);
     const title = { ht: 'Intervalo', concede: 'Gol sofrido', reta: 'Reta final', injury: 'Lesão', manual: 'Mexer no time' }[sh.kind];
     const first = U.ms.first && sh.kind === 'ht';
-    const opts = E.MENT_KEYS.map(k => `<button class="opt" data-act="momentMent" data-v="${k}" aria-pressed="${sh.pick === k}"><b>${E.MENT[k].label}</b>${k === rec ? '<span class="tag gold" style="grid-column:auto;justify-self:end">Recomendado</span>' : '<i></i>'}<span>${E.MENT[k].txt}</span></button>`).join('');
-    // substituicoes
+    // a postura usa a mesma regua da escalacao: o mini campo mostra onde fica a linha do time
+    const regua = E.MENT_KEYS.map((k, i) => `<button data-act="momentMent" data-v="${k}" aria-pressed="${sh.pick === k}" aria-label="${E.MENT[k].label}${k === rec ? ', recomendado' : ''}" data-tip="${esc(E.MENT[k].label + ': ' + E.MENT[k].txt)}"><i class="rk" style="--h:${i + 1}" aria-hidden="true"><b></b></i><span class="rl">${E.MENT[k].label.replace(' total', '')}</span>${k === rec ? '<span class="rec" aria-hidden="true"></span>' : ''}</button>`).join('');
+    const trocasFeitas = s.subs;
     let subs = '';
     if (sh.subOut != null) {
       const out = s.xi[sh.subOut].p;
-      subs = `<div class="eyebrow">Quem entra no lugar de ${esc(out ? out.n : '')}?</div><div class="plist">${s.bench.map((p, bi) => p && !p._off ? `<button class="prow" data-act="subIn" data-i="${bi}">${ovr(Math.round(p.ovr * E.fitFactor(s.xi[sh.subOut].slot, p.pos)))}<span class="who"><b>${esc(p.n)}</b><span>${posLbl(p.pos)}${E.fitFactor(s.xi[sh.subOut].slot, p.pos) < 0.92 ? ' · improvisado' : ''}</span></span>${fadiga(p.condLive != null ? p.condLive : p.cond)}</button>` : '').join('')}</div><button class="btn ghost" data-act="subCancel">Voltar</button>`;
+      subs = `<div class="eyebrow">Quem entra no lugar de ${esc(out ? out.n : '')}?</div><div class="plist">${s.bench.map((p, bi) => p && !p._off ? `<button class="prow" data-act="subIn" data-i="${bi}">${ovr(Math.round(p.ovr * E.fitFactor(s.xi[sh.subOut].slot, p.pos)))}<span class="who"><b>${esc(p.n)}</b><span>${posLbl(p.pos)}${E.fitFactor(s.xi[sh.subOut].slot, p.pos) < 0.92 ? ' · improvisado' : ''}</span></span>${fadiga(p.condLive != null ? p.condLive : p.cond)}</button>` : '').join('')}</div><button class="btn ghost block" data-act="subCancel">Voltar sem trocar</button>`;
+    } else if (trocasFeitas >= 5) {
+      subs = '<p class="small muted" style="margin:0">Você já fez as 5 trocas permitidas.</p>';
     } else {
-      subs = `<div class="row between"><div class="eyebrow">Substituições</div><span class="small muted">${s.subs} de 5 feitas</span></div>${s.subs >= 5 ? '<p class="small muted">Você já fez as 5 trocas.</p>' : `<div class="plist">${s.xi.map((o, i) => o.p ? `<button class="prow" data-act="subOut" data-i="${i}">${ovr(o.p.ovr)}<span class="who"><b>${esc(o.p.n)}</b><span>${posLbl(o.slot)}${o.p._hurt ? ' · <b class="neg-c">lesionado</b>' : ''}${o.p._yc ? ' · amarelado' : ''}</span></span>${fadiga(o.p.condLive)}</button>` : '').join('')}</div>`}`;
+      subs = `<div class="plist">${s.xi.map((o, i) => o.p ? `<button class="prow" data-act="subOut" data-i="${i}">${ovr(o.p.ovr)}<span class="who"><b>${esc(o.p.n)}</b><span>${posLbl(o.slot)}${o.p._hurt ? ' · <b class="neg-c">lesionado</b>' : ''}${o.p._yc ? ' · amarelado' : ''}</span></span>${fadiga(o.p.condLive)}</button>` : '').join('')}</div>`;
     }
-    return `<div class="moment stack" style="gap:12px">
-      <div class="row between"><div class="eyebrow">Momento-chave · ${m.minute}'</div><span class="tag">${title}</span></div>
-      <div class="situ"><div class="disp">${situ}</div><div class="small" style="opacity:.85;margin-top:6px">${esc(club(m.side[os].club).name)} joga ${E.MENT[m.side[os].ment].label.toLowerCase()}. Você está ${E.MENT[s.ment].label.toLowerCase()}.</div></div>
-      ${first ? `<div class="notice warn small"><b>Primeira decisão.</b> A postura muda o ritmo do jogo e quem fica com as chances. Nos 25 minutos finais o efeito dobra.</div>` : ''}
-      <div class="notice info small"><b>Leitura:</b> ${why}</div>
-      <div class="opts">${opts}</div>
-      ${subs}
-      <button class="btn primary big block" data-act="momentGo">Voltar para o jogo</button></div>`;
+    // quem precisa de atencao agora: lesionado, amarelado ou esgotado
+    const urgente = s.xi.filter(o => o.p && (o.p._hurt || o.p.condLive < 55)).map(o => o.p);
+    const trocaAberta = sh.subOut != null;
+    return `<div class="moment">
+      <div class="mo-topo">
+        <div class="row between" style="gap:8px"><span class="tag">${title} · ${m.minute}'</span><span class="small muted">${esc(club(m.side[os].club).name)} está ${E.MENT[m.side[os].ment].label.toLowerCase()}</span></div>
+        <div class="disp mo-placar">${situ}</div>
+      </div>
+      <div class="mo-corpo">
+        <div class="eyebrow">Como o time volta${hint('A postura muda o ritmo do jogo e quem fica com as chances. Nos 25 minutos finais o efeito dobra.')}</div>
+        <div class="ruler" role="group" aria-label="Postura">${regua}</div>
+        <div class="ruler-ends"><span>Segura</span><span>Arrisca</span></div>
+        <p class="small" style="margin:8px 0 0"><b>${E.MENT[sh.pick].label}.</b> ${E.MENT[sh.pick].txt}</p>
+        ${sh.pick !== rec ? `<p class="small muted" style="margin:6px 0 0"><b class="ouro-tx">Auxiliar sugere ${E.MENT[rec].label.toLowerCase()}:</b> ${why}</p>` : ''}
+        ${first ? `<div class="notice warn small" style="margin-top:10px">Primeira decisão da sua carreira. Dá para mudar de novo a qualquer momento do jogo.</div>` : ''}
+        ${urgente.length && !trocaAberta ? `<div class="notice bad small" style="margin-top:10px"><b>Atenção:</b> ${urgente.map(p => `${esc(p.n)} ${p._hurt ? 'está lesionado' : 'está esgotado'}`).join(' · ')}.</div>` : ''}
+        <details class="more card-more" style="margin-top:12px" ${trocaAberta || urgente.length ? 'open' : ''}><summary>Substituições · ${trocasFeitas} de 5 feitas</summary><div style="padding:0 14px 14px">${subs}</div></details>
+      </div>
+      <div class="mo-acao"><button class="btn primary big block" data-act="momentGo">Voltar para o jogo</button></div>
+    </div>`;
   }
 
   function finishMatch() {
@@ -1427,6 +1566,7 @@
         ${r.objectives.map(o => `<div class="obj ${o.done ? 'done' : ''}"><span class="box">${o.done ? IC.check : ''}</span><span class="t">${esc(o.txt)}</span><span class="xp">${o.done ? '+' + o.xp : ''}</span></div>`).join('')}
         <div class="lvl" style="margin-top:12px"><div class="n">${lv}</div><div style="flex:1"><div class="row between small"><b>${G.LEVEL_TITLES[lv - 1]}</b><span class="muted num">${S.coach.xp - cur} / ${nxt - cur} XP</span></div><div class="xpbar" style="margin-top:6px"><i id="xpfill" data-to="${toPct}" style="width:${r.levelAfter > r.levelBefore ? 0 : xpBeforePct}%"></i></div></div></div></section>
       ${r.evolutions.length ? `<section class="card"><div class="head"><h2>Evolução${hint('Jogadores de até 23 anos podem subir a nota quando jogam bem. Acima de 31, atuações ruins podem baixar.')}</h2></div>${r.evolutions.map(e => `<div class="evo">${ovr(e.to)}<b style="flex:1">${esc(e.n)}</b><span class="${e.to > e.from ? 'up' : 'dn'}">${e.from} → ${e.to}</span></div>`).join('')}</section>` : ''}
+      ${(() => { const st = S.lastMatch.stats; if (!st) return ''; return `<section class="card"><div class="head"><h2>Números do jogo${hint('Como os dois times se saíram. A barra mostra de quem foi a vantagem em cada item.')}</h2><span class="tiny muted">${esc(club(fx.h).name)} à esquerda</span></div>${cmpStats(st.lado, st.poss, st.us)}</section>`; })()}
       <section class="card"><div class="head"><h2>Notas do time${hint('Nota de cada jogador na partida, de 4 a 10. Verde: 7 ou mais. Vermelho: abaixo de 6.')}</h2></div><div class="row" style="gap:6px">${r.myRatings.slice(0, 14).map(p => `<span class="chip" style="cursor:default">${esc(shortN(p.n))} <b class="${p.r >= 7 ? 'pos-c' : p.r < 6 ? 'neg-c' : ''}">${p.r.toFixed(1)}</b></span>`).join('')}</div></section>
       <div class="grid g2">
         <section class="card"><div class="head"><h2>Caixa${hint('O que entrou e saiu do caixa nesta data. Folha, cota de TV e patrocínio só caem na virada do mês.')}</h2>${r.payday ? `<span class="tag gold">Fechamento de ${esc(r.payday)}</span>` : ''}</div><div class="fin">${r.payday ? `<span>Cota de TV</span><b class="num pos-c">+${fmt(fin.tv || 0)}</b>` : '<span class="muted" style="grid-column:1/-1">Fora da virada do mês só entra a bilheteria e o que a loja vende. A folha e a cota de TV caem no último jogo do mês.</span>'}${fin.sponsor ? `<span>Patrocínio · ${esc(r.sponsorName || '')}</span><b class="num pos-c">+${fmt(fin.sponsor)}</b>` : ''}${fin.winBonus ? `<span>Bônus por vitória</span><b class="num pos-c">+${fmt(fin.winBonus)}</b>` : ''}${r.payday ? `<span>Folha salarial</span><b class="num neg-c">${fmt(fin.wage || 0)}</b>` : ''}${fin.gate ? `<span>Bilheteria · ${(r.attendance || 0).toLocaleString('pt-BR')} pessoas${r.fill != null ? ` (${Math.round(r.fill * 100)}%)` : ''}</span><b class="num pos-c">+${fmt(fin.gate)}</b>` : ''}${fin.bonus ? `<span>Bônus dos objetivos</span><b class="num pos-c">+${fmt(fin.bonus)}</b>` : ''}${fin.loja ? `<span>Loja · lucro das camisas</span><b class="num pos-c">+${fmt(fin.loja)}</b>` : ''}${fin.bicho ? `<span>Bicho para o elenco${hint('Prêmio que os jogadores recebem por vitória (6% da folha mensal) ou empate (2,5%), como no futebol brasileiro. Quanto mais o time ganha, mais paga.')}</span><b class="num neg-c">${fmt(fin.bicho)}</b>` : ''}${fin.maint ? `<span>Manutenção da estrutura</span><b class="num neg-c">${fmt(fin.maint)}</b>` : ''}${r.cupQuota ? `<span>Cota da Copa do Brasil</span><b class="num pos-c">+${fmt(r.cupQuota)}</b>` : ''}${r.contPrize ? `<span>Prêmio da CONMEBOL${hint('Valores da CONMEBOL 2026 em dólar, convertidos a R$ 5,30 (câmbio fixo do jogo): cota por jogo em casa e por vitória na fase de grupos, prêmio por fase alcançada e pela final.')}</span><b class="num pos-c">+${fmt(r.contPrize)}</b>` : ''}<span class="tot">Saldo da data</span><b class="tot num ${total < 0 ? 'neg-c' : 'pos-c'}">${total < 0 ? '' : '+'}${fmt(total)}</b></div></section>
@@ -1465,7 +1605,7 @@
   }
   function renderSheet() {
     let el = document.getElementById('sheet');
-    const html = !U.sheet || (!S && U.sheet.type !== 'clubPreview') ? null : U.sheet.type === 'clubPreview' ? sheetClubPreview() : U.sheet.type === 'avatar' ? sheetAvatar() : U.sheet.type === 'pick' || U.sheet.type === 'bench' ? sheetPick() : U.sheet.type === 'player' ? sheetPlayer() : U.sheet.type === 'offer' ? sheetOffer() : U.sheet.type === 'moment' ? sheetMoment() : U.sheet.type === 'verba' ? sheetVerba() : U.sheet.type === 'passe' ? sheetPasse() : '';
+    const html = !U.sheet || (!S && U.sheet.type !== 'clubPreview') ? null : U.sheet.type === 'clubPreview' ? sheetClubPreview() : U.sheet.type === 'avatar' ? sheetAvatar() : U.sheet.type === 'pick' || U.sheet.type === 'bench' ? sheetPick() : U.sheet.type === 'player' ? sheetPlayer() : U.sheet.type === 'offer' ? sheetOffer() : U.sheet.type === 'moment' ? sheetMoment() : U.sheet.type === 'rapido' ? sheetRapido() : U.sheet.type === 'salvar' ? sheetSalvar() : U.sheet.type === 'compare' ? sheetCompare() : U.sheet.type === 'verba' ? sheetVerba() : U.sheet.type === 'passe' ? sheetPasse() : '';
     // o editor de visual atualiza no lugar, sem reabrir a folha a cada toque
     if (el && html !== null && U.sheet.type === 'avatar' && el.dataset.type === 'avatar') { const sh = el.querySelector('.sheet'); const y = sh.scrollTop; sh.innerHTML = `<div class="grab"></div>${html}`; sh.scrollTop = y; return; }
     if (el) el.remove();
@@ -1524,9 +1664,24 @@
       S.lineupFrom = null; save(); closeSheet(); render(); toast('Escalação salva.');
     },
     player: el => { U.sheet = { type: 'player', pid: +el.dataset.pid }; renderSheet(); },
+    avisoOk: () => { S.avisoTela = 1; save(); render(); },
+    comoSalvar: () => { U.sheet = { type: 'salvar' }; renderSheet(); },
     closeSheet: () => closeSheet(),
     listToggle: el => { const p = S.players[+el.dataset.pid]; p.listed = !p.listed; save(); renderSheet(); render(); toast(p.listed ? `${p.n} está à venda.` : `${p.n} saiu da lista de venda.`); },
     quickSell: el => { const r = G.quickSell(S, +el.dataset.pid); save(); closeSheet(); render(); toast(esc(r.msg)); },
+    mktSal: el => { U.mkt.salF = el.dataset.v; render(); },
+    cmpMode: () => { if (U.cmpOn) { U.cmpOn = false; U.cmp = []; } else { U.cmpOn = true; U.cmp = []; toast('Toque em até 3 jogadores para comparar.'); } render(); },
+    cmpPick: el => {
+      const id = +el.dataset.pid; U.cmp = U.cmp || [];
+      const i = U.cmp.indexOf(id);
+      if (i >= 0) U.cmp.splice(i, 1);
+      else if (U.cmp.length >= 3) { toast('Dá para comparar três por vez. Tire um antes.'); return; }
+      else U.cmp.push(id);
+      if (U.sheet && U.sheet.type === 'compare' && !U.cmp.length) { closeSheet(); render(); return; }
+      if (U.cmp.length >= 2 && !(U.sheet && U.sheet.type === 'compare')) U.sheet = { type: 'compare' };
+      renderSheet(); render();
+    },
+    cmpGo: el => { U.cmpOn = false; U.cmp = []; U.sheet = { type: 'player', pid: +el.dataset.pid }; renderSheet(); render(); },
     mktTab: el => { U.mkt.tab = el.dataset.v; if (U.mkt.tab !== 'auction') stopAuction(); render(); },
     mktPos: el => { U.mkt.pos = el.dataset.v; render(); },
     mktYoung: () => { U.mkt.young = !U.mkt.young; render(); },
@@ -1611,6 +1766,22 @@
         all.push(...evs.filter(e => e.t !== 'chance' || e.xg > 0.13 || e.kind === 'post'));
       }
       updateMatchUI(all); whistle(3);
+    },
+    rapido: () => { if (!G.userFixture(S)) { render(); return; } if (G.sponsorPending(S)) { toast('Escolha um patrocinador antes de jogar.'); return; } U.sheet = { type: 'rapido', pick: S.lineup.ment || 'equilibrada' }; renderSheet(); },
+    rapMent: el => { U.sheet.pick = el.dataset.v; renderSheet(); },
+    rapGo: () => {
+      S.lineup.ment = U.sheet.pick; save();
+      closeSheet();
+      const m = G.prepareUserMatch(S); m.startXI = m.side[m.userSide].xi.map(o => o.p).filter(Boolean);
+      const us = m.userSide;
+      while (!m.done) {
+        E.aiInGame(m, 1 - us);
+        E.assistInGame(m, us); E.step(m);
+        // mesma troca automatica da opcao "ate o fim" dentro da partida
+        m.side[us].xi.forEach((o, i) => { if (o.p && o.p._hurt && m.side[us].subs < 5) { const bi = m.side[us].bench.findIndex(p => p && !p._off); if (bi >= 0) { delete o.p._hurt; E.substitute(m, us, i, bi); } } });
+      }
+      U.match = m; U.ms = { speed: 1, running: false, timer: null, moments: 0, first: false, lastMent: [m.side[0].ment, m.side[1].ment], coachSaid: true };
+      finishMatch();
     },
     finishMatch: () => finishMatch(),
     postDone: () => { U.post = null; U.view = 'central'; render(); window.scrollTo(0, 0); },

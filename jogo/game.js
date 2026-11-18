@@ -50,7 +50,28 @@
   const isMid = w => !!(C.CAL[w] && C.CAL[w].mid);
   const LEVELS = [0, 100, 300, 600, 1000, 1500, 2100, 2800, 3600, 4500, 5500];
   const LEVEL_TITLES = ['Estagiário', 'Auxiliar', 'Interino', 'Efetivado', 'Professor', 'Estrategista', 'Comandante', 'Mestre', 'Lenda', 'Lenda', 'Lenda'];
-  const UNLOCKS = { 2: ['5-3-2', 'Análise do rival'], 3: ['3-5-2'], 4: ['4-1-4-1'], 5: ['3-4-3'] };
+  // As formacoes nascem todas liberadas: travar tatica so punia quem esta comecando.
+  // O nivel passou a dar coisas que somam ao que o tecnico ja tem.
+  const UNLOCKS = {
+    2: ['Análise do rival'],
+    3: ['Peneira maior'],
+    4: ['Diretoria mais paciente'],
+    5: ['Bom de conversa'],
+    6: ['Olheiro'],
+    7: ['Peneira de elite']
+  };
+  const UNLOCK_TXT = {
+    'Análise do rival': 'Antes de cada jogo você vê a formação do adversário e a postura que ele deve usar.',
+    'Peneira maior': 'A peneira da base traz 1 garoto a mais por ano.',
+    'Diretoria mais paciente': 'Cada queda de confiança por rodada é 1 ponto menor.',
+    'Bom de conversa': 'Os clubes pedem 6% menos pelos jogadores deles.',
+    'Olheiro': 'No mercado, você vê de cara quem topa vir para o seu clube.',
+    'Peneira de elite': 'Mais 1 garoto por ano, e eles chegam com nota mais alta.'
+  };
+  // quanto o tecnico ja conquistou, por nivel
+  const bonusNivel = st => { const l = (st.coach && st.coach.level) || 1; return {
+    analise: l >= 2, peneiraExtra: (l >= 3 ? 1 : 0) + (l >= 7 ? 1 : 0), paciencia: l >= 4 ? 1 : 0,
+    desconto: l >= 5 ? 0.94 : 1, olheiro: l >= 6, peneiraNota: l >= 7 ? 2 : 0 }; };
   const TICKET = 45;
   // cota de TV relativa entre séries e chance de jogar em casa numa semana (calendário de 58 semanas)
   const DIV_TV = { A: 1, B: 0.45, C: 0.2, D: 0.08 };
@@ -621,6 +642,8 @@
       if (isLeague && lj >= 7) { const gap = pos - st.board.target.pos; if (gap > 5) dc -= 2; else if (gap > 2) dc -= 1; else if (gap <= 0) dc += 1; }
       if (st.clubs[me].cash < 0) dc -= 2;
       if (res === 'D' && dc < 0 && life(st).flags.underdog === st.round) dc = Math.round(dc / 2);
+      // diretoria mais paciente: a partir do nivel 4 cada queda e um ponto menor
+      const pac = bonusNivel(st).paciencia; if (pac && dc < 0) dc = Math.min(0, dc + pac);
       st.board.conf = Math.max(0, Math.min(100, st.board.conf + dc)); report.conf = dc;
       if (isLeague) report.alerta = boardAlert(st, lj, pos);
       // conquistas
@@ -723,7 +746,10 @@
     if (ures) {
       report.mvp = (() => { let best = null; Object.entries(ures.ratings).forEach(([pid, r]) => { if (!best || r > best.r) best = { id: +pid, r, n: st.players[pid].n, club: st.players[pid].club }; }); return best; })();
       report.myRatings = Object.entries(ures.ratings).filter(([pid]) => st.players[pid].club === me).map(([pid, r]) => ({ id: +pid, n: st.players[pid].n, pos: st.players[pid].pos, r })).sort((a, b) => b.r - a.r);
-      st.lastMatch = { round: st.round + 1, fx, label: fx.label, score: userMatch.score.slice(), events: userMatch.events.filter(e => e.t !== 'chance' || e.xg > 0.2) };
+      st.lastMatch = { round: st.round + 1, fx, label: fx.label, score: userMatch.score.slice(), events: userMatch.events.filter(e => e.t !== 'chance' || e.xg > 0.2),
+        // numeros da partida para a tela de fim de jogo; guardados crus, sem objeto de jogador junto
+        stats: { poss: userMatch.minute ? userMatch.possAcc / userMatch.minute : 0.5, us: userMatch.userSide,
+          lado: [0, 1].map(i => ({ shots: userMatch.side[i].shots, onTarget: userMatch.side[i].onTarget, xg: userMatch.side[i].xg, cards: userMatch.side[i].cards.length })) } };
     }
     st.round++;
     lifeWeek(st, report, mid);
@@ -779,6 +805,8 @@
     if (filt.pos) list = list.filter(p => p.pos === filt.pos);
     if (filt.maxAge) list = list.filter(p => p.age <= filt.maxAge);
     if (filt.minOvr) list = list.filter(p => p.ovr >= filt.minOvr);
+    if (filt.wageMax != null) list = list.filter(p => p.wage <= filt.wageMax);
+    if (filt.wageMin != null) list = list.filter(p => p.wage >= filt.wageMin);
     if (filt.q) { const q = filt.q.toLowerCase(); list = list.filter(p => p.n.toLowerCase().includes(q) || st.clubs[p.club].name.toLowerCase().includes(q)); }
     return list.sort((a, b) => b.ovr - a.ovr || a.age - b.age);
   }
@@ -805,6 +833,7 @@
     if (c.cash < 0) { f *= 0.85; reasons.push(['Clube precisa de dinheiro', -15]); }
     if (buyerId && st.clubs[buyerId] && st.clubs[buyerId].div === c.div) { f *= 1.1; reasons.push(['Venda para rival da mesma série', 10]); }
     if ((p.contract || 2) <= 1) { f *= 0.85; reasons.push(['Último ano de contrato', -15]); }
+    if (buyerId === st.coach.club) { const d = bonusNivel(st).desconto; if (d < 1) { f *= d; reasons.push(['Sua fama de bom negociador', -Math.round((1 - d) * 100)]); } }
     return { ask: r10(v * f), value: r10(mValue(p)), reasons };
   }
   function askPrice(st, p) { return sellerAsk(st, p).ask; }
@@ -1572,12 +1601,13 @@
   // peneira da base: garotos fictícios; quantidade e qualidade sobem com o nível
   function genProspects(st) {
     const inf = infra(st); const me = st.coach.club; const lvl = inf.base;
-    const k = Math.min(PROSPECTS[lvl], BASE_MAX - inf.prospects.length); if (k <= 0) return 0;
+    const bn = bonusNivel(st);
+    const k = Math.min(PROSPECTS[lvl] + bn.peneiraExtra, BASE_MAX - inf.prospects.length); if (k <= 0) return 0;
     const rng = rngFor(st, 'base', st.year, st.round);
     const ovrs = squadOf(st, me).map(p => p.ovr).sort((a, b) => a - b); const med = ovrs.length ? ovrs[Math.floor(ovrs.length / 2)] : 60;
     const POSL = ['GK', 'CB', 'CB', 'LB', 'RB', 'DM', 'CM', 'CM', 'AM', 'LW', 'RW', 'ST', 'ST'];
     for (let i = 0; i < k; i++) {
-      const pos = rng.pick(POSL); const ovr = Math.max(45, Math.min(74, Math.round(med - 15 + 1.5 * lvl + rng.int(-3, 3) + (course(st, 'base') ? 2 : 0))));
+      const pos = rng.pick(POSL); const ovr = Math.max(45, Math.min(76, Math.round(med - 15 + 1.5 * lvl + rng.int(-3, 3) + (course(st, 'base') ? 2 : 0) + bn.peneiraNota)));
       const p = E.genPlayer(rng, pos, ovr, rng.int(16, 17), null, st.nextId++);
       p.pot = Math.min(92, ovr + 10 + Math.round(2.5 * lvl) + rng.int(0, 10));
       const w = 6 - lvl; p.potLo = p.pot - rng.int(0, w); p.potHi = Math.min(95, p.potLo + w);
@@ -1819,6 +1849,6 @@
     return `${s}R$ ${a.toLocaleString('pt-BR')}`;
   }
 
-  const api = { BICHO, bicho, ALERTA, alertaTexto, WEEKS, SEASON_WEEKS, isMid, abreSponsor, PRECOS, PASSE_DATA, temPasse, passeNaHora, passeTrava, passeInfo, ativarPasse, CONT_PRIZE, USD, contGroups, WINDOWS, LEVELS, LEVEL_TITLES, UNLOCKS, ACH, TICKET, CUP_QUOTA, cupQuota, CAP_MAX, capAt, rngFor, hashSeed, levelFromXp, formationsFor, squadOf, wageBill, strength, windowOpen, windowInfo, strengthRanks, divClubs, targetFor, newCareer, startSeason, weekFixtures, userFixture, nextUserWeek, leagueKey, sortedTable, position, prepareUserMatch, suggestMent, sponsorOffers, signSponsor, sponsorPending, sponsorPerf, migrate, BRANDS, withB, finishRound, simWeek, askPrice, sellerAsk, disposition, interest, marketWage, buyTerms, signPlayer, loanTerms, loanIn, INTEREST_OK, mValue, prestige, loanFee, respondOffer, endLoans, aiMarketTick, marketList, wageRoom, makeOffer, acceptOffer, quickSell, auctionBid, auctionRivalTick, auctionClose, nextSeason, restartAfterFire, fireOffers, fmt, userSide, LIC, LIC_ORDER, COURSES, life, hasLic, licNeed, xpMult, studyOptions, startStudy, answerPresser, answerEvent, checkLicense, PRESETS, PRESET_COMP, compKind, savePreset, loadPreset, applyPresetFor, INFRA, PROSPECTS, TICKET_MULT, TICKET_NAME, BASE_MAX, PENEIRA_WEEK, SQUAD_MAX, infra, infraCost, infraStart, infraMaint, infraLabel, ctBonus, crowd, lojaInfo, idolOf, kitPrice, promoteProspect, releaseProspect, verbaInfo, askVerba };
+  const api = { BICHO, bicho, ALERTA, alertaTexto, WEEKS, SEASON_WEEKS, isMid, abreSponsor, PRECOS, PASSE_DATA, temPasse, passeNaHora, passeTrava, passeInfo, ativarPasse, CONT_PRIZE, USD, contGroups, WINDOWS, LEVELS, LEVEL_TITLES, UNLOCKS, UNLOCK_TXT, bonusNivel, ACH, TICKET, CUP_QUOTA, cupQuota, CAP_MAX, capAt, rngFor, hashSeed, levelFromXp, formationsFor, squadOf, wageBill, strength, windowOpen, windowInfo, strengthRanks, divClubs, targetFor, newCareer, startSeason, weekFixtures, userFixture, nextUserWeek, leagueKey, sortedTable, position, prepareUserMatch, suggestMent, sponsorOffers, signSponsor, sponsorPending, sponsorPerf, migrate, BRANDS, withB, finishRound, simWeek, askPrice, sellerAsk, disposition, interest, marketWage, buyTerms, signPlayer, loanTerms, loanIn, INTEREST_OK, mValue, prestige, loanFee, respondOffer, endLoans, aiMarketTick, marketList, wageRoom, makeOffer, acceptOffer, quickSell, auctionBid, auctionRivalTick, auctionClose, nextSeason, restartAfterFire, fireOffers, fmt, userSide, LIC, LIC_ORDER, COURSES, life, hasLic, licNeed, xpMult, studyOptions, startStudy, answerPresser, answerEvent, checkLicense, PRESETS, PRESET_COMP, compKind, savePreset, loadPreset, applyPresetFor, INFRA, PROSPECTS, TICKET_MULT, TICKET_NAME, BASE_MAX, PENEIRA_WEEK, SQUAD_MAX, infra, infraCost, infraStart, infraMaint, infraLabel, ctBonus, crowd, lojaInfo, idolOf, kitPrice, promoteProspect, releaseProspect, verbaInfo, askVerba };
   if (NODE) module.exports = api; else root.Game = api;
 })(typeof window !== 'undefined' ? window : globalThis);
