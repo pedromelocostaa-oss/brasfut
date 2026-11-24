@@ -49,6 +49,8 @@
   const myPlayers = () => G.squadOf(S, me());
 
   const IC = {
+    collapse: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>',
+    expand: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>',
     central: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>',
     elenco: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M8 3l-5 3 2 4 2-1v12h10V9l2 1 2-4-5-3c-.5 1.7-2 3-4 3S8.5 4.7 8 3z"/></svg>',
     tabela: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="7" cy="6" r=".5"/></svg>',
@@ -203,8 +205,9 @@
     const c = club(me());
     const navBtns = NAV.map(([k, l]) => `<button data-act="go" data-v="${k}" ${tipA(NAV_TIP[k])} ${U.view === k ? 'aria-current="page"' : ''}>${IC[k]}<span>${l}</span></button>`).join('') + (LIGA_ONLINE ? `<button class="only-wide" data-act="go" data-v="liga" ${tipA(NAV_TIP.liga)} ${U.view === 'liga' ? 'aria-current="page"' : ''}>${IC.liga}<span>Liga</span></button>` : '');
     const roundLbl = S.seasonOver ? `Temporada ${S.year} encerrada` : `${DIVN[c.div]} · ${T.dateLabel(S.year, S.round, true)} de ${S.year}${T.isMonthEnd(S.year, S.round) ? ' · dia de pagamento' : ''}`;
-    return `<div class="shell ${U.view === 'match' ? 'focus' : ''}">
-      <nav class="nav" aria-label="Menu principal"><div class="nav-brand">Pran<i>cheta</i></div>${navBtns}</nav>
+    const col = U.settings && U.settings.navCollapsed ? ' nav-collapsed' : '';
+    return `<div class="shell ${U.view === 'match' ? 'focus' : ''}${col}">
+      <nav class="nav" aria-label="Menu principal"><div class="nav-brand">Pran<i>cheta</i></div>${navBtns}<button class="nav-toggle only-wide" data-act="navToggle" aria-label="${col ? 'Expandir menu' : 'Recolher menu'}">${col ? IC.expand || '»' : IC.collapse || '«'}<span>Recolher</span></button></nav>
       <div class="content">
         <header class="topbar">
           <div class="club">${badge(me())}<b>${esc(c.name)}</b></div>
@@ -606,9 +609,77 @@
       <p class="tiny muted" style="margin:8px 0 0">Fontes: preços e horas da CBF Academy (Trivela, 2025); exigência da Pró na Série A anunciada pela CBF em 2021.</p></section>`;
   }
 
+  // Cartao do tecnico e do clube: a coluna da esquerda, no modelo de 3 colunas.
+  // Junta clube, avatar, personalidade, confianca (cargo), moral, caixa, nivel e meta.
+  function coachCard() {
+    const c = club(me()); const cash = c.cash; const conf = Math.round(S.board.conf); const mor = Math.round(S.morale);
+    const pers = E.PERSONAS[S.coach.persona] || { label: '' };
+    const lv = S.coach.level, xp = S.coach.xp; const cur = G.LEVELS[lv - 1] || 0, nxt = G.LEVELS[lv] || cur + 1000;
+    const pctXp = Math.min(100, (xp - cur) / (nxt - cur) * 100);
+    const lic = (G.LIC[S.coach.lic || 'B'] || { name: '' }).name;
+    const cargo = conf >= 70 ? ['Cargo firme', 'good'] : conf >= 45 ? ['Cargo estável', 'gold'] : conf >= 25 ? ['Sob pressão', 'warn'] : ['Beira da demissão', 'bad'];
+    return `<section class="card coachcard">
+      <div class="coachtop">
+        <div class="ct-club"><div class="ct-crest">${badge(me(), 'lg')}</div><div class="ct-name"><b>${esc(c.name)}</b><span>${DIVN[c.div]} · ${esc(c.uf || '')}</span></div>
+          <button class="ct-av" data-act="editAvatar" aria-label="Editar visual do técnico" ${tipA('Mudar o visual do técnico.')}>${avatarSVG(S.coach.avatar, me(), 46)}</button></div>
+        <div class="ct-who">${esc(S.coach.name)} <span>· ${pers.label}${lic ? ' · ' + lic : ''}</span></div>
+        <div class="ct-cargo"><span class="tag ${cargo[1]}">${cargo[0]}</span><b class="num">${conf}%</b></div>
+        <div class="ct-bar"><i style="width:${conf}%"></i></div>
+        <div class="ct-meta">Meta: ${esc(S.board.target.label)}. Hoje ${G.position(S)}º ${c.div === 'D' ? 'no grupo' : 'na ' + DIVN[c.div]}.</div>
+      </div>
+      <div class="ct-humor">
+        <div class="hcell" ${tipA(CONF_TIP)}><div class="l">Diretoria</div><div class="n num">${conf}</div><div class="tk"><i style="width:${conf}%"></i></div></div>
+        <div class="hcell" ${tipA(MORAL_TIP)}><div class="l">Moral do elenco</div><div class="n num">${mor}</div><div class="tk"><i style="width:${mor}%"></i></div></div>
+      </div>
+      <div class="ct-row">
+        <div class="box" ${tipA('Dinheiro do clube agora.')}><div class="l">Caixa do clube</div><div class="v num ${cash < 0 ? 'neg-c' : ''}">${money(cash)}</div></div>
+        <div class="box"><div class="l">Nível ${lv}</div><div class="v" style="font-size:15px">${G.LEVEL_TITLES[lv - 1]}</div><div class="tk" style="margin-top:5px"><i style="width:${pctXp}%;background:var(--ouro)"></i></div></div>
+      </div>
+      <button class="btn ghost ct-link" data-act="go" data-v="clube" ${tipA('Abre a página do Clube: diretoria, finanças, formação do técnico e conquistas.')}>Técnico e cargo ›</button>
+    </section>`;
+  }
+
+  // Campanha na carreira: cartel de vitorias, empates e derrotas da temporada.
+  function campanhaCard() {
+    const res = (S.results || []).filter(g => (g.h === me() || g.a === me()));
+    let v = 0, e = 0, d = 0, gf = 0, ga = 0;
+    res.forEach(g => { const meu = g.h === me() ? g.s[0] : g.s[1], outro = g.h === me() ? g.s[1] : g.s[0]; gf += meu; ga += outro; if (meu > outro) v++; else if (meu === outro) e++; else d++; });
+    const tot = v + e + d;
+    const body = tot === 0
+      ? `<p class="small muted" style="margin:0">Nenhum jogo ainda. Vitórias, empates e derrotas aparecem aqui depois da primeira partida.</p>`
+      : `<div class="ved"><div class="v"><b class="num">${v}</b><span>V</span></div><div class="e"><b class="num">${e}</b><span>E</span></div><div class="d"><b class="num">${d}</b><span>D</span></div></div>
+         <p class="tiny muted" style="margin:8px 0 0">${tot} ${plural(tot, 'jogo', 'jogos')} · ${gf} ${plural(gf, 'gol feito', 'gols feitos')}, ${ga} ${plural(ga, 'sofrido', 'sofridos')}.</p>`;
+    return `<section class="card pad"><h3 class="t3">Campanha na carreira</h3>${body}</section>`;
+  }
+
+  // Temporada: quantas competicoes o clube disputa.
+  function temporadaCard() {
+    const SC = S.comp; if (!SC) return '';
+    const divs = ['A', 'B', 'C', 'D'];
+    let n = 0; if (SC.est) n += Object.keys(SC.est).length ? 1 : 0; n += 2; // estadual + liga + copa do brasil, aproximado
+    return `<section class="card pad"><h3 class="t3">Temporada ${S.year} <button class="lnk" data-act="go" data-v="tabela">Abrir ›</button></h3>
+      <p class="small muted" style="margin:0">Estadual, Brasileirão e Copa do Brasil em disputa${club(me()).div === 'A' ? ', mais a vaga na Libertadores e na Sul-Americana' : ''}.</p></section>`;
+  }
+
+  // Calendario: os proximos jogos do seu clube, com data e mando.
+  function calendarCard() {
+    const jogos = []; let w = S.round;
+    for (let i = 0; i < 24 && jogos.length < 6; i++) { const nx = G.nextUserWeek(S, w + 1); if (!nx) break; jogos.push(nx); w = nx.w; }
+    if (!jogos.length) return '';
+    const it = jogos.map(nx => {
+      // dateLabel curto vem como "qua, 28 jan": tira o dia da semana, deixa numero grande e mes pequeno.
+      const data = T.dateLabel(S.year, nx.w, true);
+      const semDia = data.replace(/^[^,]*,\s*/, '');
+      const m = semDia.match(/(\d+)\s+(\S+)/);
+      const diaN = m ? m[1] : semDia;
+      const mes = m ? m[2].replace('.', '') : '';
+      return `<div class="cal-it"><div class="cal-d"><b>${diaN}</b><span>${mes}</span></div><div class="cal-mid"><div class="cal-nm">${esc(club(nx.fx.opp).name)}</div><div class="cal-sub">${esc(nx.fx.label)}</div></div><span class="cal-tag">${nx.fx.neutral ? 'Neutro' : nx.fx.isHome ? 'Casa' : 'Fora'}</span></div>`;
+    }).join('');
+    return `<section class="card pad"><h3 class="t3">Calendário <button class="lnk" data-act="go" data-v="tabela">Completo ›</button></h3><div class="cal">${it}</div></section>`;
+  }
+
   function vCentral() {
     if (S.fired) return vFired();
-    const cols = [];
     const avTela = avisoTelaInicio();
     // coluna 1: proximo jogo + objetivos
     let c1 = '';
@@ -662,31 +733,24 @@
         if (pend) c1 += sponsorCard();
       }
     }
-    cols.push(`<div class="stack">${c1}</div>`);
-    // coluna 2: medidores, nivel, mercado
-    const c = club(me()); const wb = G.wageBill(S, me());
-    const conf = Math.round(S.board.conf);
-    let c2 = `<section class="card"><div class="head"><h2>Seu momento</h2><button class="btn ghost" data-act="go" data-v="clube" ${tipA('Abre a página do Clube com as regras da diretoria e as finanças.')}>Detalhes</button></div>
-      <div class="meters">
-        <div class="meter ${conf < 30 ? 'warn' : ''}" ${tipA(CONF_TIP)}><div class="lbl">Confiança</div><div class="v num">${conf}</div><div class="bar"><i style="width:${conf}%"></i></div></div>
-        <div class="meter" ${tipA('Dinheiro em mãos. Embaixo, quanto a folha salarial custa por mês.')}><div class="lbl">Caixa</div><div class="v num money ${c.cash < 0 ? 'neg-c' : ''}">${money(c.cash)}</div><div class="tiny muted">folha ${fmt(wb)}/mês</div></div>
-        <div class="meter" ${tipA(MORAL_TIP)}><div class="lbl">Moral</div><div class="v num">${Math.round(S.morale)}</div><div class="bar"><i style="width:${S.morale}%"></i></div></div>
-      </div>
-      <p class="small" style="margin:12px 0 0"><b>Meta:</b> ${S.board.target.label}. Hoje: ${G.position(S)}º ${club(me()).div === 'D' ? 'no grupo' : 'na ' + DIVN[club(me()).div]}.</p></section>`;
-    c2 += promisesCard();
-    c2 += levelCard();
+    // ESQUERDA: o técnico e o clube
+    const left = coachCard() + promisesCard() + campanhaCard() + temporadaCard();
+    // CENTRO: o jogo (c1) e o mercado como aviso
     const w = G.windowInfo(S.round);
     const offers = S.market.offers.length;
     const a = S.market.auction && S.market.auction.status === 'open' ? S.market.auction : null;
-    c2 += `<section class="card"><div class="head"><h2>Mercado${hint(JANELA_TIP)}</h2><span class="tag ${w.open ? 'good' : ''}">${w.open ? `Janela aberta · fecha ${T.dateLabel(S.year, Math.min(G.WEEKS - 1, S.round + w.closesIn), true)}` : w.opensIn ? `Abre ${T.dateLabel(S.year, Math.min(G.WEEKS - 1, S.round + w.opensIn), true)}` : 'Fechada até ' + (S.year + 1)}</span></div>
+    const mercadoAviso = `<section class="card"><div class="head"><h2>Mercado${hint(JANELA_TIP)}</h2><span class="tag ${w.open ? 'good' : ''}">${w.open ? `Janela aberta · fecha ${T.dateLabel(S.year, Math.min(G.WEEKS - 1, S.round + w.closesIn), true)}` : w.opensIn ? `Abre ${T.dateLabel(S.year, Math.min(G.WEEKS - 1, S.round + w.opensIn), true)}` : 'Fechada até ' + (S.year + 1)}</span></div>
       ${a ? `<div class="notice warn row between"><span><b>Leilão relâmpago:</b> ${esc(S.players[a.pid].n)} (${posLbl(S.players[a.pid].pos)}, ${S.players[a.pid].ovr})</span><button class="btn gold" data-act="goAuction">Ver leilão</button></div>` : ''}
       ${offers ? `<div class="notice info row between" style="margin-top:8px"><span><b>${offers} ${plural(offers, 'proposta', 'propostas')}</b> por jogadores seus</span><button class="btn" data-act="goSell">Responder</button></div>` : ''}
       ${!a && !offers ? `<p class="small muted" style="margin:0">${w.open ? 'Procure reforços ou coloque jogadores à venda para receber propostas.' : 'Fora da janela você pode olhar o mercado, mas nada fecha.'}</p>` : ''}</section>`;
-    c2 += centralClubCard();
-    cols.push(`<div class="stack">${c2}${passeCard()}</div>`);
-    // coluna 3: tabela e noticias
-    cols.push(`<div class="stack">${miniTable()}<section class="card"><div class="head"><h2>Notícias${hint('O que aconteceu no campeonato e no seu clube: resultados, transferências, evoluções e contratos.')}</h2></div><ul class="news">${S.news.slice(0, 7).map(n => `<li><span class="r">${n.r > G.WEEKS ? 'Fim' : T.dateLabel(n.y || S.year, n.r - 1, true)}</span>${esc(n.txt)}</li>`).join('')}</ul></section></div>`);
-    return `${avTela}<div class="grid g-hub">${cols.join('')}</div>`;
+    const mid = c1 + mercadoAviso + passeCard();
+    // DIREITA: tabela, calendário e notícias
+    const right = miniTable() + calendarCard() + `<section class="card"><div class="head"><h2>Notícias${hint('O que aconteceu no campeonato e no seu clube: resultados, transferências, evoluções e contratos.')}</h2></div><ul class="news">${S.news.slice(0, 7).map(n => `<li><span class="r">${n.r > G.WEEKS ? 'Fim' : T.dateLabel(n.y || S.year, n.r - 1, true)}</span>${esc(n.txt)}</li>`).join('')}</ul></section>`;
+    return `${avTela}<div class="grid g-hub">
+      <div class="stack hub-left">${left}</div>
+      <div class="stack hub-mid">${mid}</div>
+      <div class="stack hub-right">${right}</div>
+    </div>`;
   }
 
   function levelCard() {
@@ -1843,6 +1907,7 @@
   // ---------- acoes ----------
   const A = {
     go: el => { U.view = el.dataset.v; U.sheet = null; if (U.view !== 'mercado') stopAuction(); render(); window.scrollTo(0, 0); },
+    navToggle: () => { U.settings = U.settings || {}; U.settings.navCollapsed = !U.settings.navCollapsed; save(); render(); },
     onbClub: el => { U.sheet = { type: 'clubPreview', id: el.dataset.id }; renderSheet(); },
     onbPick: el => { U.sheet = null; renderSheet(); U.onb.club = el.dataset.id; U.onb.step = 2; if (!U.onb.avatar) U.onb.avatar = randomAvatar(); render(); window.scrollTo(0, 0); },
     av: el => { const tgt = U.sheet && U.sheet.type === 'avatar' ? S.coach.avatar : U.onb.avatar; const k = el.dataset.k; tgt[k] = (k === 'skin' || k === 'hairColor') ? +el.dataset.v : el.dataset.v; if (U.sheet && U.sheet.type === 'avatar') { save(); render(); } else render(); },

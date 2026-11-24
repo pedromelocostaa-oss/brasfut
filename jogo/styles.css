@@ -83,7 +83,8 @@ main { padding: 16px; padding-block: 16px 24px; max-width: 1240px; width: 100%; 
 .grid { display: grid; gap: 16px; grid-template-columns: 1fr; align-items: start; }
 .grid.g2 > :only-child { grid-column: 1 / -1; }
 @media (min-width: 720px) { .grid.g2 { grid-template-columns: 1fr 1fr; } .grid.g-hub { grid-template-columns: 1.2fr 1fr; } }
-@media (min-width: 1180px) { .grid.g-hub { grid-template-columns: 1.25fr 1fr 1fr; } }
+@media (min-width: 760px) and (max-width: 1179px) { .grid.g-hub { grid-template-columns: 1fr 1fr; } .grid.g-hub .hub-mid { grid-column: 1 / -1; order: -1; } }
+@media (min-width: 1180px) { .grid.g-hub { grid-template-columns: 300px minmax(0, 1fr) 330px; } }
 .stack { display: grid; gap: 16px; min-width: 0; }
 .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
 .row.between { justify-content: space-between; }
@@ -691,3 +692,67 @@ select.txt { min-height: 40px; padding: 6px 10px; border-radius: 10px; border: 1
 .chip-del .chip { border-top-right-radius: 0; border-bottom-right-radius: 0; }
 .chip-del .x { border: 1px solid var(--linha); border-left: 0; background: var(--sup); color: var(--tinta2); border-radius: 0 999px 999px 0; width: 30px; font-size: 18px; line-height: 1; padding: 0; }
 .chip-del .x:hover { color: var(--cartao); }
+
+/* ---------- Central: coluna do técnico ---------- */
+.coachcard { overflow: hidden; padding: 0; }
+.coachtop { background: linear-gradient(160deg, var(--gram), var(--gram2)); color: #fff; padding: 16px; }
+.coachtop .ct-club { display: flex; align-items: center; gap: 12px; }
+.coachtop .ct-crest { width: 46px; height: 46px; display: grid; place-items: center; flex: none; }
+.coachtop .ct-crest svg, .coachtop .ct-crest img { width: 46px; height: 46px; }
+.coachtop .ct-name b { font-family: var(--f-display); font-weight: 900; font-size: 20px; text-transform: uppercase; line-height: 1; display: block; }
+.coachtop .ct-name span { font-size: 12px; opacity: .85; }
+.coachtop .ct-av { margin-left: auto; width: 46px; height: 46px; border-radius: 50%; overflow: hidden; border: 0; padding: 0; background: #ffffff1f; flex: none; }
+.coachtop .ct-av svg { width: 46px; height: 46px; }
+.coachtop .ct-who { margin-top: 12px; font-family: var(--f-display); font-weight: 700; font-size: 16px; text-transform: uppercase; }
+.coachtop .ct-who span { font-family: var(--f-texto); font-weight: 400; text-transform: none; font-size: 13px; opacity: .85; }
+.coachtop .ct-cargo { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; }
+.coachtop .ct-cargo .num { font-family: var(--f-display); font-weight: 900; font-size: 22px; }
+.coachtop .ct-bar { height: 6px; border-radius: 4px; background: #ffffff22; overflow: hidden; margin-top: 6px; }
+.coachtop .ct-bar i { display: block; height: 100%; background: var(--ouro); }
+.coachtop .ct-meta { font-size: 12px; opacity: .9; margin-top: 10px; line-height: 1.5; }
+.ct-humor { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 14px; }
+.ct-humor .hcell { background: var(--quadro); border-radius: 10px; padding: 10px; }
+.ct-humor .l { font: 700 10px var(--f-texto); text-transform: uppercase; letter-spacing: .05em; color: var(--tinta2); }
+.ct-humor .n { font-family: var(--f-display); font-weight: 900; font-size: 24px; line-height: 1; }
+.ct-humor .tk { height: 5px; border-radius: 3px; background: var(--sup2); margin-top: 5px; overflow: hidden; }
+.ct-humor .tk i { display: block; height: 100%; background: var(--verde); }
+.ct-row { display: flex; gap: 10px; padding: 0 14px 14px; }
+.ct-row .box { flex: 1; background: var(--quadro); border-radius: 10px; padding: 10px; min-width: 0; }
+.ct-row .l { font: 700 10px var(--f-texto); text-transform: uppercase; color: var(--tinta2); }
+.ct-row .v { font-family: var(--f-display); font-weight: 900; font-size: 18px; }
+.ct-row .tk { height: 5px; border-radius: 3px; background: var(--sup2); overflow: hidden; }
+.ct-row .tk i { display: block; height: 100%; }
+.ct-link { width: calc(100% - 28px); margin: 0 14px 14px; justify-self: start; }
+.t3 { font-family: var(--f-display); font-weight: 900; font-size: 16px; text-transform: uppercase; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+.t3 .lnk { color: var(--ima); font: 700 13px var(--f-texto); background: none; border: 0; cursor: pointer; }
+.ved { display: flex; gap: 10px; }
+.ved > div { flex: 1; background: var(--quadro); border-radius: 10px; padding: 10px; text-align: center; }
+.ved b { font-family: var(--f-display); font-weight: 900; font-size: 26px; display: block; line-height: 1; }
+.ved span { font: 700 11px var(--f-texto); text-transform: uppercase; color: var(--tinta2); }
+.ved .v b { color: var(--verde); } .ved .d b { color: var(--cartao); }
+/* calendário */
+.cal .cal-it { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-top: 1px solid var(--linha); }
+.cal .cal-it:first-child { border-top: 0; }
+.cal .cal-d { text-align: center; flex: none; width: 38px; }
+.cal .cal-d b { font-family: var(--f-display); font-weight: 900; font-size: 18px; display: block; line-height: 1; }
+.cal .cal-d span { font-size: 10px; color: var(--tinta2); text-transform: uppercase; }
+.cal .cal-mid { min-width: 0; flex: 1; }
+.cal .cal-nm { font: 700 14px var(--f-texto); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cal .cal-sub { font-size: 11px; color: var(--tinta2); }
+.cal .cal-tag { margin-left: auto; font: 700 10px var(--f-texto); text-transform: uppercase; color: var(--tinta2); flex: none; }
+
+/* ---------- menu lateral que recolhe ---------- */
+.nav-toggle { display: none; }
+@media (min-width: 1024px) {
+  .nav-toggle { margin-top: auto; display: flex; align-items: center; gap: 12px; height: 44px; padding: 0 12px; border: 0; background: var(--sup2); color: var(--tinta2); border-radius: 10px; font: 700 14px var(--f-texto); cursor: pointer; }
+  .nav-toggle svg { width: 20px; height: 20px; flex: none; }
+  .nav { display: flex; flex-direction: column; }
+  .nav button[data-act="go"] { flex: none; }
+  /* estado recolhido: so os icones */
+  .shell.nav-collapsed { grid-template-columns: 68px 1fr; }
+  .shell.nav-collapsed .nav { padding: 16px 10px; }
+  .shell.nav-collapsed .nav-brand { display: none; }
+  .shell.nav-collapsed .nav button { justify-content: center; padding: 0; gap: 0; }
+  .shell.nav-collapsed .nav button span { display: none; }
+  .shell.nav-collapsed .nav-toggle { justify-content: center; }
+}
