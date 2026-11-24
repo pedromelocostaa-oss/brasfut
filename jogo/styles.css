@@ -748,8 +748,8 @@ select.txt { min-height: 40px; padding: 6px 10px; border-radius: 10px; border: 1
   .nav-toggle svg { width: 20px; height: 20px; flex: none; }
   .nav { display: flex; flex-direction: column; }
   .nav button[data-act="go"] { flex: none; }
-  /* estado recolhido: so os icones */
-  .shell.nav-collapsed { grid-template-columns: 68px 1fr; }
+  /* estado recolhido: so os icones. Durante a partida (focus) a grade e de uma coluna so, senao o conteudo cai nos 68px. */
+  .shell.nav-collapsed:not(.focus) { grid-template-columns: 68px 1fr; }
   .shell.nav-collapsed .nav { padding: 16px 10px; }
   .shell.nav-collapsed .nav-brand { display: none; }
   .shell.nav-collapsed .nav button { justify-content: center; padding: 0; gap: 0; }
