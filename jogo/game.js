@@ -303,50 +303,22 @@
 
   function pushNews(st, type, txt) { st.news.unshift({ y: st.year, r: st.round + 1, type, txt }); if (st.news.length > 80) st.news.length = 80; }
   // ---------- patrocinio (marcas ficticias do prototipo) ----------
-  // patrocinadoras do jogo. Todas inventadas: usar marca real afirmaria um patrocinio que nao existe.
-  // Fora da lista de proposito: casas de apostas, bebida alcoolica e tabaco.
-  // art: artigo usado nas frases ("fecha com o Itaú", "com a Samsung").
-  // Marcas inventadas para o jogo. Nenhuma e real: desenhar o logo de uma empresa de
-  // verdade afirmaria um patrocinio que nao existe. Campos: id, nome, artigo, setor,
-  // cor e simbolo (desenhado em brandLogo, na interface).
+  // Empresas reais citadas so pelo nome, sem logo e sem cores de marca, como patrocinadoras
+  // ficticias. Decisao do Pedro, que conhece o risco. Nao desenhar o logo de nenhuma delas:
+  // o nome num jogo e uma coisa, o logo afirma um patrocinio que nao existe.
   const BRANDS = [
-    ['araxa', 'Banco Araxá', 'o', 'Banco', '#1B4D8F', 'escudo'],
-    ['pontal', 'Banco Pontal', 'o', 'Banco', '#0F5C4A', 'anel'],
-    ['credipar', 'Credipar', 'a', 'Banco', '#8A2F4D', 'barras'],
-    ['serrano', 'Banco Serrano', 'o', 'Banco', '#2B3A67', 'montanha'],
-    ['zepi', 'Zepi', 'a', 'Banco digital', '#6B2FD6', 'raio'],
-    ['pagocerto', 'PagoCerto', 'o', 'Pagamentos', '#0B7A5B', 'certo'],
-    ['refriko', 'Refriko', 'a', 'Bebidas', '#C8372D', 'bolhas'],
-    ['jatoba', 'Guaraná Jatobá', 'o', 'Bebidas', '#D1711A', 'gota'],
-    ['tonga', 'Tonga', 'a', 'Bebidas', '#1E7FBF', 'onda'],
-    ['vitalis', 'Vitalis', 'o', 'Isotônicos', '#E0A21B', 'raio'],
-    ['boamesa', 'Boa Mesa', 'a', 'Alimentos', '#B5452C', 'folha'],
-    ['rioclaro', 'Fazenda Rio Claro', 'a', 'Alimentos', '#3F7A2E', 'folha'],
-    ['mandacaia', 'Leite Mandaçaia', 'o', 'Alimentos', '#1F6AA8', 'gota'],
-    ['nutrisafra', 'Nutrisafra', 'a', 'Alimentos', '#7A8F1E', 'grao'],
-    ['orbik', 'Orbik', 'a', 'Tecnologia', '#273043', 'anel'],
-    ['tecnomax', 'Tecnomax', 'a', 'Tecnologia', '#444C5C', 'hexagono'],
-    ['falae', 'Falaê', 'a', 'Telefonia', '#7B2D8E', 'sinal'],
-    ['conecta', 'Conecta', 'a', 'Telefonia', '#0E7490', 'sinal'],
-    ['ondatel', 'Onda Telecom', 'a', 'Telefonia', '#1D4ED8', 'onda'],
-    ['comprala', 'Compralá', 'a', 'Varejo', '#D4A017', 'carrinho'],
-    ['girassol', 'Lojas Girassol', 'a', 'Varejo', '#E08A00', 'estrela'],
-    ['mercadao', 'Mercadão do Lar', 'o', 'Varejo', '#9A3412', 'casa'],
-    ['vestua', 'Vestuá', 'a', 'Moda', '#111827', 'triangulo'],
-    ['florenca', 'Florença', 'a', 'Beleza', '#B03A6E', 'flor'],
-    ['cerrado', 'Essência do Cerrado', 'a', 'Beleza', '#5E7F3A', 'folha'],
-    ['limpex', 'Limpex', 'a', 'Limpeza', '#0891B2', 'bolhas'],
-    ['voltabr', 'Volta Brasil', 'a', 'Energia', '#15803D', 'raio'],
-    ['petroluz', 'Petroluz', 'a', 'Combustível', '#1F2937', 'gota'],
-    ['voare', 'Voare', 'a', 'Aviação', '#1E40AF', 'asa'],
-    ['aerosul', 'AeroSul', 'a', 'Aviação', '#0369A1', 'asa'],
-    ['tucano', 'Linhas Tucano', 'a', 'Aviação', '#C2410C', 'asa'],
-    ['saudeja', 'Saúde Já', 'a', 'Saúde', '#0D9488', 'cruz'],
-    ['vidaplena', 'Vida Plena', 'a', 'Saúde', '#2563A8', 'cruz'],
-    ['rodai', 'Rodaí', 'a', 'Aluguel de carros', '#4338CA', 'roda'],
-    ['velozmotors', 'Veloz Motors', 'a', 'Automóveis', '#991B1B', 'roda'],
-    ['chegai', 'Chegaí', 'o', 'Delivery', '#DC2626', 'seta']
-  ].map(([id, name, art, cat, cor, sym]) => ({ id, name, art, cat, cor, sym }));
+    ['itau', 'Itaú', 'o', 'Banco'], ['bradesco', 'Bradesco', 'o', 'Banco'], ['bb', 'Banco do Brasil', 'o', 'Banco'], ['caixa', 'Caixa', 'a', 'Banco'],
+    ['santander', 'Santander', 'o', 'Banco'], ['nubank', 'Nubank', 'o', 'Banco digital'], ['picpay', 'PicPay', 'o', 'Pagamentos'],
+    ['cocacola', 'Coca-Cola', 'a', 'Bebidas'], ['guarana', 'Guaraná Antarctica', 'o', 'Bebidas'], ['pepsi', 'Pepsi', 'a', 'Bebidas'], ['gatorade', 'Gatorade', 'o', 'Bebidas'],
+    ['sadia', 'Sadia', 'a', 'Alimentos'], ['seara', 'Seara', 'a', 'Alimentos'], ['nestle', 'Nestlé', 'a', 'Alimentos'], ['piracanjuba', 'Piracanjuba', 'a', 'Alimentos'],
+    ['samsung', 'Samsung', 'a', 'Tecnologia'], ['motorola', 'Motorola', 'a', 'Tecnologia'],
+    ['vivo', 'Vivo', 'a', 'Telefonia'], ['claro', 'Claro', 'a', 'Telefonia'], ['tim', 'TIM', 'a', 'Telefonia'],
+    ['mercadolivre', 'Mercado Livre', 'o', 'Varejo'], ['magalu', 'Magalu', 'o', 'Varejo'], ['casasbahia', 'Casas Bahia', 'a', 'Varejo'], ['renner', 'Renner', 'a', 'Moda'],
+    ['natura', 'Natura', 'a', 'Beleza'], ['boticario', 'Boticário', 'o', 'Beleza'], ['ype', 'Ypê', 'a', 'Limpeza'],
+    ['petrobras', 'Petrobras', 'a', 'Energia'], ['ipiranga', 'Ipiranga', 'a', 'Combustível'],
+    ['latam', 'LATAM', 'a', 'Aviação'], ['gol', 'Gol', 'a', 'Aviação'], ['azul', 'Azul', 'a', 'Aviação'],
+    ['unimed', 'Unimed', 'a', 'Saúde'], ['localiza', 'Localiza', 'a', 'Aluguel de carros'], ['fiat', 'Fiat', 'a', 'Automóveis'], ['ifood', 'iFood', 'o', 'Delivery'],
+  ].map(([id, name, art, cat]) => ({ id, name, art, cat }));
   const withB = b => `${b.art || 'a'} ${b.name}`;
   // valores em multiplos da base de patrocinio do clube (40% da cota antiga). Cada tipo tem um perfil de risco:
   // longo = seguro e com luvas na assinatura; alto = mais dinheiro agora, renovação depende do desempenho;
@@ -547,7 +519,7 @@
     const fx = userFixture(st); if (!fx) return null;
     const rng = rngFor(st, 'match', st.round, 'user');
     const me = userSide(st); const opp = aiSide(st, fx.opp, st.coach.club, !fx.isHome && !fx.neutral, rng, fx.mt);
-    if (!fx.neutral) { (fx.isHome ? me : opp).crowd = crowd(st, fx.h, fx.mt).fill; (fx.isHome ? me : opp).alt = altFactor(st, fx.h, fx.a); }
+    if (!fx.neutral) { const lado = fx.isHome ? me : opp; lado.crowd = crowd(st, fx.h, fx.mt).fill; lado.heat = formOf(st, fx.h); lado.alt = altFactor(st, fx.h, fx.a); }
     me.xi.forEach(o => { if (o.p) o.p.condStart = o.p.cond; });
     const m = E.newMatch({ home: fx.isHome ? me : opp, away: fx.isHome ? opp : me, rng, neutral: fx.neutral });
     m.userSide = fx.isHome ? 0 : 1; m.fx = fx; m.mt = fx.mt; m.auxNotes = me.notes || [];
@@ -560,7 +532,7 @@
     weekFixtures(st).forEach((mt, gi) => {
       if (mt.h === me || mt.a === me) return;
       const rng = rngFor(st, 'match', st.round, gi);
-      const home = aiSide(st, mt.h, mt.a, !mt.neutral, rng, mt); if (!mt.neutral) { home.crowd = crowd(st, mt.h, mt).fill; home.alt = altFactor(st, mt.h, mt.a); }
+      const home = aiSide(st, mt.h, mt.a, !mt.neutral, rng, mt); if (!mt.neutral) { home.crowd = crowd(st, mt.h, mt).fill; home.heat = formOf(st, mt.h); home.alt = altFactor(st, mt.h, mt.a); }
       const m = E.newMatch({ home, away: aiSide(st, mt.a, mt.h, false, rng, mt), rng, neutral: mt.neutral });
       E.playFull(m); m.mt = mt; out.push(m);
     });
@@ -836,6 +808,7 @@
     if (filt.pos) list = list.filter(p => p.pos === filt.pos);
     if (filt.maxAge) list = list.filter(p => p.age <= filt.maxAge);
     if (filt.minOvr) list = list.filter(p => p.ovr >= filt.minOvr);
+    if (filt.maxOvr) list = list.filter(p => p.ovr <= filt.maxOvr);
     if (filt.wageMax != null) list = list.filter(p => p.wage <= filt.wageMax);
     if (filt.wageMin != null) list = list.filter(p => p.wage >= filt.wageMin);
     if (filt.q) { const q = filt.q.toLowerCase(); list = list.filter(p => p.n.toLowerCase().includes(q) || st.clubs[p.club].name.toLowerCase().includes(q)); }
@@ -1880,6 +1853,6 @@
     return `${s}R$ ${a.toLocaleString('pt-BR')}`;
   }
 
-  const api = { BICHO, bicho, ALERTA, alertaTexto, WEEKS, SEASON_WEEKS, isMid, abreSponsor, PRECOS, PASSE_DATA, temPasse, passeNaHora, passeTrava, passeInfo, ativarPasse, CONT_PRIZE, USD, contGroups, WINDOWS, LEVELS, LEVEL_TITLES, UNLOCKS, UNLOCK_TXT, bonusNivel, ACH, TICKET, CUP_QUOTA, cupQuota, CAP_MAX, capAt, rngFor, hashSeed, levelFromXp, formationsFor, squadOf, wageBill, strength, windowOpen, windowInfo, strengthRanks, divClubs, targetFor, newCareer, startSeason, weekFixtures, userFixture, nextUserWeek, leagueKey, sortedTable, position, prepareUserMatch, suggestMent, sponsorOffers, signSponsor, sponsorPending, sponsorPerf, migrate, BRANDS, withB, finishRound, simWeek, askPrice, sellerAsk, disposition, interest, marketWage, buyTerms, signPlayer, loanTerms, loanIn, INTEREST_OK, mValue, prestige, loanFee, respondOffer, endLoans, aiMarketTick, marketList, wageRoom, makeOffer, acceptOffer, quickSell, auctionBid, auctionRivalTick, auctionClose, nextSeason, restartAfterFire, fireOffers, fmt, userSide, LIC, LIC_ORDER, COURSES, life, hasLic, licNeed, xpMult, studyOptions, startStudy, answerPresser, answerEvent, checkLicense, PRESETS, PRESET_COMP, compKind, savePreset, loadPreset, applyPresetFor, INFRA, PROSPECTS, TICKET_MULT, TICKET_NAME, BASE_MAX, PENEIRA_WEEK, SQUAD_MAX, infra, infraCost, infraStart, infraMaint, infraLabel, ctBonus, crowd, lojaInfo, idolOf, kitPrice, promoteProspect, releaseProspect, verbaInfo, askVerba };
+  const api = { BICHO, bicho, ALERTA, alertaTexto, WEEKS, SEASON_WEEKS, isMid, abreSponsor, PRECOS, PASSE_DATA, temPasse, passeNaHora, passeTrava, passeInfo, ativarPasse, CONT_PRIZE, USD, contGroups, WINDOWS, LEVELS, LEVEL_TITLES, UNLOCKS, UNLOCK_TXT, bonusNivel, ACH, TICKET, CUP_QUOTA, cupQuota, CAP_MAX, capAt, rngFor, hashSeed, levelFromXp, formationsFor, squadOf, wageBill, strength, windowOpen, windowInfo, strengthRanks, divClubs, targetFor, newCareer, startSeason, weekFixtures, userFixture, nextUserWeek, leagueKey, sortedTable, position, prepareUserMatch, suggestMent, sponsorOffers, signSponsor, sponsorPending, sponsorPerf, migrate, BRANDS, withB, finishRound, simWeek, askPrice, sellerAsk, disposition, interest, marketWage, buyTerms, signPlayer, loanTerms, loanIn, INTEREST_OK, mValue, prestige, loanFee, respondOffer, endLoans, aiMarketTick, marketList, wageRoom, makeOffer, acceptOffer, quickSell, auctionBid, auctionRivalTick, auctionClose, nextSeason, restartAfterFire, fireOffers, fmt, userSide, LIC, LIC_ORDER, COURSES, life, hasLic, licNeed, xpMult, studyOptions, startStudy, answerPresser, answerEvent, checkLicense, PRESETS, PRESET_COMP, compKind, savePreset, loadPreset, applyPresetFor, INFRA, PROSPECTS, TICKET_MULT, TICKET_NAME, BASE_MAX, PENEIRA_WEEK, SQUAD_MAX, infra, infraCost, infraStart, infraMaint, infraLabel, ctBonus, crowd, formOf, lojaInfo, idolOf, kitPrice, promoteProspect, releaseProspect, verbaInfo, askVerba };
   if (NODE) module.exports = api; else root.Game = api;
 })(typeof window !== 'undefined' ? window : globalThis);

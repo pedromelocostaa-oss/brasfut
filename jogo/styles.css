@@ -463,13 +463,10 @@ input.txt { width: 100%; min-height: 48px; padding: 10px 14px; border-radius: 12
 .offer .tag { justify-self: start; }
 .offer .fin { font-size: 14px; }
 .offer .offer-txt { margin: 0; }
-.brandmark { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 10px; background: var(--placar); color: var(--placar-tx); border-left: 6px solid var(--bs, var(--ima)); min-width: 0; }
-.brandmark .bm-txt { display: grid; gap: 1px; min-width: 0; }
-.blogo { flex: none; display: block; }
+.brandmark { display: grid; gap: 1px; padding: 10px 12px; border-radius: 10px; background: var(--placar); color: var(--placar-tx); border-left: 6px solid var(--bs, var(--ima)); min-width: 0; }
 .brandmark b { font-family: var(--f-display); font-weight: 900; font-size: 22px; line-height: 1; text-transform: uppercase; letter-spacing: .01em; overflow-wrap: anywhere; }
 .brandmark span { font-size: 12px; font-weight: 700; opacity: .85; }
-.brandmark.sm { display: inline-flex; gap: 6px; padding: 3px 8px; border-radius: 6px; }
-.brandmark.sm b { font-size: 15px; }
+.brandmark.sm { display: inline-grid; padding: 3px 8px; border-radius: 6px; }
 .brandmark.sm b { font-size: 15px; }
 
 /* ---------- ajuda: (i) ao passar o mouse no computador, no toque no celular ---------- */
@@ -683,3 +680,7 @@ select.txt { min-height: 40px; padding: 6px 10px; border-radius: 10px; border: 1
   background: var(--placar); color: var(--placar-tx); font-size: 11px; font-weight: 800; letter-spacing: .05em;
   text-transform: uppercase; padding: 2px 7px; border-radius: 6px; pointer-events: none; }
 @media (hover: hover) { .pitch .mag { cursor: grab; } }
+
+/* .hero pinta tudo de branco; botao claro dentro dele ficava branco no branco */
+.hero .btn:not(.gold):not(.primary) { background: rgba(0,0,0,.25); border-color: rgba(255,255,255,.28); color: #fff; }
+.hero .btn:not(.gold):not(.primary):hover { background: rgba(0,0,0,.35); }

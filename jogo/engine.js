@@ -266,8 +266,10 @@
     t = Math.max(-0.6, Math.min(0.6, t));
     // altitude: quem joga em casa acima de 2.500 m tem vantagem extra sobre quem vem de baixo
     const hf = m.neutral ? 1 : (H.persona === 'carismatico' ? P.home * 1.04 : P.home) * (H.alt || 1), af = m.neutral ? 1 : P.away;
-    // pressão da torcida: estádio cheio empurra o mandante (neutro com 60% de ocupação)
-    const crowdF = m.neutral || H.crowd == null ? 1 : 1 + 0.06 * (H.crowd - 0.6);
+    // Caldeirao: estadio cheio e torcida empolgada empurram o mandante. Sao duas coisas
+    // diferentes, lotacao e momento do time, e as duas contam. Neutro em 62% de ocupacao e
+    // momento medio. Vai de cerca de -5% num estadio vazio e time em crise a +7% em caldeirao.
+    const crowdF = m.neutral || H.crowd == null ? 1 : 1 + 0.10 * (H.crowd - 0.62) + 0.05 * ((H.heat == null ? 0.5 : H.heat) - 0.5);
     let lh = (H.ana || 1) * P.baseChances * Math.sqrt(2 * sh) * Math.pow(sH.att / sA.def, P.attExp) * hf * crowdF * pace * (1 + t);
     let la = (A.ana || 1) * P.baseChances * Math.sqrt(2 * (1 - sh)) * Math.pow(sA.att / sH.def, P.attExp) * af * pace * (1 - t);
     let xh = P.baseXg * Math.pow(75 / sA.gk, 1) * ma.expose, xa = P.baseXg * Math.pow(75 / sH.gk, 1) * mh.expose;
@@ -318,7 +320,7 @@
 
   function newMatch(opts) {
     // opts: { home:{club, xi, bench, ment, corridor, persona, morale, human}, away:{...}, rng, neutral }
-    const mk = s => ({ club: s.club, crowd: s.crowd ?? null, alt: s.alt || 1, takers: s.takers || null, fit: s.fit || 1, ana: s.ana || 1, spBonus: s.spBonus || 0, xi: s.xi.map(o => ({ ...o })), bench: s.bench.slice(), ment: s.ment || 'equilibrada', persona: s.persona || null, morale: s.morale ?? 50, human: !!s.human, reds: 0, subs: 0, windows: 0, sec: null, shots: 0, xg: 0, onTarget: 0, poss: 0, cards: [], events: [], playedIds: new Set() });
+    const mk = s => ({ club: s.club, crowd: s.crowd ?? null, heat: s.heat ?? null, alt: s.alt || 1, takers: s.takers || null, fit: s.fit || 1, ana: s.ana || 1, spBonus: s.spBonus || 0, xi: s.xi.map(o => ({ ...o })), bench: s.bench.slice(), ment: s.ment || 'equilibrada', persona: s.persona || null, morale: s.morale ?? 50, human: !!s.human, reds: 0, subs: 0, windows: 0, sec: null, shots: 0, xg: 0, onTarget: 0, poss: 0, cards: [], events: [], playedIds: new Set() });
     const m = { minute: 0, score: [0, 0], side: [mk(opts.home), mk(opts.away)], rng: opts.rng, neutral: !!opts.neutral, events: [], done: false, possAcc: 0, extra: [opts.rng.int(1, 3), opts.rng.int(2, 6)], half: 1 };
     m.side.forEach(s => { s.xi.forEach(o => { if (o.p) { s.playedIds.add(o.p.id); o.p.condLive = o.p.cond; } }); s.bench.forEach(p => { if (p) p.condLive = p.cond; }); recalc(m, s); });
     return m;

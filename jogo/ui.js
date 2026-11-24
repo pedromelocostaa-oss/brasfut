@@ -341,7 +341,7 @@
       ${boca}${front}${gl}${gear}</g></svg>`;
   }
   // gancho de teste: com #dev dá para montar uma grade de amostras do avatar fora do jogo
-  if (DEV) { window.__av = avatarSVG; window.__AV = AV; window.__brandLogo = brandLogo; }
+  if (DEV) { window.__av = avatarSVG; window.__AV = AV; }
 
   function avatarEditor(a) {
     const sw = (k, list, cur) => list.map((col, i) => `<button class="swatch" data-act="av" data-k="${k}" data-v="${i}" aria-pressed="${cur === i}" aria-label="${k === 'skin' ? 'Tom de pele ' + (i + 1) : col[1]}" style="--sw:${Array.isArray(col) ? col[0] : col}"></button>`).join('');
@@ -520,6 +520,26 @@
   const MATCH_TIP = { 'Posse de bola': 'Tempo com a bola de cada time.', 'Finalizações': 'Todos os chutes de cada time, no gol ou fora.', 'No gol': 'Chutes que foram na direção do gol: viraram gol ou o goleiro defendeu.', 'Gols esperados': 'Soma da qualidade das chances criadas. Mostra quem mereceu mais, mesmo sem gol.', 'Cartões': 'Amarelos e vermelhos de cada time.' };
 
   // ---------- central ----------
+  // Caldeirao: estadio cheio e time embalado empurram o mandante. As duas coisas contam
+  // separado, e a frase diz de quanto e o empurrao, para nenhum numero ficar solto.
+  function caldeirao(fx) {
+    const mandante = fx.h;
+    const cw = G.crowd(S, mandante, fx.mt);
+    const heat = G.formOf(S, mandante);
+    const pct = (0.10 * (cw.fill - 0.62) + 0.05 * (heat - 0.5)) * 100;
+    const clima = cw.fill >= 0.88 && heat >= 0.66 ? 'caldeirão' : cw.fill >= 0.72 ? 'casa cheia' : cw.fill >= 0.5 ? 'casa morna' : 'estádio vazio';
+    return { cw, heat, pct, clima };
+  }
+  function caldeiraoLinha(fx) {
+    const { cw, heat, pct, clima } = caldeirao(fx);
+    const forte = Math.abs(pct) >= 3;
+    const momento = heat >= 0.66 ? 'o time vem embalado' : heat >= 0.4 ? 'o time vem oscilando' : 'o time vem mal';
+    if (fx.isHome) {
+      return `<div class="scout"><b>${clima[0].toUpperCase() + clima.slice(1)}:</b> ${cw.att.toLocaleString('pt-BR')} pagantes (${Math.round(cw.fill * 100)}% do estádio) com ingresso a R$ ${cw.price}, e ${momento}. A torcida ${pct >= 0 ? 'empurra' : 'pesa'}: ${pct >= 0 ? '+' : '−'}${dec(Math.abs(pct))}% nas suas chances.${forte && pct < 0 ? ' Jogo em casa com estádio vazio vale quase nada de mando.' : ''}</div>`;
+    }
+    return `<div class="scout"><b>${clima[0].toUpperCase() + clima.slice(1)} do adversário:</b> ${Math.round(cw.fill * 100)}% do estádio, e ${momento}. Isso dá ${pct >= 0 ? '+' : '−'}${dec(Math.abs(pct))}% nas chances deles.${pct >= 3 ? ' Segurar o começo do jogo costuma esfriar.' : ''}</div>`;
+  }
+
   function postureLine() {
     const cur = S.lineup.ment || 'equilibrada'; const sug = G.suggestMent(S);
     return `<div class="scout row between nowrap" style="gap:10px"><span>Postura${hint('Como o time começa o jogo. Dá para mudar no intervalo e nos momentos-chave da partida.')}: <b>${E.MENT[cur].label}</b>${sug !== cur ? ` <span style="opacity:.85">· auxiliar sugere ${E.MENT[sug].label.toLowerCase()}</span>` : ' <span style="opacity:.85">· igual à sugestão do auxiliar</span>'}</span>${sug !== cur ? `<button class="btn" style="min-height:36px;padding:4px 12px;background:#fff;color:#10201A;border-color:#fff" data-act="useSug" data-v="${sug}" ${tipA('Troca a postura inicial pela sugerida pelo auxiliar.')}>Usar</button>` : ''}</div>`;
@@ -614,14 +634,14 @@
           <div class="vs"><div class="t">${badge(fx.h, 'lg')}<b>${esc(club(fx.h).name)}</b></div><div class="x">×</div><div class="t">${badge(fx.a, 'lg')}<b>${esc(club(fx.a).name)}</b></div></div>
           <div><div class="eyebrow" style="margin-bottom:4px">Força dos titulares${hint(FORCA_TIP)}</div><div class="forca"><span>${Math.round(leftIsMe ? ms : os)}</span><span class="track"><i style="width:${leftIsMe ? pct : 100 - pct}%"></i><em style="flex:1"></em></span><span>${Math.round(leftIsMe ? os : ms)}</span></div></div>
           ${tieInfo}
-          ${fx.isHome && !fx.neutral ? (() => { const cw = G.crowd(S, me(), fx.mt); return `<div class="scout"><b>Público esperado:</b> ${cw.att.toLocaleString('pt-BR')} (${Math.round(cw.fill * 100)}%) com ingresso a R$ ${cw.price}. Pressão da torcida ${cw.fill >= 0.6 ? '+' : '−'}${dec(Math.abs(6 * (cw.fill - 0.6)))}% de chances.</div>`; })() : ''}
+          ${!fx.neutral ? caldeiraoLinha(fx) : ''}
           ${scout}
           ${postureLine()}
           ${tiredLine()}
           ${S.lineupFrom ? `<div class="scout"><b>Time:</b> ${G.PRESETS[S.lineupFrom]}${(S.presetFor || {})[G.compKind(fx.mt.comp)] === S.lineupFrom ? ` (automático no ${G.PRESET_COMP[G.compKind(fx.mt.comp)] || 'torneio'})` : ''}.</div>` : ''}
           ${issues ? `<div class="scout"><b>${issues} ${plural(issues, 'titular fora', 'titulares fora')}</b> (lesão, suspensão ou venda): o auxiliar escala substituto se você não mexer.</div>` : ''}
           ${`<div class="${first ? 'coachmark' : ''}">${first ? '<div class="tip">Seu time já está escalado. No intervalo, o jogo para e você escolhe a postura.</div>' : ''}<button class="btn gold big block" data-act="play" ${tipA('Começa a partida. O jogo para no intervalo, em gol sofrido, na reta final e em lesão para você decidir.')}>Jogar</button><button class="btn block" style="margin-top:8px" data-act="rapido" ${tipA('Escolhe a postura e mostra só o resultado, sem narração. Boa para quando você tem pressa.')}>Simular sem narração</button></div>`}
-          <button class="btn block" style="background:rgba(0,0,0,.25);border-color:transparent;color:#fff" data-act="go" data-v="elenco" ${tipA('Abre o Elenco para mexer em formação, titulares, banco e postura.')}>Ajustar escalação</button>
+          <button class="btn block" data-act="go" data-v="elenco" ${tipA('Abre o Elenco para mexer em formação, titulares, banco e postura.')}>Ajustar escalação</button>
         </div></section>`;
         c1 += pendCard() + pressCard() + eventCard();
         c1 += `<section class="card"><div class="head"><h2>Objetivos do jogo${hint(OBJ_TIP)}</h2><span class="xp">+${S.objectives.length * 20} XP</span></div>
@@ -711,42 +731,9 @@
   }
 
   // ---------- patrocinio ----------
-  // Marca do patrocinador. As empresas sao inventadas para o jogo, entao o logo pode ser
-  // desenhado aqui mesmo: um simbolo geometrico proprio, na cor da marca.
-  let bmN = 0;
-  function brandLogo(b, size = 40) {
-    const cor = b.cor || '#2350C8';
-    const id = 'bl' + (++bmN);
-    const F = {
-      escudo: `<path d="M24 6 L40 12 Q40 34 24 42 Q8 34 8 12 Z" fill="#fff"/><path d="M24 12 L34 16 Q34 31 24 36 Q14 31 14 16 Z" fill="${cor}"/>`,
-      anel: `<circle cx="24" cy="24" r="15" fill="none" stroke="#fff" stroke-width="7"/><circle cx="24" cy="24" r="4.5" fill="#fff"/>`,
-      barras: `<rect x="9" y="26" width="7" height="13" rx="2" fill="#fff"/><rect x="20.5" y="18" width="7" height="21" rx="2" fill="#fff"/><rect x="32" y="9" width="7" height="30" rx="2" fill="#fff"/>`,
-      montanha: `<path d="M6 38 L19 16 L27 27 L33 19 L42 38 Z" fill="#fff"/>`,
-      raio: `<path d="M27 5 L12 27 L21 27 L19 43 L35 20 L25 20 Z" fill="#fff"/>`,
-      certo: `<path d="M10 25 L20 35 L39 13" stroke="#fff" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`,
-      bolhas: `<circle cx="18" cy="28" r="11" fill="#fff"/><circle cx="32" cy="18" r="7" fill="#fff" opacity=".8"/><circle cx="34" cy="33" r="4.5" fill="#fff" opacity=".65"/>`,
-      gota: `<path d="M24 5 Q38 22 38 29 A14 14 0 0 1 10 29 Q10 22 24 5 Z" fill="#fff"/>`,
-      onda: `<path d="M5 20 Q14 11 24 20 T43 20" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M5 32 Q14 23 24 32 T43 32" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round"/>`,
-      folha: `<path d="M38 8 Q14 8 11 27 Q10 37 18 40 Q36 38 38 8 Z" fill="#fff"/><path d="M33 13 Q20 24 16 38" stroke="${cor}" stroke-width="2.4" fill="none"/>`,
-      grao: `<ellipse cx="17" cy="26" rx="6.5" ry="12" transform="rotate(-20 17 26)" fill="#fff"/><ellipse cx="31" cy="26" rx="6.5" ry="12" transform="rotate(20 31 26)" fill="#fff" opacity=".75"/>`,
-      hexagono: `<path d="M24 5 L39 14 L39 33 L24 42 L9 33 L9 14 Z" fill="#fff"/><path d="M24 14 L31 18 L31 29 L24 33 L17 29 L17 18 Z" fill="${cor}"/>`,
-      sinal: `<rect x="9" y="30" width="7" height="9" rx="2" fill="#fff"/><rect x="20.5" y="22" width="7" height="17" rx="2" fill="#fff"/><rect x="32" y="11" width="7" height="28" rx="2" fill="#fff"/><circle cx="35.5" cy="7" r="3.5" fill="#fff"/>`,
-      carrinho: `<path d="M8 11 L14 11 L19 31 L38 31" stroke="#fff" stroke-width="4.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 16 L41 16 L37 26 L18 26 Z" fill="#fff"/><circle cx="21" cy="38" r="3.5" fill="#fff"/><circle cx="35" cy="38" r="3.5" fill="#fff"/>`,
-      estrela: `<path d="M24 5 L29 18 L43 19 L32 28 L36 42 L24 34 L12 42 L16 28 L5 19 L19 18 Z" fill="#fff"/>`,
-      casa: `<path d="M24 7 L42 23 L37 23 L37 41 L11 41 L11 23 L6 23 Z" fill="#fff"/><rect x="20" y="28" width="8" height="13" fill="${cor}"/>`,
-      triangulo: `<path d="M24 6 L42 40 L6 40 Z" fill="#fff"/><path d="M24 18 L34 36 L14 36 Z" fill="${cor}"/>`,
-      flor: `<circle cx="24" cy="13" r="7.5" fill="#fff"/><circle cx="35" cy="21" r="7.5" fill="#fff" opacity=".85"/><circle cx="31" cy="34" r="7.5" fill="#fff" opacity=".85"/><circle cx="17" cy="34" r="7.5" fill="#fff" opacity=".85"/><circle cx="13" cy="21" r="7.5" fill="#fff" opacity=".85"/><circle cx="24" cy="24" r="5" fill="${cor}"/>`,
-      asa: `<path d="M6 30 Q22 10 44 8 Q34 26 16 34 Z" fill="#fff"/><path d="M14 38 Q26 30 38 22" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round"/>`,
-      cruz: `<rect x="18.5" y="7" width="11" height="34" rx="3" fill="#fff"/><rect x="7" y="18.5" width="34" height="11" rx="3" fill="#fff"/>`,
-      roda: `<circle cx="24" cy="24" r="16" fill="#fff"/><circle cx="24" cy="24" r="6" fill="${cor}"/><path d="M24 8 L24 18 M24 30 L24 40 M8 24 L18 24 M30 24 L40 24" stroke="${cor}" stroke-width="3"/>`,
-      seta: `<path d="M8 24 L30 24 M22 14 L32 24 L22 34" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="37" cy="24" r="4" fill="#fff"/>`
-    };
-    return `<svg class="blogo" viewBox="0 0 48 48" width="${size}" height="${size}" role="img" aria-label="Símbolo da ${esc(b.name)}"><defs><clipPath id="${id}"><rect width="48" height="48" rx="11"/></clipPath></defs><g clip-path="url(#${id})"><rect width="48" height="48" fill="${cor}"/>${F[b.sym] || F.anel}</g></svg>`;
-  }
-  function brandMark(b, sm) {
-    if (sm) return `<span class="brandmark sm" style="--bs:${b.cor || 'var(--ima)'}">${brandLogo(b, 20)}<b>${esc(b.name)}</b></span>`;
-    return `<span class="brandmark" style="--bs:${b.cor || 'var(--ima)'}">${brandLogo(b, 44)}<span class="bm-txt"><b>${esc(b.name)}</b><span>${esc(b.cat)}</span></span></span>`;
-  }
+  // nome da empresa no nosso estilo (sem logo e sem as cores da marca); a faixa lateral usa a cor do setor, da nossa paleta
+  const SECTOR = { 'Banco': 'ima', 'Banco digital': 'ima', 'Pagamentos': 'ima', 'Bebidas': 'cartao', 'Alimentos': 'ouro', 'Tecnologia': 'verde', 'Telefonia': 'verde', 'Varejo': 'ouro', 'Moda': 'cartao', 'Beleza': 'cartao', 'Limpeza': 'verde', 'Energia': 'ouro', 'Combustível': 'ouro', 'Aviação': 'ima', 'Saúde': 'verde', 'Aluguel de carros': 'verde', 'Automóveis': 'ima', 'Delivery': 'cartao' };
+  function brandMark(b, sm) { return `<span class="brandmark ${sm ? 'sm' : ''}" style="--bs:var(--${SECTOR[b.cat] || 'ima'})"><b>${esc(b.name)}</b>${sm ? '' : `<span>${esc(b.cat)}</span>`}</span>`; }
   function seasonsLbl(r) { const s = Math.round(r / 12); return s >= 1 ? `${s} ${plural(s, 'temporada', 'temporadas')}` : `${r} ${plural(r, 'mês', 'meses')}`; }
   function sponsorCard() {
     const offers = S.sponsorOffers || []; const renew = (S.history || []).length > 0 || S.round > 0;
@@ -768,7 +755,7 @@
         <p class="tiny muted offer-txt">${esc(o.pitch)}</p>
         <button class="btn primary block" data-act="signSponsor" data-i="${i}">Assinar</button>
       </article>`).join('')}</div>
-      <p class="tiny muted" style="margin:10px 0 0">A cota de TV continua entrando toda semana; o patrocínio vem por cima. As empresas são inventadas para o jogo: nenhuma existe de verdade.</p></section>`;
+      <p class="tiny muted" style="margin:10px 0 0">A cota de TV continua entrando toda semana; o patrocínio vem por cima. Empresas citadas só pelo nome, sem logo e sem vínculo real com o jogo.</p></section>`;
   }
   function sponsorRows() {
     const sp = S.sponsor; if (!sp) return `<span>Patrocínio</span><b class="muted">sem contrato</b>`;
@@ -865,6 +852,22 @@
     const linhas = [0, 0, 0, 0];
     livre.forEach(([x, y], i) => { if (i === 0) return; linhas[y <= 34 ? 0 : y <= 47 ? 1 : y <= 74 ? 2 : 3]++; });
     return linhas.filter(n => n > 0).join('-');
+  }
+
+  // plural escrito a mao: os compostos nao seguem regra simples (laterais-direitos, nao lateral-direitos)
+  const POS_PLURAL = { GK: 'goleiros', RB: 'laterais-direitos', CB: 'zagueiros', LB: 'laterais-esquerdos', DM: 'volantes', CM: 'meio-campistas', AM: 'meias', RW: 'pontas-direitas', ST: 'centroavantes', LW: 'pontas-esquerdas' };
+  // Quantos jogadores o clube ja tem na posicao filtrada, e quantos deles sao titulares.
+  // Serve para o tecnico nao comprar o quarto zagueiro sem perceber.
+  function elencoNaPosicao(pos) {
+    if (!pos) return '';
+    const meus = myPlayers().filter(p => p.pos === pos);
+    const nome = E.POS_NAME[pos] || posLbl(pos);
+    const plural1 = POS_PLURAL[pos] || nome + 's';
+    if (!meus.length) return `<div class="notice warn small" style="margin:0 0 8px">Você não tem <b>nenhum ${nome.toLowerCase()}</b> no elenco.</div>`;
+    const tit = new Set((S.lineup.slots || []).filter(Boolean));
+    const nosOnze = meus.filter(p => tit.has(p.id)).length;
+    const melhor = meus.slice().sort((a, b) => b.ovr - a.ovr)[0];
+    return `<div class="notice info small" style="margin:0 0 8px">Você já tem <b>${meus.length} ${(meus.length === 1 ? nome : plural1).toLowerCase()}</b> no elenco${nosOnze ? `, ${nosOnze} no time titular` : ', nenhum no time titular'}. O melhor é ${esc(melhor.n)}, nota ${melhor.ovr}.</div>`;
   }
 
   function squadList(selectable) {
@@ -1048,6 +1051,14 @@
   }
 
   // ---------- mercado ----------
+  // faixas de nota do mercado, na mesma logica das de salario: escolhe com o dedo
+  const NOTA_FAIXAS = [
+    ['', 'Qualquer nota', null, null],
+    ['a', 'até 69', null, 69],
+    ['b', '70 a 74', 70, 74],
+    ['c', '75 a 79', 75, 79],
+    ['d', '80 ou mais', 80, null]
+  ];
   // faixas de salario do mercado. O public alvo nao quer digitar numero: escolhe a faixa com o dedo.
   const SAL_FAIXAS = [
     ['', 'Qualquer salário', null, null],
@@ -1075,13 +1086,15 @@
       const pos = ['', 'GK', 'RB', 'CB', 'LB', 'DM', 'CM', 'AM', 'RW', 'ST', 'LW'];
       const divChips = ['', 'A', 'B', 'C', 'D'].map(x => `<button class="chip" data-act="mktDiv" data-v="${x}" aria-pressed="${(m.div || '') === x}">${x ? DIVN[x] : 'Todas as séries'}</button>`).join('');
       const chips = pos.map(p => `<button class="chip" data-act="mktPos" data-v="${p}" aria-pressed="${m.pos === p}">${p ? posLbl(p) : 'Todos'}</button>`).join('') + `<button class="chip" data-act="mktYoung" aria-pressed="${m.young}" ${tipA('Jovens de até 23 anos ainda evoluem: boas atuações podem subir a nota.')}>Até 23 anos</button><button class="chip" data-act="mktFit" aria-pressed="${m.fit}" ${tipA('Mostra só quem dá para pagar: caixa com margem de negociação e salário dentro do teto da folha.')}>Cabe no orçamento</button>`;
+      const notaChips = NOTA_FAIXAS.map(([k, l]) => `<button class="chip" data-act="mktNota" data-v="${k}" aria-pressed="${(m.notaF || '') === k}" ${tipA('Nota geral do jogador. É o resumo dos atributos dele na posição em que joga.')}>${l}</button>`).join('');
       const salChips = SAL_FAIXAS.map(([k, l]) => `<button class="chip" data-act="mktSal" data-v="${k}" aria-pressed="${(m.salF || '') === k}" ${tipA('Salário que o jogador recebe por mês. Ele sai da sua folha todo mês, não só na compra.')}>${l}</button>`).join('');
       const myBest = {}; myPlayers().forEach(p => { myBest[p.pos] = Math.max(myBest[p.pos] || 0, p.ovr); });
       const cash = club(me()).cash, room = G.wageRoom(S);
       const fits = p => G.askPrice(S, p) * 0.86 <= cash && p.wage <= room;
       const fx = SAL_FAIXAS.find(f => f[0] === (m.salF || '')) || SAL_FAIXAS[0];
-      const list = G.marketList(S, { pos: m.pos || null, maxAge: m.young ? 23 : null, div: m.div || null, q: m.q || null, wageMin: fx[2], wageMax: fx[3] }).filter(p => !m.fit || fits(p) || p.loan).slice(0, 40);
-      body = `<section class="card"><input id="mkt-q" class="txt" type="search" placeholder="Buscar jogador ou clube" value="${esc(m.q || '')}" aria-label="Buscar jogador ou clube" style="margin-bottom:10px"><div class="chips" style="margin-bottom:6px">${divChips}</div><div class="chips" style="margin-bottom:8px">${chips}</div><div class="chips" style="margin-bottom:8px">${salChips}</div>
+      const nf = NOTA_FAIXAS.find(f => f[0] === (m.notaF || '')) || NOTA_FAIXAS[0];
+      const list = G.marketList(S, { pos: m.pos || null, maxAge: m.young ? 23 : null, div: m.div || null, q: m.q || null, wageMin: fx[2], wageMax: fx[3], minOvr: nf[2], maxOvr: nf[3] }).filter(p => !m.fit || fits(p) || p.loan).slice(0, 40);
+      body = `<section class="card"><input id="mkt-q" class="txt" type="search" placeholder="Buscar jogador ou clube" value="${esc(m.q || '')}" aria-label="Buscar jogador ou clube" style="margin-bottom:10px"><div class="chips" style="margin-bottom:6px">${divChips}</div><div class="chips" style="margin-bottom:8px">${chips}</div><div class="chips" style="margin-bottom:8px">${notaChips}</div><div class="chips" style="margin-bottom:8px">${salChips}</div>${elencoNaPosicao(m.pos)}
         <div class="row between" style="gap:8px;margin-bottom:8px"><span class="small muted">${list.length} ${plural(list.length, 'jogador', 'jogadores')}${fx[2] != null || fx[3] != null ? ' nesta faixa de salário' : ''}</span><button class="btn ${U.cmp && U.cmp.length ? 'primary' : ''}" data-act="cmpMode" ${tipA('Escolhe até 3 jogadores e mostra os números deles lado a lado.')}>${U.cmpOn ? (U.cmp && U.cmp.length ? `Comparar ${U.cmp.length}` : 'Cancelar comparação') : 'Comparar jogadores'}</button></div>
         <div class="plist">${list.map(p => `<button class="prow ${fits(p) ? '' : 'dim'} ${U.cmpOn && (U.cmp || []).includes(p.id) ? 'cur' : ''}" data-act="${U.cmpOn ? 'cmpPick' : 'mktSel'}" data-pid="${p.id}">${ovr(p.ovr)}<span class="who"><b>${esc(p.n)} ${p.ovr > (myBest[p.pos] || 0) ? '<span class="tag gold" data-tip="Nota acima do seu melhor jogador nesta posição.">reforço</span>' : ''}${p.loan ? ' <span class="tag">emprestado</span>' : ''}</b><span>${posLbl(p.pos)} · ${p.age} anos · ${esc(club(p.club).name)} <span class="muted">(${club(p.club).div})</span> ${attrMini(p)}</span></span><span class="end"><b class="num gold-c">${fmt(G.askPrice(S, p))}</b><span class="tiny muted">${fmt(p.wage)}/mês</span><span class="ct-cue">Contratar</span></span></button>`).join('') || `<div class="empty">Nenhum jogador com esse filtro.${m.fit ? ' Desligue “Cabe no orçamento” para ver todos, ou venda alguém para abrir caixa e folha.' : ''}</div>`}</div><p class="tiny muted" style="margin:8px 0 0">O valor da lista é o pedido do clube. Toque no jogador para ver se ele topa vir e fazer proposta de compra ou de empréstimo.</p></section>`;
     } else if (m.tab === 'sell') {
@@ -1860,6 +1873,7 @@
     listToggle: el => { const p = S.players[+el.dataset.pid]; p.listed = !p.listed; save(); renderSheet(); render(); toast(p.listed ? `${p.n} está à venda.` : `${p.n} saiu da lista de venda.`); },
     quickSell: el => { const r = G.quickSell(S, +el.dataset.pid); save(); closeSheet(); render(); toast(esc(r.msg)); },
     mktSal: el => { U.mkt.salF = el.dataset.v; render(); },
+    mktNota: el => { U.mkt.notaF = el.dataset.v; render(); },
     cmpMode: () => { if (U.cmpOn) { U.cmpOn = false; U.cmp = []; } else { U.cmpOn = true; U.cmp = []; toast('Toque em até 3 jogadores para comparar.'); } render(); },
     cmpPick: el => {
       const id = +el.dataset.pid; U.cmp = U.cmp || [];
