@@ -213,8 +213,9 @@ table.tbl .pts { font-family: var(--f-display); font-weight: 900; font-size: 19p
   /* sem isso o grid estica as linhas da coluna e o bloco fica sem espaco para deslizar */
   .lineup-layout > .stack { align-content: start; }
   /* o campo fica parado e a coluna da direita rola: quem escala olha o campo o tempo todo */
-  .campo-fixo { position: sticky; top: 76px; }
-  .campo-fixo .pitch { height: min(62vh, 580px); width: auto; max-width: 100%; } }
+  /* a esquerda agora so tem o campo; fundo solido e z-index para nada passar por cima */
+  .campo-fixo { position: sticky; top: 76px; z-index: 2; background: var(--quadro); border-radius: 14px; }
+  .campo-fixo .pitch { height: min(58vh, 540px); width: auto; max-width: 100%; } }
 @media (min-width: 900px) and (max-height: 700px) { .campo-fixo .pitch { height: 58vh; } }
 
 /* ---------- linhas de jogador ---------- */
@@ -684,3 +685,9 @@ select.txt { min-height: 40px; padding: 6px 10px; border-radius: 10px; border: 1
 /* .hero pinta tudo de branco; botao claro dentro dele ficava branco no branco */
 .hero .btn:not(.gold):not(.primary) { background: rgba(0,0,0,.25); border-color: rgba(255,255,255,.28); color: #fff; }
 .hero .btn:not(.gold):not(.primary):hover { background: rgba(0,0,0,.35); }
+
+/* chip de formacao salva, com o x de apagar junto */
+.chip-del { display: inline-flex; align-items: stretch; }
+.chip-del .chip { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+.chip-del .x { border: 1px solid var(--linha); border-left: 0; background: var(--sup); color: var(--tinta2); border-radius: 0 999px 999px 0; width: 30px; font-size: 18px; line-height: 1; padding: 0; }
+.chip-del .x:hover { color: var(--cartao); }

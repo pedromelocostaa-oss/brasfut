@@ -204,7 +204,7 @@
   // primeira data em que o clube do jogador entra em campo
   function primeiraData(st, id) { for (let w = 0; w < WEEKS; w++) { if (C.fixturesOf(st.comp, w).some(m => m.h === id || m.a === id)) return w; } return 0; }
   function newCareer(seed, clubId, coachName, persona) {
-    const st = { v: 3, seed, year: 2026, round: 0, coach: { name: coachName || 'Técnico', persona, xp: 0, level: 1, club: clubId }, clubs: {}, players: {}, rosters: {}, comp: null, results: [], news: [], achievements: {}, finance: [], market: { neg: {}, offers: [], auction: null, auctionsDone: [] }, stats: { winStreak: 0, unbeaten: 0, clean: 0 }, history: [], morale: 55, board: { conf: 60 }, lineup: null, lastMatch: null, objectives: [], fired: false, seasonOver: false };
+    const st = { v: 3, seed, year: 2026, round: 0, coach: { name: coachName || 'Técnico', persona, xp: 0, level: 1, club: clubId }, clubs: {}, players: {}, rosters: {}, comp: null, results: [], news: [], achievements: {}, finance: [], market: { neg: {}, offers: [], auction: null, auctionsDone: [] }, stats: { winStreak: 0, unbeaten: 0, clean: 0 }, history: [], morale: 55, board: { conf: 60 }, lineup: null, lastMatch: null, objectives: [], customForms: [], fired: false, seasonOver: false };
     const rng = rngFor(st, 'gen');
     let id = 1;
     const REAL = (typeof window !== 'undefined' && window.REAL_ROSTERS) || (typeof globalThis !== 'undefined' && globalThis.REAL_ROSTERS) || null;
@@ -362,7 +362,7 @@
     return st.sponsor;
   }
   function migrate(st) {
-    if (st.coach) { life(st); if (st.lineup && !st.lineup.takers) st.lineup.takers = {}; }
+    if (st.coach) { life(st); if (st.lineup && !st.lineup.takers) st.lineup.takers = {}; if (!st.customForms) st.customForms = []; }
     Object.values(st.players || {}).forEach(p => { if (Array.isArray(p.at)) E.normAt(p); });
     Object.values(st.infra || {}).forEach(inf => (inf.prospects || []).forEach(p => { if (Array.isArray(p.at)) E.normAt(p); }));
     // loja antiga com estoque: devolve o estoque pelo custo e passa para a loja sem estoque

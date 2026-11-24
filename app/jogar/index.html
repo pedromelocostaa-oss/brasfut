@@ -237,8 +237,9 @@ table.tbl .pts { font-family: var(--f-display); font-weight: 900; font-size: 19p
   /* sem isso o grid estica as linhas da coluna e o bloco fica sem espaco para deslizar */
   .lineup-layout > .stack { align-content: start; }
   /* o campo fica parado e a coluna da direita rola: quem escala olha o campo o tempo todo */
-  .campo-fixo { position: sticky; top: 76px; }
-  .campo-fixo .pitch { height: min(62vh, 580px); width: auto; max-width: 100%; } }
+  /* a esquerda agora so tem o campo; fundo solido e z-index para nada passar por cima */
+  .campo-fixo { position: sticky; top: 76px; z-index: 2; background: var(--quadro); border-radius: 14px; }
+  .campo-fixo .pitch { height: min(58vh, 540px); width: auto; max-width: 100%; } }
 @media (min-width: 900px) and (max-height: 700px) { .campo-fixo .pitch { height: 58vh; } }
 
 /* ---------- linhas de jogador ---------- */
@@ -708,6 +709,12 @@ select.txt { min-height: 40px; padding: 6px 10px; border-radius: 10px; border: 1
 /* .hero pinta tudo de branco; botao claro dentro dele ficava branco no branco */
 .hero .btn:not(.gold):not(.primary) { background: rgba(0,0,0,.25); border-color: rgba(255,255,255,.28); color: #fff; }
 .hero .btn:not(.gold):not(.primary):hover { background: rgba(0,0,0,.35); }
+
+/* chip de formacao salva, com o x de apagar junto */
+.chip-del { display: inline-flex; align-items: stretch; }
+.chip-del .chip { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+.chip-del .x { border: 1px solid var(--linha); border-left: 0; background: var(--sup); color: var(--tinta2); border-radius: 0 999px 999px 0; width: 30px; font-size: 18px; line-height: 1; padding: 0; }
+.chip-del .x:hover { color: var(--cartao); }
 
 </style>
 </head>
@@ -1945,7 +1952,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
   // primeira data em que o clube do jogador entra em campo
   function primeiraData(st, id) { for (let w = 0; w < WEEKS; w++) { if (C.fixturesOf(st.comp, w).some(m => m.h === id || m.a === id)) return w; } return 0; }
   function newCareer(seed, clubId, coachName, persona) {
-    const st = { v: 3, seed, year: 2026, round: 0, coach: { name: coachName || 'Técnico', persona, xp: 0, level: 1, club: clubId }, clubs: {}, players: {}, rosters: {}, comp: null, results: [], news: [], achievements: {}, finance: [], market: { neg: {}, offers: [], auction: null, auctionsDone: [] }, stats: { winStreak: 0, unbeaten: 0, clean: 0 }, history: [], morale: 55, board: { conf: 60 }, lineup: null, lastMatch: null, objectives: [], fired: false, seasonOver: false };
+    const st = { v: 3, seed, year: 2026, round: 0, coach: { name: coachName || 'Técnico', persona, xp: 0, level: 1, club: clubId }, clubs: {}, players: {}, rosters: {}, comp: null, results: [], news: [], achievements: {}, finance: [], market: { neg: {}, offers: [], auction: null, auctionsDone: [] }, stats: { winStreak: 0, unbeaten: 0, clean: 0 }, history: [], morale: 55, board: { conf: 60 }, lineup: null, lastMatch: null, objectives: [], customForms: [], fired: false, seasonOver: false };
     const rng = rngFor(st, 'gen');
     let id = 1;
     const REAL = (typeof window !== 'undefined' && window.REAL_ROSTERS) || (typeof globalThis !== 'undefined' && globalThis.REAL_ROSTERS) || null;
@@ -2103,7 +2110,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
     return st.sponsor;
   }
   function migrate(st) {
-    if (st.coach) { life(st); if (st.lineup && !st.lineup.takers) st.lineup.takers = {}; }
+    if (st.coach) { life(st); if (st.lineup && !st.lineup.takers) st.lineup.takers = {}; if (!st.customForms) st.customForms = []; }
     Object.values(st.players || {}).forEach(p => { if (Array.isArray(p.at)) E.normAt(p); });
     Object.values(st.infra || {}).forEach(inf => (inf.prospects || []).forEach(p => { if (Array.isArray(p.at)) E.normAt(p); }));
     // loja antiga com estoque: devolve o estoque pelo custo e passa para a loja sem estoque
@@ -3745,7 +3752,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
       const lu = S.lineup;
       const base = (lu.livre && lu.livre.length === 11) ? lu.livre.map(c => c.slice()) : E.coordsOf(lu.formation);
       base[t.i] = [Math.round(t.pos[0]), Math.round(t.pos[1])];
-      lu.livre = base; S.lineupFrom = null; S.trocouUmaVez = true;
+      lu.livre = base; lu.formSalva = null; S.lineupFrom = null; S.trocouUmaVez = true;
       U.arrastouAte = Date.now() + 500;
       save(); render();
       toast(`${posLbl(E.slotFromXY(base[t.i][0], base[t.i][1]))}: posição salva. Desenho ${desenhoLivre(base)}.`);
@@ -4423,17 +4430,20 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
         <div class="campo-fixo stack" style="gap:12px">
         <section class="card stack" style="gap:12px">
           <div class="head" style="margin:0"><h2>Escalação${hint('Clique num jogador no campo para trocar. O número no círculo é a nota já com o efeito da posição: fora dela, o jogador rende menos e aparece como improvisado.')}</h2><button class="btn" data-act="auto" ${tipA('Monta o time com os melhores para esta formação, descontando cansaço, lesão e suspensão.')}>Escalar os melhores</button></div>
-          <div class="chips wrap" role="group" aria-label="Formação">${forms}${lu.livre ? '<button class="chip" aria-pressed="true" data-tip="Você moveu jogadores no campo. A função de cada um vem de onde ele está.">Livre</button>' : ''}</div>
-          <p class="small muted" style="margin:0">${lu.livre ? `Formação livre: ${desenhoLivre(lu.livre)}. Arraste os jogadores para mudar. A posição no campo define a função de cada um.` : f.txt}</p>
-          ${lu.livre ? '<button class="btn ghost" data-act="livreOff" style="justify-self:start;padding-inline:0;min-height:32px">Voltar para uma formação pronta</button>' : ''}
+          <div class="chips wrap" role="group" aria-label="Formação">${forms}${minhasForms()}${lu.livre && !S.lineup.formSalva ? '<button class="chip" aria-pressed="true" data-tip="Você moveu jogadores no campo. A função de cada um vem de onde ele está. Salve para reusar.">Livre</button>' : ''}</div>
+          <p class="small muted" style="margin:0">${lu.livre ? `${lu.formSalva ? `<b>${esc(lu.formSalva)}</b>: sua formação. ` : `Formação livre: ${desenhoLivre(lu.livre)}. `}Arraste os jogadores para mudar. A posição no campo define a função de cada um.` : f.txt}</p>
+          <div class="row" style="gap:8px;flex-wrap:wrap">
+          ${lu.livre && !lu.formSalva && (S.customForms || []).length < 4 ? '<button class="btn ghost" data-act="formSalvar" style="padding-inline:0;min-height:32px" data-tip="Guarda este desenho de posições com um nome, para usar em qualquer jogo.">Salvar esta formação</button>' : ''}
+          ${lu.livre ? '<button class="btn ghost" data-act="livreOff" style="padding-inline:0;min-height:32px">Voltar para uma formação pronta</button>' : ''}
+          </div>
         </section>
         ${!S.trocouUmaVez ? `<div class="notice info small" style="margin:0">Toque num jogador no campo e escolha quem entra no lugar. "Escalar os melhores" faz isso sozinho.</div>` : ''}
         <div class="pitch" aria-label="Campo">${'<div class="lines"></div><div class="box-top"></div><div class="box-bot"></div>'}${mags}</div>
+        ${out.length ? `<div class="notice bad small" style="margin:0">${out.map(p => `${esc(p.n)} ${p.inj > 0 ? `lesionado (${p.inj} ${plural(p.inj, 'semana', 'semanas')})` : 'suspenso'}`).join(' · ')}. Toque no ímã para trocar.</div>` : ''}
         </div>
-        ${out.length ? `<div class="notice bad small">${out.map(p => `${esc(p.n)} ${p.inj > 0 ? `lesionado (${p.inj} ${plural(p.inj, 'semana', 'semanas')})` : 'suspenso'}`).join(' · ')}. Toque no ímã para trocar.</div>` : ''}
-        <section class="card"><div class="head"><h2>Banco${hint('Até 9 reservas para as trocas durante o jogo (até 5 por partida). Clique numa vaga para escolher quem fica nela.')}</h2><span class="tiny muted">Entra primeiro quem está antes</span></div><div class="row" style="gap:8px">${bench}</div></section>
       </div>
       <div class="stack side">
+        <section class="card"><div class="head"><h2>Banco${hint('Até 9 reservas para as trocas durante o jogo (até 5 por partida). Clique numa vaga para escolher quem fica nela.')}</h2><span class="tiny muted">Entra primeiro quem está antes</span></div><div class="row" style="gap:8px">${bench}</div></section>
         <section class="card stack" style="gap:10px">
           <div class="head" style="margin:0"><h2>Postura${hint('Como o time começa o jogo. Do lado seguro, menos gols a favor e contra. Do lado arriscado, mais chances para os dois times e mais cansaço. Passe o mouse em cada opção.')}</h2><span class="tag blue">${ment.label}</span></div>
           <div class="ruler" role="group" aria-label="Postura">${ruler}</div><div class="ruler-ends"><span>Segura</span><span>Arrisca</span></div>
@@ -4447,6 +4457,14 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
         <section class="card"><div class="head"><h2>Elenco${hint('Clique num jogador para ver números, valor e salário e para colocá-lo à venda. A barra ao lado é a condição física.')}</h2><span class="small muted">${myPlayers().length} jogadores</span></div>${squadList()}</section>
       </div>
     </div>`;
+  }
+
+  // Formacoes que o tecnico salvou. Chip com o nome e um x para apagar.
+  function minhasForms() {
+    return (S.customForms || []).map((cf, i) => {
+      const ativa = S.lineup.formSalva === cf.nome;
+      return `<span class="chip-del"><button class="chip" data-act="formUsar" data-i="${i}" aria-pressed="${ativa}" data-tip="Sua formação ${esc(cf.nome)} (${desenhoLivre(cf.livre)}). Escala os melhores nessas posições.">${esc(cf.nome)}</button><button class="x" data-act="formApagar" data-i="${i}" aria-label="Apagar ${esc(cf.nome)}">×</button></span>`;
+    }).join('');
   }
 
   // le as 11 coordenadas e devolve o desenho em numeros, como 4-3-3
@@ -4524,6 +4542,17 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
       ${problemas ? `<div class="notice bad small" style="margin-top:10px">${problemas} ${plural(problemas, 'posição está', 'posições estão')} com jogador indisponível. Arrume a escalação antes.</div>` : ''}
       <button class="btn primary big block" style="margin-top:14px" data-act="rapGo">Simular e ver o resultado</button>
       <p class="tiny muted" style="margin:8px 0 0">O jogo roda inteiro de uma vez, com as mesmas regras da partida normal. Você não para no intervalo nem faz substituições; o auxiliar troca lesionado e cansado.</p>`;
+  }
+
+  function sheetNomeForm() {
+    const des = desenhoLivre(S.lineup.livre);
+    const usados = (S.customForms || []).map(c => c.nome);
+    const sugest = [des, des + ' ofensivo', des + ' fechado', 'Meu esquema', 'Time da virada'].filter(x => !usados.includes(x)).slice(0, 4);
+    return `<div class="row between" style="margin-bottom:10px"><div><div class="eyebrow">Desenho ${des}</div><h2 class="disp" style="font-size:26px;text-transform:uppercase">Salvar formação</h2></div><button class="btn" data-act="closeSheet">Fechar</button></div>
+      <p class="small muted" style="margin:0 0 12px">Guarda só as posições, sem os jogadores. Depois é só tocar no nome dela para escalar os melhores nesse desenho, em qualquer time.</p>
+      <label class="stack" style="gap:6px"><span class="eyebrow">Nome da formação</span><input id="form-nome" class="txt" maxlength="22" placeholder="Ex: ${des} ofensivo" value=""></label>
+      <div class="chips wrap" style="margin-top:10px">${sugest.map(x => `<button class="chip" data-act="formNomeSug" data-v="${esc(x)}">${esc(x)}</button>`).join('')}</div>
+      <button class="btn primary big block" style="margin-top:14px" data-act="formNomeOk">Salvar</button>`;
   }
 
   function sheetSalvar() {
@@ -5408,7 +5437,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
   }
   function renderSheet() {
     let el = document.getElementById('sheet');
-    const html = !U.sheet || (!S && U.sheet.type !== 'clubPreview') ? null : U.sheet.type === 'clubPreview' ? sheetClubPreview() : U.sheet.type === 'avatar' ? sheetAvatar() : U.sheet.type === 'pick' || U.sheet.type === 'bench' ? sheetPick() : U.sheet.type === 'player' ? sheetPlayer() : U.sheet.type === 'offer' ? sheetOffer() : U.sheet.type === 'moment' ? sheetMoment() : U.sheet.type === 'rapido' ? sheetRapido() : U.sheet.type === 'salvar' ? sheetSalvar() : U.sheet.type === 'compare' ? sheetCompare() : U.sheet.type === 'verba' ? sheetVerba() : U.sheet.type === 'passe' ? sheetPasse() : '';
+    const html = !U.sheet || (!S && U.sheet.type !== 'clubPreview') ? null : U.sheet.type === 'clubPreview' ? sheetClubPreview() : U.sheet.type === 'avatar' ? sheetAvatar() : U.sheet.type === 'pick' || U.sheet.type === 'bench' ? sheetPick() : U.sheet.type === 'player' ? sheetPlayer() : U.sheet.type === 'offer' ? sheetOffer() : U.sheet.type === 'moment' ? sheetMoment() : U.sheet.type === 'rapido' ? sheetRapido() : U.sheet.type === 'nomeForm' ? sheetNomeForm() : U.sheet.type === 'salvar' ? sheetSalvar() : U.sheet.type === 'compare' ? sheetCompare() : U.sheet.type === 'verba' ? sheetVerba() : U.sheet.type === 'passe' ? sheetPasse() : '';
     // o editor de visual atualiza no lugar, sem reabrir a folha a cada toque
     if (el && html !== null && U.sheet.type === 'avatar' && el.dataset.type === 'avatar') { const sh = el.querySelector('.sheet'); const y = sh.scrollTop; sh.innerHTML = `<div class="grab"></div>${html}`; sh.scrollTop = y; return; }
     if (el) el.remove();
@@ -5448,11 +5477,24 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
     onbPersona: el => { U.onb.persona = el.dataset.v; render(); },
     onbStart: () => { const nm = (document.getElementById('coach-name').value || '').trim() || 'Técnico'; S = G.newCareer((Date.now() & 0x7fffffff) >>> 0, U.onb.club, nm, U.onb.persona); S.coach.avatar = U.onb.avatar || randomAvatar(); U.view = 'central'; save(); render(); window.scrollTo(0, 0); },
     play: () => { if (!G.userFixture(S)) { render(); return; } if (G.sponsorPending(S)) { toast('Escolha um patrocinador antes de jogar.'); const el = document.getElementById('spons'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; } audio(); startMatch(); },
-    formation: el => { const f = el.dataset.v; const keep = { ...S.lineup }; const auto = E.autoLineup(G.squadOf(S, me()), f); S.lineup = { ...auto, ment: keep.ment, formation: f, livre: null, takers: keep.takers }; S.lineupFrom = null; save(); render(); toast('Formação ' + f + ': time reescalado nas posições novas.'); },
+    formation: el => { const f = el.dataset.v; const keep = { ...S.lineup }; const auto = E.autoLineup(G.squadOf(S, me()), f); S.lineup = { ...auto, ment: keep.ment, formation: f, livre: null, formSalva: null, takers: keep.takers }; S.lineupFrom = null; save(); render(); toast('Formação ' + f + ': time reescalado nas posições novas.'); },
     ment: el => { S.lineup.ment = el.dataset.v; save(); render(); },
     auto: () => { const lv = S.lineup.livre; S.lineup = { ...E.autoLineup(G.squadOf(S, me()), S.lineup.formation, lv), ment: S.lineup.ment, formation: S.lineup.formation, takers: S.lineup.takers }; S.lineupFrom = null; save(); render(); toast('Escalados os melhores para ' + (lv ? 'as posições que você montou' : 'esta formação') + ', já contando o cansaço.'); },
     slot: el => { S.trocouUmaVez = true; U.sheet = { type: 'pick', i: +el.dataset.i }; renderSheet(); },
-    livreOff: () => { S.lineup.livre = null; S.lineupFrom = null; save(); render(); toast('De volta ao ' + S.lineup.formation + '.'); },
+    livreOff: () => { S.lineup.livre = null; S.lineup.formSalva = null; S.lineupFrom = null; save(); render(); toast('De volta ao ' + S.lineup.formation + '.'); },
+    formSalvar: () => { if (!S.lineup.livre) return; U.sheet = { type: 'nomeForm' }; renderSheet(); },
+    formNomeSug: el => { const i = document.getElementById('form-nome'); if (i) i.value = el.dataset.v; },
+    formNomeOk: () => {
+      const inp = document.getElementById('form-nome'); let nome = (inp && inp.value || '').trim();
+      if (!nome) nome = desenhoLivre(S.lineup.livre) + ' ' + ((S.customForms || []).length + 1);
+      if ((S.customForms || []).some(c => c.nome === nome)) { toast('Já existe uma formação com esse nome.'); return; }
+      S.customForms = S.customForms || [];
+      S.customForms.push({ nome, livre: S.lineup.livre.map(c => c.slice()) });
+      S.lineup.formSalva = nome;
+      closeSheet(); save(); render(); toast('Formação ' + nome + ' salva. Está nos botões de formação.');
+    },
+    formUsar: el => { const cf = (S.customForms || [])[+el.dataset.i]; if (!cf) return; const lv = cf.livre.map(c => c.slice()); S.lineup = { ...E.autoLineup(G.squadOf(S, me()), S.lineup.formation, lv), ment: S.lineup.ment, formation: S.lineup.formation, takers: S.lineup.takers, formSalva: cf.nome }; S.lineupFrom = null; save(); render(); toast(cf.nome + ': time escalado nessas posições.'); },
+    formApagar: el => { const i = +el.dataset.i; const cf = (S.customForms || [])[i]; if (!cf) return; S.customForms.splice(i, 1); if (S.lineup.formSalva === cf.nome) S.lineup.formSalva = null; save(); render(); toast('Formação ' + cf.nome + ' apagada.'); },
     benchslot: el => { U.sheet = { type: 'bench', i: +el.dataset.i }; renderSheet(); },
     pick: el => {
       const pid = +el.dataset.pid; const lu = S.lineup; lu.bench = lu.bench || [];
