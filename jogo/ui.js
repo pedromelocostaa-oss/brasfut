@@ -1298,6 +1298,8 @@
   };
   const pips = (l, max) => `<span class="pips" aria-hidden="true">${Array.from({ length: max }, (_, i) => `<i class="${i < l ? 'on' : ''}"></i>`).join('')}</span>`;
   const cmp = (now, nxt) => nxt == null || nxt === now ? `<b class="num">${now}</b>` : `<b class="num">${now} <span class="nx">→ ${nxt}</span></b>`;
+  // Igual ao cmp, mas para numeros que PIORAM ao subir de nivel (manutencao). Verde so para melhora; custo maior vai em ambar.
+  const cmpCost = (now, nxt) => nxt == null || nxt === now ? `<b class="num">${now}</b>` : `<b class="num">${now} <span class="nx-cost">→ ${nxt}</span></b>`;
   // manutenção mensal de um nível de estrutura (a regra guarda o valor por rodada; aqui vira conta de mês)
   function maintOf(k, l) { const inf = G.infra(S); const D = G.INFRA[k]; return Math.round(inf.ref * D.maint * Math.max(0, l - D.min) * 58 / 12 / 1000) * 1000; }
   function buildBar(k) {

@@ -56,7 +56,17 @@ img {{ max-width: 100%; }}
 {BODY}
 <script>
 // o service worker é do site; dentro do app nativo o Capacitor já serve tudo localmente
-if ('serviceWorker' in navigator && !(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform())) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {{}}));
+if ('serviceWorker' in navigator && !(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform())) addEventListener('load', () => {{
+  const jaControlado = !!navigator.serviceWorker.controller;
+  navigator.serviceWorker.register('sw.js').catch(() => {{}});
+  // quando uma versão nova assume o controle, recarrega uma vez para a tela sair do código velho
+  let recarregou = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {{
+    if (recarregou || !jaControlado) return;
+    recarregou = true;
+    location.reload();
+  }});
+}});
 </script>
 </body>
 </html>
