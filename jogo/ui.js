@@ -980,8 +980,9 @@
     const rows = ps.map(p => {
       const unav = p.inj > 0 || p.sus > 0;
       const role = lu.slots.includes(p.id) ? 'Titular' : (lu.bench || []).includes(p.id) ? 'Banco' : 'Fora';
-      const fit = slot ? (p.pos === slot ? '' : E.fitFactor(slot, p.pos) >= 0.92 ? '<span class="tag">Adaptado</span>' : '<span class="tag bad">Improvisado</span>') : '';
-      return `<button class="prow ${p.id === curId ? 'cur' : ''}" data-act="pick" data-pid="${p.id}" ${unav ? 'disabled style="opacity:.5"' : ''}>${ovr(slot ? Math.round(p.ovr * E.fitFactor(slot, p.pos)) : p.ovr)}<span class="who"><b>${esc(p.n)}</b><span>${posLbl(p.pos)} · ${p.age} anos · ${role}</span></span><span class="end">${unav ? (p.inj > 0 ? '<span class="tag bad">Lesionado</span>' : '<span class="tag bad">Suspenso</span>') : fit}${fadiga(p.cond, true)}</span></button>`;
+      const nat = slot && p.pos === slot;
+      const fit = !slot ? '' : nat ? '<span class="tag good">Na posição</span>' : (E.fitFactor(slot, p.pos) >= 0.92 ? '<span class="tag">Adaptado</span>' : '<span class="tag bad">Improvisado</span>');
+      return `<button class="prow pick-row ${nat ? 'natural' : ''} ${p.id === curId ? 'cur' : ''}" data-act="pick" data-pid="${p.id}" ${unav ? 'disabled style="opacity:.5"' : ''}>${ovr(slot ? Math.round(p.ovr * E.fitFactor(slot, p.pos)) : p.ovr)}<span class="who"><b>${esc(p.n)}</b><span class="pmeta">${posLbl(p.pos)} · ${p.age} anos · ${role}</span><span class="pqual">${estrelas(p.ovr)}${attrMini(p)}</span></span><span class="end">${unav ? (p.inj > 0 ? '<span class="tag bad">Lesionado</span>' : '<span class="tag bad">Suspenso</span>') : fit}${fadiga(p.cond, true)}</span></button>`;
     }).join('');
     return `<div class="row between" style="margin-bottom:8px"><div><div class="eyebrow">${isBench ? 'Banco · vaga ' + (sh.i + 1) : 'Escolha para a posição'}</div><h2 class="disp" style="font-size:28px;text-transform:uppercase">${isBench ? 'Reserva' : E.POS_NAME[slot]}</h2></div><button class="btn" data-act="closeSheet">Fechar</button></div>
       <p class="small muted" style="margin:0 0 8px">A nota já mostra o efeito da posição: fora dela o jogador rende menos. A barra é o cansaço.</p>

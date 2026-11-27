@@ -145,6 +145,13 @@ main { padding: 16px; padding-block: 16px 24px; max-width: 1240px; width: 100%; 
 .stars.mini::before { letter-spacing: 1px; }
 .mag .stars { color: rgba(255,255,255,.32); margin-top: 1px; }
 .prow .who .stars { margin-top: 3px; }
+.pick-row .who { display: grid; gap: 3px; }
+.pick-row .pmeta { font-size: 13px; color: var(--tinta2); }
+.pick-row .pqual { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.pick-row .pqual .stars { margin-top: 0; }
+.pick-row .pqual .attrs { font-size: 12px; color: var(--tinta2); }
+.pick-row.natural { box-shadow: inset 3px 0 0 var(--verde); }
+.pick-row.natural .who b { color: var(--tinta); }
 
 /* ---------- medidores ---------- */
 .meters { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
