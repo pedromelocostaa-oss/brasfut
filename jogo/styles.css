@@ -139,6 +139,8 @@ main { padding: 16px; padding-block: 16px 24px; max-width: 1240px; width: 100%; 
 .chip-criar { border-style: dashed; color: var(--ima); font-weight: 700; }
 .stars { position: relative; display: inline-block; font-size: 11px; line-height: 1; color: var(--linha); letter-spacing: 1.5px; white-space: nowrap; }
 .stars::before { content: "★★★★★"; position: absolute; left: 0; top: 0; width: var(--p); overflow: hidden; color: var(--ouro); letter-spacing: 1.5px; white-space: nowrap; }
+.chev-btn { border: 0; background: transparent; color: var(--tinta2); font-size: 15px; line-height: 1; min-height: 28px; min-width: 28px; border-radius: 8px; cursor: pointer; }
+.chev-btn:hover { background: var(--sup2); color: var(--tinta); }
 .stars.mini { font-size: 9px; letter-spacing: 1px; }
 .stars.mini::before { letter-spacing: 1px; }
 .mag .stars { color: rgba(255,255,255,.32); margin-top: 1px; }
@@ -471,8 +473,8 @@ input.txt { width: 100%; min-height: 48px; padding: 10px 14px; border-radius: 12
 
 /* ---------- patrocinio ---------- */
 .spons { border: 2px solid var(--ouro); }
-.offers { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 10px; }
-.offer { display: grid; gap: 10px; align-content: start; padding: 12px; border-radius: 12px; border: 1.5px solid var(--linha); background: var(--quadro); min-width: 0; }
+.offers { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-top: 10px; }
+.offer { display: grid; gap: 10px; align-content: start; padding: 12px; border-radius: 12px; border: 1.5px solid var(--linha); border-top: 4px solid var(--bs, var(--linha)); background: var(--quadro); min-width: 0; }
 .offer .tag { justify-self: start; }
 .offer .fin { font-size: 14px; }
 .offer .offer-txt { margin: 0; }

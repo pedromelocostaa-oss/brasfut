@@ -687,7 +687,7 @@
     // Antes de entrar em campo, a primeira decisão é o patrocinador. Enquanto
     // estiver pendente, a Central mostra só essa escolha, sem o campo e sem o
     // botão Jogar. Depois de escolher, a Central abre normal.
-    if (G.sponsorPending(S)) return `${avTela}<div class="onb stack" style="max-width:720px;gap:16px">
+    if (G.sponsorPending(S)) return `${avTela}<div class="onb stack" style="max-width:1000px;gap:16px">
       <div class="row">${badge(me(), 'lg')}<div><div class="eyebrow">${esc(club(me()).name)} · ${DIVN[club(me()).div]}</div><h1 style="font-size:clamp(26px,5vw,40px);line-height:1">Escolha seu patrocinador</h1></div></div>
       <p class="small muted" style="margin:0">É a primeira decisão, antes de entrar em campo. A marca fica na camisa e paga todo mês. Assim que você escolher, o jogo abre com o próximo jogo e o botão de jogar.</p>
       ${sponsorCard()}
@@ -725,9 +725,10 @@
           ${`<div class="${first ? 'coachmark' : ''}">${first ? '<div class="tip">Seu time já está escalado. No intervalo, o jogo para e você escolhe a postura.</div>' : ''}<button class="btn gold big block" data-act="play" ${tipA('Começa a partida. O jogo para no intervalo, em gol sofrido, na reta final e em lesão para você decidir.')}>Jogar</button><button class="btn block" style="margin-top:8px" data-act="rapido" ${tipA('Escolhe a postura e mostra só o resultado, sem narração. Boa para quando você tem pressa.')}>Simular sem narração</button></div>`}
           <button class="btn block" data-act="go" data-v="elenco" ${tipA('Abre o Elenco para mexer em formação, titulares, banco e postura.')}>Ajustar escalação</button>
         </div></section>`;
-        c1 += `<section class="card"><div class="head"><h2>Objetivos do jogo${hint(OBJ_TIP)}</h2><span class="xp">+${S.objectives.length * 20} XP</span></div>
+        const objCol = U.settings && U.settings.objCol;
+        c1 += `<section class="card"><div class="head"><h2>Objetivos do jogo${hint(OBJ_TIP)}</h2><span class="row nowrap" style="gap:10px"><span class="xp">+${S.objectives.length * 20} XP</span><button class="chev-btn" data-act="objToggle" aria-expanded="${!objCol}" aria-label="${objCol ? 'Expandir objetivos' : 'Recolher objetivos'}">${objCol ? '▾' : '▴'}</button></span></div>${objCol ? '' : `
           ${S.objectives.map(o => `<div class="obj"><span class="box"></span><span class="t">${esc(o.txt)}</span><span class="xp">+${o.xp}</span></div>`).join('')}
-          <p class="tiny muted" style="margin:8px 0 0">Cada objetivo cumprido também paga um bônus em dinheiro.</p></section>`;
+          <p class="tiny muted" style="margin:8px 0 0">Cada objetivo cumprido também paga um bônus em dinheiro.</p>`}</section>`;
         c1 += pendCard() + pressCard() + eventCard();
         if (pend) c1 += sponsorCard();
       } else {
@@ -816,7 +817,7 @@
     return `<section class="card spons" id="spons"><div class="head"><h2>Propostas de patrocínio${hint(SPONS_TIP)}</h2><span class="tag gold">Decisão pendente</span></div>
       <p class="small" style="margin:0 0 4px">${renew ? 'O contrato anterior acabou. ' : ''}Três marcas querem estampar a camisa do ${esc(club(me()).name)}. Escolha uma para começar a jogar.</p>
       ${renew && pp ? `<p class="tiny muted" style="margin:0 0 4px">A campanha ${pp > 0 ? 'valorizou' : 'desvalorizou'} as propostas em ${Math.abs(pp)}%.</p>` : ''}
-      <div class="offers">${offers.map((o, i) => `<article class="offer">
+      <div class="offers">${offers.map((o, i) => `<article class="offer" style="--bs:var(--${SECTOR[o.brand.cat] || 'ima'})">
         ${brandMark(o.brand)}
         <span class="tag ${o.kind === 'alto' ? 'gold' : o.kind === 'longo' ? 'blue' : o.kind === 'titulo' ? 'gold' : 'good'}">${o.label}</span>
         <div class="fin small">
@@ -1944,6 +1945,7 @@
   const A = {
     go: el => { U.view = el.dataset.v; U.sheet = null; if (U.view !== 'mercado') stopAuction(); render(); window.scrollTo(0, 0); },
     navToggle: () => { U.settings = U.settings || {}; U.settings.navCollapsed = !U.settings.navCollapsed; save(); render(); },
+    objToggle: () => { U.settings = U.settings || {}; U.settings.objCol = !U.settings.objCol; save(); render(); },
     onbClub: el => { U.sheet = { type: 'clubPreview', id: el.dataset.id }; renderSheet(); },
     onbPick: el => { U.sheet = null; renderSheet(); U.onb.club = el.dataset.id; U.onb.step = 2; if (!U.onb.avatar) U.onb.avatar = randomAvatar(); render(); window.scrollTo(0, 0); },
     av: el => { const tgt = U.sheet && U.sheet.type === 'avatar' ? S.coach.avatar : U.onb.avatar; const k = el.dataset.k; tgt[k] = (k === 'skin' || k === 'hairColor') ? +el.dataset.v : el.dataset.v; if (U.sheet && U.sheet.type === 'avatar') { save(); render(); } else render(); },
