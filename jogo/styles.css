@@ -133,6 +133,10 @@ main { padding: 16px; padding-block: 16px 24px; max-width: 1240px; width: 100%; 
 .fadiga > i { display: block; height: 100%; border-radius: 3px; background: var(--verde); }
 .fadiga.mid > i { background: var(--alerta); }
 .fadiga.low > i { background: var(--cartao); }
+.fad-wrap { display: inline-flex; align-items: center; gap: 6px; }
+.fad-n { font-weight: 700; font-size: 12px; color: var(--tinta2); font-variant-numeric: tabular-nums; }
+.fad-wrap.low .fad-n { color: var(--cartao); }
+.chip-criar { border-style: dashed; color: var(--ima); font-weight: 700; }
 
 /* ---------- medidores ---------- */
 .meters { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
