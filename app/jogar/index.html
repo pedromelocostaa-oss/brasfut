@@ -169,13 +169,21 @@ main { padding: 16px; padding-block: 16px 24px; max-width: 1240px; width: 100%; 
 .stars.mini::before { letter-spacing: 1px; }
 .mag .stars { color: rgba(255,255,255,.32); margin-top: 1px; }
 .prow .who .stars { margin-top: 3px; }
-.pick-row .who { display: grid; gap: 3px; }
-.pick-row .pmeta { font-size: 13px; color: var(--tinta2); }
-.pick-row .pqual { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-.pick-row .pqual .stars { margin-top: 0; }
-.pick-row .pqual .attrs { font-size: 12px; color: var(--tinta2); }
+.prow .pmeta { display: block; font-size: 13px; color: var(--tinta2); }
+.prow .pqual { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 2px; }
+.prow .pqual .stars { margin-top: 0; }
+.prow .pqual .attrs { font-size: 12px; color: var(--tinta2); }
 .pick-row.natural { box-shadow: inset 3px 0 0 var(--verde); }
 .pick-row.natural .who b { color: var(--tinta); }
+.pchead { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: start; }
+.pch-main { min-width: 0; display: grid; gap: 6px; }
+.pch-stars { display: flex; align-items: center; gap: 8px; }
+.pch-fad { margin-top: 2px; }
+.vagas { margin-top: 14px; }
+.vaga-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.vaga { display: inline-flex; align-items: center; gap: 5px; padding: 5px 11px; border-radius: 999px; border: 1px solid var(--linha); font-size: 13px; }
+.vaga.nat { border-color: var(--verde); color: var(--tinta); font-weight: 700; }
+.vaga i { font-style: normal; color: var(--cartao); font-size: 11px; }
 
 /* ---------- medidores ---------- */
 .meters { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
@@ -4077,7 +4085,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
     const sec = E.sectors(E.lineupFrom(id, tmp.players, lu).filter(o => o.p), {});
     const groups = [['G', 'Goleiros'], ['D', 'Defensores'], ['M', 'Meio-campistas'], ['A', 'Atacantes']];
     const avgAge = sq.reduce((x, p) => x + p.age, 0) / sq.length;
-    const list = groups.map(([g, l]) => { const ps = sq.filter(p => E.GROUP[p.pos] === g).sort((a, b) => b.ovr - a.ovr); return `<div class="eyebrow sector-h">${l} · ${ps.length}</div><div class="plist">${ps.map(p => `<div class="prow" style="cursor:default">${ovr(p.ovr)}<span class="who"><b>${esc(p.n)}${p.youth ? ' <span class="tag">base</span>' : ''}</b><span>${E.POS_NAME[p.pos]} · ${p.age} anos ${attrMini(p)}</span></span>${lu.slots.includes(p.id) ? '<span class="tag">Titular</span>' : ''}</div>`).join('')}</div>`; }).join('');
+    const list = groups.map(([g, l]) => { const ps = sq.filter(p => E.GROUP[p.pos] === g).sort((a, b) => b.ovr - a.ovr); return `<div class="eyebrow sector-h">${l} · ${ps.length}</div><div class="plist">${ps.map(p => `<div class="prow" style="cursor:default">${ovr(p.ovr)}<span class="who"><b>${esc(p.n)}${p.youth ? ' <span class="tag">base</span>' : ''}</b><span class="pmeta">${E.POS_NAME[p.pos]} · ${p.age} anos</span><span class="pqual">${estrelas(p.ovr)}${attrMini(p)}</span></span>${lu.slots.includes(p.id) ? '<span class="tag">Titular</span>' : ''}</div>`).join('')}</div>`; }).join('');
     return `<div class="row between nowrap" style="margin-bottom:12px"><div class="row nowrap">${badge(id, 'lg')}<div><h2 class="disp" style="font-size:28px;text-transform:uppercase;line-height:1">${esc(c.name)}</h2><div class="small muted">${esc(c.city)}-${c.uf} · ${DIVN[c.div]}</div></div></div><button class="btn" data-act="closeSheet">Fechar</button></div>
       <div class="notice info small"><b>${t.role}.</b> Meta ${t.meta}, cobrança ${t.press}.${c.stadium ? ` Estádio: ${esc(c.stadium)}, ${c.cap.toLocaleString('pt-BR')} lugares.` : ''}</div>
       <div class="stats3" style="margin:12px 0">${[['Defesa', sec.def], ['Meio', sec.mid], ['Ataque', sec.att]].map(([l, v]) => `<div class="stat" ${tipA(SECTOR_TIP[l])}><div class="lbl">${l}</div><div class="disp" style="text-align:center;font-size:26px;font-weight:900">${Math.round(v)}</div></div>`).join('')}</div>
@@ -4765,11 +4773,18 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
     const avg = p.apps ? (p.rsum / p.apps).toFixed(1) : '–';
     const w = G.windowOpen(S.round);
     const v = E.valueFor(p.ovr, p.age, p.pos);
-    return `<div class="row between" style="margin-bottom:12px"><div class="row nowrap">${ovr(p.ovr)}<div><h2 class="disp" style="font-size:28px;text-transform:uppercase;line-height:1">${esc(p.n)}</h2><div class="small muted">${E.POS_NAME[p.pos]} · ${p.age} anos · ${esc(club(p.club).name)}</div></div></div><button class="btn" data-act="closeSheet">Fechar</button></div>
-      <div class="stats3" style="grid-template-columns:repeat(4,1fr)">${[['Jogos', p.apps], ['Gols', p.g], ['Assist.', p.a], ['Nota média', avg]].map(([l, x]) => `<div class="stat"><div class="lbl">${l}</div><div class="disp" style="text-align:center;font-size:24px;font-weight:900">${x}</div></div>`).join('')}</div>
+    const h = estrelasN(p.ovr);
+    const potN = p.pot && p.pot > p.ovr + 1 ? estrelasN(p.pot) : null;
+    const contrato = p.contract ? `contrato até ${S.year + p.contract}` : '';
+    const vagas = Object.keys(E.POS_NAME).map(sl => ({ sl, f: E.fitFactor(sl, p.pos) })).filter(o => o.f >= 0.85).sort((a, b) => b.f - a.f).slice(0, 4);
+    const vagaChips = vagas.map(o => `<span class="vaga ${o.f >= 1 ? 'nat' : ''}">${posLbl(o.sl)} <b>${Math.round(p.ovr * o.f)}</b>${o.f < 1 ? `<i>-${Math.round((1 - o.f) * 100)}%</i>` : ''}</span>`).join('');
+    return `<div class="row between" style="margin-bottom:8px"><div class="eyebrow">Jogador</div><button class="btn" data-act="closeSheet">Fechar</button></div>
+      <div class="pchead">${ovr(p.ovr)}<div class="pch-main"><h2 class="disp" style="font-size:26px;text-transform:uppercase;line-height:1">${esc(p.n)}${p.youth ? ' <span class="tag">base</span>' : ''}</h2><div class="small muted">${E.POS_NAME[p.pos]} · ${p.age} anos${contrato ? ' · ' + contrato : ''} · ${esc(club(p.club).name)}</div><div class="pch-stars">${estrelas(p.ovr)}<span class="small muted">Hoje <b>${estrelaTxt(h)}</b>${potN ? ` · chega a <b>${estrelaTxt(potN)}</b>` : ''}</span></div><div class="pch-fad">${fadiga(p.cond, true)}</div></div></div>
+      <div class="stats3" style="grid-template-columns:repeat(4,1fr);margin-top:12px">${[['Jogos', p.apps], ['Gols', p.g], ['Assist.', p.a], ['Nota média', avg]].map(([l, x]) => `<div class="stat"><div class="lbl">${l}</div><div class="disp" style="text-align:center;font-size:24px;font-weight:900">${x}</div></div>`).join('')}</div>
       ${attrBars(p)}
+      <div class="vagas"><div class="eyebrow" style="margin-bottom:6px">Onde joga${hint('A nota cai fora da posição de origem. Aqui está quanto ele rende em cada vaga.')}</div><div class="vaga-row">${vagaChips}</div></div>
       ${p.s26 ? `<p class="tiny muted" style="margin:6px 0 0">Na vida real em 2026 (Transfermarkt, até 3 de outubro): ${p.s26[0]} jogos, ${p.s26[1]} gols, ${p.s26[2]} assistências.</p>` : p.youth ? '<p class="tiny muted" style="margin:6px 0 0">Garoto da base gerado pelo jogo (nome fictício).</p>' : ''}
-      <div class="fin" style="margin-top:14px"><span>Condição física</span><span>${fadiga(p.cond, true)}</span><span>Valor de mercado${hint('Estimativa pela nota, idade e posição. Serve de base para propostas e vendas.')}</span><b class="num">${fmt(v)}</b><span>Salário</span><b class="num">${fmt(p.wage)} por mês</b>${p.inj > 0 ? `<span>Lesão</span><b class="neg-c">${p.inj} ${plural(p.inj, 'semana', 'semanas')}</b>` : ''}</div>
+      <div class="fin" style="margin-top:14px"><span>Valor de mercado${hint('Estimativa pela nota, idade e posição. Serve de base para propostas e vendas.')}</span><b class="num">${fmt(v)}</b><span>Salário</span><b class="num">${fmt(p.wage)} por mês</b>${p.inj > 0 ? `<span>Lesão</span><b class="neg-c">${p.inj} ${plural(p.inj, 'semana', 'semanas')}</b>` : ''}</div>
       ${mine ? `<div class="row" style="margin-top:16px"><button class="btn ${p.listed ? '' : 'primary'}" data-act="listToggle" data-pid="${p.id}" ${tipA(p.listed ? 'Tira o jogador da lista de venda: para de receber propostas.' : 'Avisa o mercado. Com a janela aberta, chegam propostas a cada rodada; você responde em Mercado, aba Vender.')}>${p.listed ? 'Tirar da venda' : 'Pôr à venda'}</button>${w ? `<button class="btn danger" data-act="quickSell" data-pid="${p.id}" ${tipA('Vende na hora por 75% do valor de mercado.')}>Venda rápida · ${fmt(Math.round(v * 0.75 / 10000) * 10000)}</button>` : ''}</div>
       <p class="tiny muted" style="margin:8px 0 0">${p.listed ? 'Clubes interessados mandam propostas na próxima data.' : 'À venda, ele recebe propostas a cada semana com a janela aberta.'}${w ? '' : ' A janela está fechada: vendas só fecham quando abrir.'}</p>` : ''}`;
   }
