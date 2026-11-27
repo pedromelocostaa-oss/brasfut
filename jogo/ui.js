@@ -424,13 +424,12 @@
       <button class="btn ghost" data-act="onbBack" style="justify-self:start">← Trocar de clube</button>
       <div class="row">${badge(o.club, 'lg')}<div><div class="eyebrow">Seu clube · ${DIVN[c.div]}</div><h1 style="font-size:clamp(34px,6vw,54px)">${esc(c.name)}</h1></div></div>
       <div class="notice info"><b>${t.role}.</b> Meta da diretoria: ${t.label.charAt(0).toLowerCase() + t.label.slice(1)}, com cobrança ${t.press}.${c.div === 'D' ? ' Na Série D a meta vale para o grupo de 6 da primeira fase.' : ''} Se a campanha ficar muito abaixo disso por vários jogos seguidos, a diretoria demite.</div>
-      <button class="btn primary big block" data-act="onbStart">Começar carreira no ${esc(c.name)}</button>
-      <p class="small muted" style="margin:-4px 0 0">Nome, visual e jeito de comandar já vêm prontos. Mude abaixo se quiser; dá para trocar depois em Clube.</p>
+      <p class="small muted" style="margin:0">Nome, visual e jeito de comandar já vêm prontos. Mude aqui embaixo se quiser; dá para trocar depois em Clube. O botão para começar fica fixo no rodapé.</p>
       <section class="card stack" style="gap:12px"><h2>Quem é o técnico?${hint('Nome e visual aparecem no jogo. O visual dá para mudar depois em Clube.')}</h2>
         <label class="stack" style="gap:6px"><span class="eyebrow">Nome do técnico</span><input id="coach-name" class="txt" maxlength="28" placeholder="Seu nome" value="${esc(o.name)}" autocomplete="name"></label>
         <div class="av-wrap"><div class="av-prev">${avatarSVG(o.avatar, o.club, 150)}</div>${avatarEditor(o.avatar)}</div></section>
       <div class="stack" style="gap:8px"><span class="eyebrow">Seu jeito de comandar${hint('Cada estilo dá um efeito fixo em todas as partidas. Ele não muda durante a carreira.')}</span><div class="personas">${ps}</div></div>
-      <button class="btn primary big block" data-act="onbStart">Começar carreira</button>
+      <div class="onb-cta"><button class="btn primary big block" data-act="onbStart">Começar carreira no ${esc(c.name)}</button></div>
     </div>`;
   }
 
@@ -714,10 +713,10 @@
           ${`<div class="${first ? 'coachmark' : ''}">${first ? '<div class="tip">Seu time já está escalado. No intervalo, o jogo para e você escolhe a postura.</div>' : ''}<button class="btn gold big block" data-act="play" ${tipA('Começa a partida. O jogo para no intervalo, em gol sofrido, na reta final e em lesão para você decidir.')}>Jogar</button><button class="btn block" style="margin-top:8px" data-act="rapido" ${tipA('Escolhe a postura e mostra só o resultado, sem narração. Boa para quando você tem pressa.')}>Simular sem narração</button></div>`}
           <button class="btn block" data-act="go" data-v="elenco" ${tipA('Abre o Elenco para mexer em formação, titulares, banco e postura.')}>Ajustar escalação</button>
         </div></section>`;
-        c1 += pendCard() + pressCard() + eventCard();
         c1 += `<section class="card"><div class="head"><h2>Objetivos do jogo${hint(OBJ_TIP)}</h2><span class="xp">+${S.objectives.length * 20} XP</span></div>
           ${S.objectives.map(o => `<div class="obj"><span class="box"></span><span class="t">${esc(o.txt)}</span><span class="xp">+${o.xp}</span></div>`).join('')}
           <p class="tiny muted" style="margin:8px 0 0">Cada objetivo cumprido também paga um bônus em dinheiro.</p></section>`;
+        c1 += pendCard() + pressCard() + eventCard();
         if (pend) c1 += sponsorCard();
       } else {
         const nx = G.nextUserWeek(S, S.round + 1);
