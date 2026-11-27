@@ -4341,6 +4341,14 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
   function vCentral() {
     if (S.fired) return vFired();
     const avTela = avisoTelaInicio();
+    // Antes de entrar em campo, a primeira decisão é o patrocinador. Enquanto
+    // estiver pendente, a Central mostra só essa escolha, sem o campo e sem o
+    // botão Jogar. Depois de escolher, a Central abre normal.
+    if (G.sponsorPending(S)) return `${avTela}<div class="onb stack" style="max-width:720px;gap:16px">
+      <div class="row">${badge(me(), 'lg')}<div><div class="eyebrow">${esc(club(me()).name)} · ${DIVN[club(me()).div]}</div><h1 style="font-size:clamp(26px,5vw,40px);line-height:1">Escolha seu patrocinador</h1></div></div>
+      <p class="small muted" style="margin:0">É a primeira decisão, antes de entrar em campo. A marca fica na camisa e paga todo mês. Assim que você escolher, o jogo abre com o próximo jogo e o botão de jogar.</p>
+      ${sponsorCard()}
+    </div>`;
     // coluna 1: proximo jogo + objetivos
     let c1 = '';
     const pend = G.sponsorPending(S);
@@ -5616,7 +5624,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
       afterSim(reps);
     },
     onbPersona: el => { U.onb.persona = el.dataset.v; render(); },
-    onbStart: () => { const nm = (document.getElementById('coach-name').value || '').trim() || 'Técnico'; S = G.newCareer((Date.now() & 0x7fffffff) >>> 0, U.onb.club, nm, U.onb.persona); S.coach.avatar = U.onb.avatar || randomAvatar(); U.view = 'central'; save(); render(); window.scrollTo(0, 0); },
+    onbStart: () => { const nm = (document.getElementById('coach-name').value || '').trim() || 'Técnico'; S = G.newCareer((Date.now() & 0x7fffffff) >>> 0, U.onb.club, nm, U.onb.persona); S.coach.avatar = U.onb.avatar || randomAvatar(); G.abreSponsor(S); U.view = 'central'; save(); render(); window.scrollTo(0, 0); },
     play: () => { if (!G.userFixture(S)) { render(); return; } if (G.sponsorPending(S)) { toast('Escolha um patrocinador antes de jogar.'); const el = document.getElementById('spons'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; } audio(); startMatch(); },
     formation: el => { const f = el.dataset.v; const keep = { ...S.lineup }; const auto = E.autoLineup(G.squadOf(S, me()), f); S.lineup = { ...auto, ment: keep.ment, formation: f, livre: null, formSalva: null, takers: keep.takers }; S.lineupFrom = null; save(); render(); toast('Formação ' + f + ': time reescalado nas posições novas.'); },
     ment: el => { S.lineup.ment = el.dataset.v; save(); render(); },
