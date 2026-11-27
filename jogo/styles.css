@@ -137,6 +137,12 @@ main { padding: 16px; padding-block: 16px 24px; max-width: 1240px; width: 100%; 
 .fad-n { font-weight: 700; font-size: 12px; color: var(--tinta2); font-variant-numeric: tabular-nums; }
 .fad-wrap.low .fad-n { color: var(--cartao); }
 .chip-criar { border-style: dashed; color: var(--ima); font-weight: 700; }
+.stars { position: relative; display: inline-block; font-size: 11px; line-height: 1; color: var(--linha); letter-spacing: 1.5px; white-space: nowrap; }
+.stars::before { content: "★★★★★"; position: absolute; left: 0; top: 0; width: var(--p); overflow: hidden; color: var(--ouro); letter-spacing: 1.5px; white-space: nowrap; }
+.stars.mini { font-size: 9px; letter-spacing: 1px; }
+.stars.mini::before { letter-spacing: 1px; }
+.mag .stars { color: rgba(255,255,255,.32); margin-top: 1px; }
+.prow .who .stars { margin-top: 3px; }
 
 /* ---------- medidores ---------- */
 .meters { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }

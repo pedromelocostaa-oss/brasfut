@@ -143,6 +143,12 @@ main { padding: 16px; padding-block: 16px 24px; max-width: 1240px; width: 100%; 
 .fad-n { font-weight: 700; font-size: 12px; color: var(--tinta2); font-variant-numeric: tabular-nums; }
 .fad-wrap.low .fad-n { color: var(--cartao); }
 .chip-criar { border-style: dashed; color: var(--ima); font-weight: 700; }
+.stars { position: relative; display: inline-block; font-size: 11px; line-height: 1; color: var(--linha); letter-spacing: 1.5px; white-space: nowrap; }
+.stars::before { content: "★★★★★"; position: absolute; left: 0; top: 0; width: var(--p); overflow: hidden; color: var(--ouro); letter-spacing: 1.5px; white-space: nowrap; }
+.stars.mini { font-size: 9px; letter-spacing: 1px; }
+.stars.mini::before { letter-spacing: 1px; }
+.mag .stars { color: rgba(255,255,255,.32); margin-top: 1px; }
+.prow .who .stars { margin-top: 3px; }
 
 /* ---------- medidores ---------- */
 .meters { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
@@ -3704,6 +3710,10 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
   const tier = o => o >= 82 ? 't1' : o >= 76 ? 't2' : o >= 60 ? 't3' : 't4';
   const ovr = o => `<span class="ovr ${tier(o)}" data-tip="Nota do jogador. Dourado: 82 ou mais. Verde: 76 a 81. Cinza: 60 a 75. Vermelho: abaixo de 60.">${o}</span>`;
   function fadiga(c, num) { const cls = c >= 80 ? '' : c >= 62 ? 'mid' : 'low'; const lbl = c >= 80 ? 'descansado' : c >= 62 ? 'cansado' : 'esgotado'; const pct = Math.round(c); const bar = `<span class="fadiga ${cls}" role="img" aria-label="Energia ${pct}%, ${lbl}" data-tip="Energia: ${pct}% (${lbl}). Cansado rende menos. Recupera um pouco a cada rodada.">${''}<i style="width:${pct}%"></i></span>`; return num ? `<span class="fad-wrap ${cls}">${bar}<b class="fad-n">${pct}%</b></span>` : bar; }
+  // Estrelas por jogador: a nota vira de 0,5 a 5 estrelas (nota 79 = 3 estrelas e meia).
+  function estrelasN(ovr) { return Math.max(0.5, Math.min(5, Math.round((ovr - 44) / 10 * 2) / 2)); }
+  function estrelaTxt(n) { return n % 1 ? Math.floor(n) + '½' : String(n); }
+  function estrelas(ovr, cls) { const n = estrelasN(ovr); const pct = n / 5 * 100; return `<span class="stars ${cls || ''}" role="img" aria-label="${estrelaTxt(n)} de 5 estrelas" style="--p:${pct}%">★★★★★</span>`; }
   const shortN = n => { if (n.length <= 10) return n; const p = n.split(' '); let i = p.length - 1; while (i > 0 && /^(de|da|do|dos|das|la|del|van|von)$/.test(p[i - 1])) i--; return p.slice(i).join(' '); };
   const posLbl = p => E.POS_PT[p];
   const plural = (n, a, b) => n === 1 ? a : b;
@@ -4541,7 +4551,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
       const left = x, top = 100 - y;
       if (!ok) return `<button class="mag empty" style="left:${left}%;top:${top}%" data-act="slot" data-i="${i}" aria-label="Escolher ${E.POS_NAME[slot]}"><span class="disc">+</span><span class="nm">${posLbl(slot)}</span></button>`;
       const imp = E.fitFactor(slot, p.pos) < 1;
-      return `<button class="mag ${off ? 'off' : ''}" style="left:${left}%;top:${top}%;--c1:${c.c1};--c2:${c.c2};--cx:${txtOn(c.c1)}" data-act="slot" data-i="${i}" aria-label="${esc(p.n)}, ${E.POS_NAME[slot]}, nota ${p.ovr}"><span class="disc">${Math.round(p.ovr * E.fitFactor(slot, p.pos))}</span><span class="nm">${esc(shortN(p.n))}</span>${fadiga(p.cond)}${imp ? `<span class="slot">improvisado</span>` : ''}</button>`;
+      return `<button class="mag ${off ? 'off' : ''}" style="left:${left}%;top:${top}%;--c1:${c.c1};--c2:${c.c2};--cx:${txtOn(c.c1)}" data-act="slot" data-i="${i}" aria-label="${esc(p.n)}, ${E.POS_NAME[slot]}, nota ${p.ovr}"><span class="disc">${Math.round(p.ovr * E.fitFactor(slot, p.pos))}</span><span class="nm">${esc(shortN(p.n))}</span>${estrelas(p.ovr, 'mini')}${fadiga(p.cond)}${imp ? `<span class="slot">improvisado</span>` : ''}</button>`;
     }).join('');
     const bench = Array.from({ length: 9 }, (_, i) => { const p = S.players[(lu.bench || [])[i]]; return p && p.club === me() ? `<button class="chip" data-act="benchslot" data-i="${i}">${p.ovr} · ${esc(shortN(p.n))} <span class="muted">${posLbl(p.pos)}</span></button>` : `<button class="chip lock" data-act="benchslot" data-i="${i}">+ vaga</button>`; }).join('');
     const sec = sectorsNow();
@@ -4619,7 +4629,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = api; else 
       const ps = myPlayers().filter(p => E.GROUP[p.pos] === g).sort((a, b) => b.ovr - a.ovr);
       return `<div class="eyebrow sector-h">${l}</div><div class="plist">${ps.map(p => {
         const st = p.inj > 0 ? `<span class="tag bad">Lesionado ${p.inj}r</span>` : p.sus > 0 ? '<span class="tag bad">Suspenso</span>' : lu.slots.includes(p.id) ? '<span class="tag blue">Titular</span>' : (lu.bench || []).includes(p.id) ? '<span class="tag">Banco</span>' : '';
-        return `<button class="prow" data-act="player" data-pid="${p.id}">${ovr(p.ovr)}<span class="who"><b>${esc(p.n)}${p.youth ? ' <span class="tag">base</span>' : ''}</b><span>${posLbl(p.pos)} · ${p.age} anos${p.listed ? ' · <b>à venda</b>' : ''} ${attrMini(p)}</span></span><span class="end">${st}${fadiga(p.cond, true)}</span></button>`;
+        return `<button class="prow" data-act="player" data-pid="${p.id}">${ovr(p.ovr)}<span class="who"><b>${esc(p.n)}${p.youth ? ' <span class="tag">base</span>' : ''}</b><span>${posLbl(p.pos)} · ${p.age} anos${p.listed ? ' · <b>à venda</b>' : ''} ${attrMini(p)}</span>${estrelas(p.ovr)}</span><span class="end">${st}${fadiga(p.cond, true)}</span></button>`;
       }).join('')}</div>`;
     }).join('');
   }
