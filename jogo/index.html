@@ -155,8 +155,9 @@ main { padding: 16px; padding-block: 16px 24px; max-width: 1240px; width: 100%; 
 .prow .pqual { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 2px; }
 .prow .pqual .stars { margin-top: 0; }
 .prow .pqual .attrs { font-size: 12px; color: var(--tinta2); }
-.pick-row.natural { box-shadow: inset 3px 0 0 var(--verde); }
-.pick-row.natural .who b { color: var(--tinta); }
+.pick-row.natural { background: color-mix(in srgb, var(--verde) 8%, transparent); border-radius: 10px; }
+.pick-row:not(.natural) { opacity: .74; }
+.pick-row:not(.natural):hover { opacity: 1; }
 .pchead { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: start; }
 .pch-main { min-width: 0; display: grid; gap: 6px; }
 .pch-stars { display: flex; align-items: center; gap: 8px; }
